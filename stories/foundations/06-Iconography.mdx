@@ -1,0 +1,198 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { CircleAlert, Clock, Plus, Trophy } from "lucide-react";
+
+import {
+  FoundationsStyles,
+  ICON_COUNT,
+  ICON_GROUPS,
+  ICON_RUNGS,
+  IconGrid,
+  IconSizeSpecimen,
+  ModeFrame,
+  Rule,
+  TwoUp,
+} from "./lib";
+
+<Meta title="Foundations/Iconography" />
+
+<FoundationsStyles />
+
+# Iconography
+
+Icons are the one part of the vocabulary that is not authored here. Everything
+else on these pages is a value Raqt decided; the glyphs come off the shelf, and
+the design decisions left are which shelf, which {ICON_COUNT} of them, and how
+big.
+
+## The library
+
+**[Lucide](https://lucide.dev), through `lucide-react`.** It is already in the
+system — `button` imports its spinner and `dialog` its close cross, both list it
+as a registry dependency, and `components.json` names it as the project's
+`iconLibrary`, which is what `shadcn add` reads when it pulls in a component
+that needs one.
+
+It also fits. Lucide draws on a 24px grid at a 2px stroke with round caps and
+joins; scaled to the 16px an icon usually renders at, that lands at roughly the
+stem weight of Inter at `--text-sm`, which is why an icon beside a label reads as
+part of the sentence rather than as a sticker on it.
+
+<Rule>
+
+  **One library.** A second icon family is a second design system — a different
+  grid, a different stroke, a different idea of what a chevron is — and the two
+  never quite line up on the one screen that shows both. If Lucide is missing a
+  glyph Raqt genuinely needs, that is a gap to raise, the same as a missing
+  token. It is not a licence to import one icon from somewhere else.
+
+  Named imports only: `import { Trophy } from "lucide-react"`. The package is
+  side-effect free, so a named import ships one glyph; `import * as icons` ships
+  all seven thousand.
+
+</Rule>
+
+## The set
+
+The library is seven thousand glyphs. The set is {ICON_COUNT} — one nominated
+per concept Raqt actually names, so that "add" is the same shape on every screen
+instead of three plausible plus signs picked by three different people.
+
+The mono line under each is the export name, read off the component itself. Copy
+it straight into an import. Where a row says `· button`, a shipped component
+already depends on it.
+
+{ICON_GROUPS.map((group) => (
+  <div key={group.title}>
+    <h3>{group.title}</h3>
+    <p>{group.blurb}</p>
+    <ModeFrame mode="dark">
+      <IconGrid icons={group.icons} />
+    </ModeFrame>
+  </div>
+))}
+
+<Rule>
+
+  **One concept, one glyph — and one glyph, one concept.** The rule runs both
+  ways. Two icons for "add" makes the interface look assembled by strangers;
+  the same icon for "filter" on one screen and "settings" on another makes it
+  look assembled by one person who forgot.
+
+  **Adding a concept is adding a row here.** Pick it on lucide.dev, add it to
+  `ICON_GROUPS` in `stories/foundations/lib.tsx`, and it is documented by the
+  act of existing. An icon used in the product and absent from this page is how
+  a set becomes a pile.
+
+</Rule>
+
+## Size
+
+Three rungs, and they are steps of the spacing scale rather than a private icon
+scale — the `4` in `size-4` is the same `4` as in `p-4`.
+
+<ModeFrame mode="dark">
+  {ICON_RUNGS.map((rung) => (
+    <IconSizeSpecimen
+      key={rung.step}
+      step={rung.step}
+      matches={rung.matches}
+      where={rung.where}
+    />
+  ))}
+</ModeFrame>
+
+<Rule>
+
+  **An icon is cut to the type beside it.** `size-4` next to `--text-sm` and
+  `--text-base`, `size-3` next to `--text-xs` inside a badge. The components
+  already enforce this — `button` sets `size-4` on any child `svg` that has not
+  asked for something else, `badge` sets `size-3` — so in practice you write the
+  icon and the size is decided for you. Overriding it is the exception that
+  needs a reason.
+
+  **`size-5` is for an icon standing alone**, like the one in the `empty-state`
+  medallion, where there is no cap height to match. Above that it stops being an
+  icon: a 24px-grid glyph at 32px is four visible line segments, not an
+  illustration, and blowing it up is how a page ends up with a spindly
+  decoration nobody drew on purpose.
+
+  **Never set `strokeWidth` by hand.** The weight is the family's, and one icon
+  at 1.5 in a row of 2s is visible as a mistake even to someone who cannot say
+  what changed.
+
+</Rule>
+
+## Colour
+
+Every Lucide glyph strokes in `currentColor` and fills nothing. An icon
+therefore has no colour of its own — it is the colour of the text it sits in,
+which is what makes it survive both modes, a host app's `.raqt` scope, and a
+button whose background changed underneath it.
+
+<TwoUp
+  render={() => (
+    <div className="flex flex-col gap-3 text-sm">
+      <p className="flex items-center gap-2 text-foreground">
+        <Trophy className="size-4" aria-hidden="true" />
+        inherits foreground
+      </p>
+      <p className="flex items-center gap-2 text-muted-foreground">
+        <Clock className="size-4" aria-hidden="true" />
+        inherits muted-foreground
+      </p>
+      <p className="flex w-fit items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-primary-foreground">
+        <Plus className="size-4" aria-hidden="true" />
+        inherits primary-foreground
+      </p>
+      <p className="flex items-center gap-2 text-destructive">
+        <CircleAlert className="size-4" aria-hidden="true" />
+        tinted, because it is saying something
+      </p>
+    </div>
+  )}
+/>
+
+<Rule>
+
+  **Do not give an icon a colour class unless the colour is the message.** The
+  four state icons carry `text-success`, `text-warning`, `text-destructive` and
+  `text-info` because severity is what they are for; that is rule 5, not an
+  exception to it. A green trophy on a card because the card looked flat is the
+  same defect as a `warning` amber border for decoration.
+
+  Match status is the case people get wrong: a live match is a `badge` in
+  `status-live`, not a red icon. The state lives in the badge, and the icon
+  beside it stays whatever colour the row is.
+
+</Rule>
+
+## Meaning and accessibility
+
+An icon is a picture of a word, and outside a very small set — a magnifier, a
+cross, a plus — the picture is not the word. Two rules follow.
+
+<Rule>
+
+  **Decorative icons are hidden.** An icon beside a label repeats the label, so
+  it takes `aria-hidden="true"` and adds nothing to the accessibility tree.
+  Everything on this page carries it.
+
+  **An icon alone still needs its word.** An icon-only control — `button` with
+  `size="icon"` — needs a `<span className="sr-only">` label or an
+  `aria-label`, exactly as `dialog`'s close does. Without it the control
+  announces as "button" and nothing else.
+
+  **Never let the icon be the only carrier.** Status is colour *and* glyph *and*
+  text; a filter that is on is a glyph *and* a count. Two of the three fail for
+  someone — colour for a colourblind reader, glyph for a screen reader — and the
+  third is what keeps the interface usable.
+
+</Rule>
+
+## Motion
+
+Two icons in the system move, and both are reporting on time passing: the
+spinner in `button`'s `loading` state (`animate-spin`), and the pulse on the
+`live` badge's dot. Nothing else animates. An icon that spins, bounces or wiggles
+to attract attention is decoration with a motor, and on a day sheet of twenty
+matches it is twenty of them.

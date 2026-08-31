@@ -15,9 +15,57 @@
  */
 import type { CSSProperties, ReactNode } from "react";
 
+import type { LucideIcon } from "lucide-react";
+import {
+  Bell,
+  Building2,
+  CalendarDays,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  CircleAlert,
+  CircleCheck,
+  Clock,
+  Download,
+  EllipsisVertical,
+  ExternalLink,
+  House,
+  Inbox,
+  Info,
+  LandPlot,
+  ListOrdered,
+  LoaderCircle,
+  LogOut,
+  MapPin,
+  Medal,
+  Menu,
+  Network,
+  Pencil,
+  Plus,
+  Radio,
+  Search,
+  Settings,
+  Share2,
+  SlidersHorizontal,
+  Swords,
+  Trash2,
+  TriangleAlert,
+  Trophy,
+  User,
+  Users,
+  X,
+} from "lucide-react";
 import { create } from "storybook/theming/create";
 
-import { semanticColors, elevationShadows, radius, typography } from "@/tokens/dist/tokens";
+import {
+  semanticColors,
+  elevationShadows,
+  radius,
+  spacing,
+  typography,
+} from "@/tokens/dist/tokens";
 
 /* ------------------------------------------------------------------ modes */
 
@@ -455,6 +503,200 @@ export function ElevationStack() {
         <div className="rounded-sm border border-border bg-surface-3 p-4 shadow-e3">
           <p className="font-mono text-xs opacity-60">surface-3 · rounded-sm · shadow-e3</p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------- icons */
+
+/**
+ * The icon set.
+ *
+ * The set is not the library. `lucide-react` is the library — the one
+ * `components.json` declares and the one `button` and `dialog` already ship
+ * with. The rows below are the **vocabulary**: one glyph nominated per concept
+ * Raqt actually names, so "add" is the same shape on every screen instead of
+ * three plausible plus signs chosen by three different people.
+ *
+ * Nothing here retypes an import name. The label under each glyph is the
+ * component's own `displayName`, which is exactly the string you import — a
+ * row cannot document an icon it is not rendering.
+ */
+export type IconEntry = {
+  /** What Raqt calls the thing. */
+  concept: string;
+  icon: LucideIcon;
+  /** Where the component library already depends on this row, if it does. */
+  used?: string;
+  /**
+   * A literal colour utility. Only the four meaning icons carry one — rule 5,
+   * and the reason it is a field rather than a prop is that a tint is a fact
+   * about the concept, not about the place it is drawn.
+   */
+  tone?: string;
+};
+
+export const ICON_GROUPS: { title: string; blurb: string; icons: IconEntry[] }[] = [
+  {
+    title: "The domain",
+    blurb:
+      "The things Raqt is about. These are the rows worth arguing over — the rest of the set is furniture every product has.",
+    icons: [
+      { concept: "tournament", icon: Trophy },
+      { concept: "match", icon: Swords },
+      { concept: "court", icon: LandPlot },
+      { concept: "draw", icon: Network },
+      { concept: "schedule", icon: CalendarDays },
+      { concept: "time", icon: Clock },
+      { concept: "live", icon: Radio },
+      { concept: "ranking", icon: Medal },
+      { concept: "results", icon: ListOrdered },
+      { concept: "player", icon: User },
+      { concept: "players", icon: Users },
+      { concept: "club", icon: Building2 },
+      { concept: "venue", icon: MapPin },
+    ],
+  },
+  {
+    title: "Navigation and chrome",
+    blurb: "Getting around. One glyph per direction; a chevron is never a caret.",
+    icons: [
+      { concept: "home", icon: House },
+      { concept: "search", icon: Search, used: "input" },
+      { concept: "menu", icon: Menu },
+      { concept: "back", icon: ChevronLeft },
+      { concept: "forward", icon: ChevronRight },
+      { concept: "expand", icon: ChevronDown },
+      { concept: "collapse", icon: ChevronUp },
+      { concept: "close", icon: X, used: "dialog" },
+      { concept: "external", icon: ExternalLink },
+      { concept: "more", icon: EllipsisVertical },
+    ],
+  },
+  {
+    title: "Actions",
+    blurb:
+      "What a person does. An icon here almost always sits inside a button, which means it inherits the button's colour and never picks its own.",
+    icons: [
+      { concept: "add", icon: Plus, used: "button" },
+      { concept: "edit", icon: Pencil },
+      { concept: "delete", icon: Trash2 },
+      { concept: "confirm", icon: Check },
+      { concept: "filter", icon: SlidersHorizontal },
+      { concept: "share", icon: Share2 },
+      { concept: "download", icon: Download },
+      { concept: "settings", icon: Settings },
+      { concept: "notifications", icon: Bell },
+      { concept: "sign out", icon: LogOut },
+    ],
+  },
+  {
+    title: "State and feedback",
+    blurb:
+      "The only four icons in the set with a colour of their own, and they have one for the same reason the tokens do: they are saying something.",
+    icons: [
+      { concept: "success", icon: CircleCheck, tone: "text-success" },
+      { concept: "warning", icon: TriangleAlert, tone: "text-warning" },
+      { concept: "error", icon: CircleAlert, tone: "text-destructive" },
+      { concept: "info", icon: Info, tone: "text-info" },
+      { concept: "loading", icon: LoaderCircle, used: "button" },
+      { concept: "empty", icon: Inbox, used: "empty-state" },
+    ],
+  },
+];
+
+/** Every concept the set names, for the "one concept, one glyph" count. */
+export const ICON_COUNT = ICON_GROUPS.reduce((n, g) => n + g.icons.length, 0);
+
+/**
+ * One row of the set: the glyph at the default rung, the Raqt word, and the
+ * lucide export read off the component itself.
+ */
+export function IconCell({ entry }: { entry: IconEntry }) {
+  const Icon = entry.icon;
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-surface-3">
+        <Icon className={entry.tone ? `size-4 ${entry.tone}` : "size-4"} aria-hidden="true" />
+      </div>
+      <div className="min-w-0">
+        <p className="text-sm">{entry.concept}</p>
+        <p className="font-mono text-xs opacity-60">
+          {Icon.displayName}
+          {entry.used ? <span className="opacity-70"> · {entry.used}</span> : null}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function IconGrid({ icons }: { icons: IconEntry[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {icons.map((entry) => (
+        <IconCell key={entry.concept} entry={entry} />
+      ))}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------- icon sizing
+ *
+ * Three rungs, and they are steps of the spacing scale rather than a private
+ * icon scale — `size-4` is the same 4 as `p-4`. The px column is read out of
+ * `spacing.steps`, so it cannot disagree with the Spacing page.
+ */
+const SIZE_CLASS: Record<number, string> = {
+  3: "size-3",
+  4: "size-4",
+  5: "size-5",
+};
+
+/** The type each rung is cut to match, as a literal utility. */
+const SIZE_TEXT_CLASS: Record<number, string> = {
+  3: "text-xs",
+  4: "text-sm",
+  5: "text-lg",
+};
+
+export const ICON_RUNGS: { step: 3 | 4 | 5; matches: string; where: string }[] = [
+  { step: 3, matches: "cut to --text-xs", where: "inside a badge" },
+  {
+    step: 4,
+    matches: "cut to --text-sm / --text-base",
+    where: "button, input, dialog close — the default",
+  },
+  { step: 5, matches: "no type to match", where: "the empty-state medallion, standing alone" },
+];
+
+export function iconPx(step: number): number {
+  const rung = spacing.steps.find((s) => s.step === step);
+  if (!rung) throw new Error(`No spacing step ${step}`);
+  return rung.px;
+}
+
+/** One rung, drawn beside the type it is cut to match. */
+export function IconSizeSpecimen({
+  step,
+  matches,
+  where,
+}: {
+  step: 3 | 4 | 5;
+  matches: string;
+  where: string;
+}) {
+  return (
+    <div className="flex items-center gap-4 border-b border-border py-3 last:border-b-0">
+      <div className="flex w-40 shrink-0 items-center gap-2">
+        <Trophy className={SIZE_CLASS[step]} aria-hidden="true" />
+        <span className={SIZE_TEXT_CLASS[step]}>Tournament</span>
+      </div>
+      <div className="min-w-0 font-mono text-xs opacity-60">
+        <p>
+          {SIZE_CLASS[step]} · {iconPx(step)}px · {matches}
+        </p>
+        <p>{where}</p>
       </div>
     </div>
   );

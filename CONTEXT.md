@@ -18,6 +18,15 @@ inventing with them (`DESIGN.md` §4). Generative, not a list of parts. It does
 **component library** — the nine components. Built *with* the design system, not
 part of it. Finite, and replaceable; the design system is what survives it.
 
+**icon library** — `lucide-react`. The one family the system draws glyphs from.
+Not authored here, and not a component: it is a dependency two components
+already carry.
+
+**icon set** — the curated vocabulary, one glyph nominated per concept Raqt
+names. The library is what is *available*; the set is what is *used*. It is
+documented rather than coded — the register is the Storybook Iconography page
+and `DESIGN.md` §5, not a module.
+
 ## Where it is authored
 
 **`raqt-design`** — this repository, by proper noun. Authors both the design
@@ -37,7 +46,9 @@ touch).
 ## Where it is seen
 
 **Storybook** — where the design system and the component library are rendered
-for humans. The foundations pages and one story per component state.
+for humans. The foundations pages, one story per component state, and one
+**playground** per component — the same component with every prop on a control,
+where the state pages show the design and the playground shows the API.
 
 ## How it travels
 

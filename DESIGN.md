@@ -182,7 +182,45 @@ but in fifty small ones nobody had to defend.
 
 ---
 
-## 5. Platform notes
+## 5. Iconography
+
+**One library: Lucide, via `lucide-react`.** It is what `components.json`
+declares, what `button` and `dialog` already ship with, and therefore what a
+consumer already installs with either of them. A second icon family is a second
+design system — a different grid, a different stroke, a different idea of what a
+chevron is — so a glyph Lucide does not have is a gap to raise, the same as a
+missing token. Named imports only; the package is side-effect free, so
+`import { Trophy } from "lucide-react"` ships one glyph and `import * as icons`
+ships seven thousand.
+
+**The set is the vocabulary, not the library.** Each concept Raqt names has one
+nominated glyph — tournament `Trophy`, match `Swords`, court `LandPlot`, live
+`Radio` — and the register is the Storybook *Foundations → Iconography* page.
+One concept, one glyph, and the rule runs both ways: the same icon for "filter"
+here and "settings" there is the same defect as two icons for "add". Adding a
+concept means adding it to that page.
+
+**Three sizes, off the spacing scale.** `size-3` beside `--text-xs` (inside a
+badge), `size-4` beside `--text-sm`/`--text-base` (the default — `button` and
+`dialog` set it for you), `size-5` for an icon standing alone, like the
+`empty-state` medallion. Nothing larger: a 24px-grid glyph at 32px is four
+visible line segments, not an illustration. Never set `strokeWidth` by hand.
+
+**Icons take `currentColor`.** They have no colour of their own, which is what
+carries them into light mode and into a host app's scope. Do not give one a
+colour class unless the colour is the message — `text-success`, `text-warning`,
+`text-destructive`, `text-info`, and nothing else. That is rule 5, not an
+exception to it: a live match is a `status-live` badge, never a red icon.
+
+**Decorative icons are `aria-hidden`; an icon alone still needs its word.** An
+icon beside a label repeats the label, so it is hidden from the accessibility
+tree. An icon-only `button` (`size="icon"`) carries an `sr-only` label, as
+`dialog`'s close does. And never let the glyph be the only carrier — status is
+colour *and* glyph *and* text, because any one of the three fails for somebody.
+
+---
+
+## 6. Platform notes
 
 Web only. The theme is CSS custom properties consumed through Tailwind v4
 utilities, so it works anywhere Tailwind does.
