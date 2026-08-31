@@ -1,0 +1,120 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+import { FoundationsStyles, Rule } from "./lib";
+
+<Meta title="Foundations/Grammar" />
+
+<FoundationsStyles />
+
+# Grammar
+
+The four pages before this one are the vocabulary. This one is the grammar: the
+rules for putting the vocabulary together into something that has never existed
+before and still looks like Raqt.
+
+It is the only foundations page with no specimens on it, on purpose. Components
+get replaced; the rules are what survive them.
+
+<Rule>
+
+  These rules are also `DESIGN.md` §"Rules for inventing" — the file handed to an
+  agent asked to build something the library does not have. Human page and agent
+  brief are the same nine rules, deliberately: if they drift, the thing product
+  invents stops matching the thing design drew.
+
+</Rule>
+
+## 1. Semantic tokens only
+
+Reach for `bg-primary`, `text-muted-foreground`, `border-border`. Never a hex,
+never a `px`.
+
+A raw value is not a shortcut, it is a **defect** — it is the one thing in the
+component that will not follow the theme into light mode, into a host app's
+`.raqt` scope, or into whatever the brand becomes next quarter. If a value you
+need has no token, that is a gap in the contract to raise, not a hex to inline.
+
+## 2. Start on the ground
+
+`background` is the page. Everything else sits on it. Text on the ground is
+`foreground`, and the quieter half of it is `muted-foreground` — two levels, not
+five. Raqt does not have a "slightly dimmer than secondary" grey, and inventing
+one by lowering opacity puts a value on screen that no token can reach.
+
+## 3. Nesting steps the surface up and the radius down
+
+Elevation N is `bg-surface-N` + `border border-border` + `shadow-eN`, all three
+together. A card at `surface-1 rounded-lg` holds a row at
+`surface-2 rounded-md`, which holds a chip at `surface-3 rounded-sm`.
+
+Three levels is the whole ladder. If a design needs a fourth, the layout is too
+deep — flatten it rather than extending the scale.
+
+## 4. One primary action
+
+`primary` is the single most important thing a person can do on the screen. Two
+primary buttons in one view means neither is.
+
+Everything else steps down: `secondary` for the alternative, `ghost`/`accent` for
+the tertiary, and plain text for anything below that.
+
+## 5. Colour carries meaning, never decoration
+
+`destructive`, `warning`, `success` and `info` say something. Using `warning`
+amber because a card looked flat is a lie the interface tells, and the next
+person to read it believes it.
+
+Match state has its own four tokens — `status-upcoming`, `status-live`,
+`status-finished`, `status-open` — because a match's state is a Raqt domain fact,
+not a severity. Do not reach for `destructive` to mean "live".
+
+## 6. Scan sizes and read sizes are different faces
+
+`--text-xl` and above are display type: Archivo, stretched, applied with the
+`font-display` utility. Scores, names, headings — things the eye lands on.
+
+`--text-lg` and below are Inter. Anything a person reads a sentence of.
+
+Never apply the Archivo family by hand. `font-display` sets family, width and
+tracking together; the family alone is a different typeface.
+
+## 7. Spacing comes off the scale
+
+`--spacing` is `0.25rem` and Tailwind generates the rest. Use the rungs: `2`
+inside a control, `3`–`4` for control padding, `4`–`6` for surface padding, `8`+
+between sections.
+
+An arbitrary value like `p-[13px]` is the same defect as a hex — it is a decision
+nobody else can find or change.
+
+## 8. Every state, not just the happy one
+
+An interactive thing is not done until it has all five: rest, hover, active,
+`focus-visible`, disabled. Focus is `ring-2 ring-ring` and is never removed —
+`outline-none` without a replacement ring makes the component unusable by
+keyboard, and that is not a visual preference.
+
+A thing that shows data is not done until it has all three: loaded, **loading**,
+and **empty**. The library ships `skeleton` and `empty-state` precisely so that
+covering them is cheaper than skipping them.
+
+## 9. Dark is the truth, light is the check
+
+Design in dark — it is the default and it is what most of Raqt's users see. Then
+flip to light before you call it done.
+
+Almost every mode bug is a rule broken above: a hardcoded colour, a surface
+without its border, an elevation without its shadow. The flip does not create
+those bugs, it reveals them.
+
+---
+
+## When the rules do not cover it
+
+Say so, out loud, in the pull request. A missing token, a fourth elevation level,
+a state nobody planned for — these are contract changes, and the contract is one
+file (`docs/TOKENS.md`) precisely so that changing it is a visible act rather
+than a quiet one.
+
+Inventing a value locally is how a design system dies: not in one bad decision,
+but in fifty small ones nobody had to defend.

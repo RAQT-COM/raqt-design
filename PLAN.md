@@ -92,7 +92,7 @@ All five verified. Five things later lanes need to know:
 
 ---
 
-## W2 — Foundations stories
+## W2 — Foundations stories ✅ done
 
 MDX pages under `stories/foundations/`, no interactivity. Build these before judging any component — they are half the demo.
 
@@ -105,6 +105,27 @@ MDX pages under `stories/foundations/`, no interactivity. Build these before jud
 Read values from `tokens/dist/tokens.ts` rather than retyping them, so the pages cannot drift.
 
 **Done when:** all five render, every value on the page traces to a token, and the Colour page shows contrast ratios in both modes.
+
+All three verified in a browser. Five things later lanes need to know:
+
+- **`sb-unstyled` is mandatory on anything that has to look like the real app.** Storybook's docs container ships an opinionated stylesheet that sets font-size, font-family, margins, text colour and a zebra stripe on the elements MDX compiles to — and it is **unlayered**, so it beats every Tailwind utility, which live in `@layer utilities`, no matter how specific the class. Measured: `text-4xl` rendered at 14px, `mt-10` at 0, and a light-mode panel inherited the dark panel's text colour. Wrapping the specimen in Storybook's own `sb-unstyled` opt-out fixes all of it at once; inside it there is no docs CSS, only Tailwind's preflight. Any lane writing an MDX page or an autodocs block hits this.
+- **Both modes on one page come from the `.raqt` scope, not from a mode toggle.** A panel is `<div class="raqt">` or `<div class="raqt light">`, which is exactly the mechanism W5 drops into `raqt-public`. Side-by-side dark/light needs no addon and no edit to `.storybook/`, and the foundations pages double as a live test of the retrofit.
+- **`parameters.docs.theme` does nothing on these pages.** They are unattached MDX (no `of={meta}`), and the docs container only reads that parameter off a CSF meta or the project. The docs chrome is therefore a project-wide setting in `.storybook/preview.ts` — W0's file — so W2 left it alone. A token-derived theme is exported from `stories/foundations/lib.tsx` as `docsTheme`, ready if the user wants the chrome dark; see the hand-off below.
+- **Class names still cannot be composed at runtime**, per W1. Where a specimen has to prove the *utility* works rather than the custom property, the loop indexes a map of literal class strings (`TEXT_CLASS`, `RADIUS_CLASS` in `lib.tsx`); everything else paints via `style={{ … "var(--color-x)" }}`.
+- **The Colour page reports one real contrast failure**, and it is a fact about the palette, not a bug on the page: `primary` on `background` in **light** mode is 1.61:1. Brand green is a fill in light mode, never text on the ground. Dark mode is fine at 10.80:1.
+
+`stories/foundations/lib.tsx` holds the shared renderers. The colour groups carry a drift alarm: a semantic token added to `tokens.ts` and not assigned to a group surfaces in an "Ungrouped" block instead of silently vanishing from the page.
+
+**Grammar and `DESIGN.md` §4 are the same nine rules.** W2 wrote the Grammar page rather than waiting, so W6 should lift §"Rules for inventing" from `stories/foundations/05-Grammar.mdx` instead of writing a second version. If they drift, W7 is testing a brief the Storybook does not teach.
+
+**One hand-off, W0's file.** `.storybook/preview.ts` is the only place the docs chrome can be themed. Two lines make it Raqt-dark:
+
+```ts
+import { docsTheme } from "../stories/foundations/lib";
+// parameters: { docs: { theme: docsTheme } }
+```
+
+Every page is self-carrying without it — the specimens paint themselves — so this is presentation for the demo, not a correctness fix.
 
 ---
 

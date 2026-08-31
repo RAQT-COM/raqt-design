@@ -1,0 +1,119 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+import { typography } from "@/tokens/dist/tokens";
+
+import {
+  FoundationsStyles,
+  ModeFrame,
+  Rule,
+  TypeSpecimen,
+} from "./lib";
+
+<Meta title="Foundations/Typography" />
+
+<FoundationsStyles />
+
+# Typography
+
+Two families, one scale, and a hard line between them.
+
+- **Inter** carries everything you read — `--text-lg` and below.
+- **Archivo** carries everything you scan — `--text-xl` and above. Archivo is a
+  variable font, and Raqt uses it stretched — <code>font-stretch: {typography.display.stretch}</code>
+  and <code>letter-spacing: {typography.display.tracking}</code>. That width is
+  what makes a scoreline look like a scoreboard.
+
+<Rule>
+  **`font-display` is a utility, not a family.** It sets family, width and
+  tracking together, so nothing can take Archivo without also taking the stretch.
+  Applying `font-family: Archivo` by hand gives you Archivo at 100% width, which
+  is a different typeface from the one Raqt uses.
+</Rule>
+
+## The scale
+
+Every step rendered at size. Sizes come from the token contract; the `rem` value
+is the token, the `px` is what it resolves to at a 16px root.
+
+<ModeFrame mode="dark">
+  <TypeSpecimen
+    step="4xl"
+    size={typography.scale["4xl"].size}
+    lineHeight={typography.scale["4xl"].lineHeight}
+    family={typography.scale["4xl"].family}
+    sample="Spring Open"
+  />
+  <TypeSpecimen
+    step="3xl"
+    size={typography.scale["3xl"].size}
+    lineHeight={typography.scale["3xl"].lineHeight}
+    family={typography.scale["3xl"].family}
+    sample="Mixed Doubles Final"
+  />
+  <TypeSpecimen
+    step="2xl"
+    size={typography.scale["2xl"].size}
+    lineHeight={typography.scale["2xl"].lineHeight}
+    family={typography.scale["2xl"].family}
+    sample="Court 3 — Semi-final"
+  />
+  <TypeSpecimen
+    step="xl"
+    size={typography.scale.xl.size}
+    lineHeight={typography.scale.xl.lineHeight}
+    family={typography.scale.xl.family}
+    sample="Nilsson / Berg  6–4  4–6  11–9"
+  />
+  <TypeSpecimen
+    step="lg"
+    size={typography.scale.lg.size}
+    lineHeight={typography.scale.lg.lineHeight}
+    family={typography.scale.lg.family}
+    sample="Sixty-four pairs, one weekend, four courts."
+  />
+  <TypeSpecimen
+    step="base"
+    size={typography.scale.base.size}
+    lineHeight={typography.scale.base.lineHeight}
+    family={typography.scale.base.family}
+    sample="Body copy. Everything a player actually reads sits here — rules, confirmations, the long tail of a tournament page."
+  />
+  <TypeSpecimen
+    step="sm"
+    size={typography.scale.sm.size}
+    lineHeight={typography.scale.sm.lineHeight}
+    family={typography.scale.sm.family}
+    sample="Secondary text: timestamps, court numbers, helper copy under a field."
+  />
+  <TypeSpecimen
+    step="xs"
+    size={typography.scale.xs.size}
+    lineHeight={typography.scale.xs.lineHeight}
+    family={typography.scale.xs.family}
+    sample="LABELS, BADGES, TABLE HEADERS"
+  />
+</ModeFrame>
+
+## The two families side by side
+
+The same line at `--text-2xl`, once in each family. The display face is wider and
+tighter; that difference is the point of having two.
+
+<ModeFrame mode="dark">
+  <p className="text-2xl font-display">Nilsson / Berg — 6–4 4–6 11–9</p>
+  <p className="text-2xl">Nilsson / Berg — 6–4 4–6 11–9</p>
+  <div className="mt-3 font-mono text-xs opacity-60">
+    top: font-display · bottom: font-sans (the default)
+  </div>
+</ModeFrame>
+
+## What the fonts are
+
+Both load from Google Fonts as variable fonts.
+
+- `--font-sans` — <code>{typography.fonts.sans}</code>
+- `--font-display` — <code>{typography.fonts.display}</code>
+
+Weight is not a token: Inter is loaded across `400..700` and Archivo across
+`400..800`, and components pick from that range with Tailwind's stock `font-*`
+utilities. If a weight ever needs to *mean* something, it becomes a token first.

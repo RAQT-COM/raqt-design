@@ -1,0 +1,86 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+import { primitives } from "@/tokens/dist/tokens";
+
+import {
+  COLOUR_GROUPS,
+  ContrastTable,
+  FoundationsStyles,
+  ModeFrame,
+  Ramp,
+  Rule,
+  SwatchGroup,
+  TwoUp,
+  UNGROUPED,
+} from "./lib";
+
+<Meta title="Foundations/Colour" />
+
+<FoundationsStyles />
+
+# Colour
+
+Raqt is **green-grounded**, not grey with a green accent. The neutral ramp is
+tinted green all the way down, so a dark screen reads as turf rather than as
+charcoal.
+
+Dark is the default mode. Light is derived from it. **`primary` holds the same
+value in both** — the brand green is the one colour that never moves.
+
+<Rule>
+
+  Every colour below is painted from the live custom property, and every hex is
+  read from `tokens/dist/tokens.ts`. Nothing on this page is typed by hand, so
+  it cannot drift from the token contract.
+
+</Rule>
+
+## The semantic layer
+
+The only layer components touch. Names match shadcn's, so `shadcn add` output
+works against Raqt with no rewiring; the Raqt-only additions sit alongside and
+never rename shadcn's.
+
+{COLOUR_GROUPS.map((group) => (
+  <section key={group.title}>
+    <h3>{group.title}</h3>
+    <p>{group.blurb}</p>
+    <TwoUp render={(mode) => <SwatchGroup tokens={group.tokens} mode={mode} />} />
+  </section>
+))}
+
+{UNGROUPED.length > 0 && (
+  <section>
+    <h3>Ungrouped</h3>
+    <p>
+      These tokens exist in tokens.ts but this page has not been told what they
+      are for. That is a drift alarm, not a category.
+    </p>
+    <TwoUp render={(mode) => <SwatchGroup tokens={[...UNGROUPED]} mode={mode} />} />
+  </section>
+)}
+
+## Contrast
+
+Each foreground token measured against the background it is paired with, in both
+modes. Ratios are WCAG 2.1; the grade is for normal-size body text, so **AA
+large** means the pair is only safe at display sizes or on non-text elements.
+
+The `X` / `X-foreground` pairs are discovered from the token names, so a new pair
+in the contract appears here on its own.
+
+<TwoUp render={(mode) => <ContrastTable mode={mode} />} />
+
+## The primitive ramps
+
+Raw values. **Components never reference these** — they are here so the ramps can
+be seen, and because the semantic layer is easier to trust once you can see what
+it was chosen from.
+
+<ModeFrame mode="dark">
+  <Ramp name="green — the brand ramp. 400 is the brand green." steps={primitives.color.green} />
+  <Ramp name="ink — the green-tinted neutral. Lower number is lighter." steps={primitives.color.ink} />
+  <Ramp name="red — destructive, and a live match" steps={primitives.color.red} />
+  <Ramp name="amber — warning" steps={primitives.color.amber} />
+  <Ramp name="blue — info" steps={primitives.color.blue} />
+</ModeFrame>

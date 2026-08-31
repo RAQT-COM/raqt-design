@@ -1,0 +1,95 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+import { spacing } from "@/tokens/dist/tokens";
+
+import {
+  FoundationsStyles,
+  ModeFrame,
+  Rule,
+  SpacingBar,
+} from "./lib";
+
+<Meta title="Foundations/Spacing" />
+
+<FoundationsStyles />
+
+# Spacing
+
+One token: <code>--spacing: {spacing.base}</code>. Tailwind v4 multiplies it to
+generate the entire scale, so `p-4` is four times {spacing.base} and there is no
+list of hand-authored steps to keep in sync.
+
+<Rule>
+  **Do not add `--spacing-1`, `--spacing-2` and friends.** Naming individual
+  steps is Tailwind v3 thinking; in v4 it produces a second scale that fights the
+  generated one, and arbitrary steps like `gap-7` silently fall back to the
+  generated value anyway. The base is the token. The steps are consequences.
+</Rule>
+
+## The scale
+
+Each bar's width **is** the value — nothing here is drawn to a fixed size.
+
+<ModeFrame mode="dark">
+  <div className="flex flex-col gap-2">
+    {spacing.steps.map((s) => (
+      <SpacingBar key={s.step} step={s.step} rem={s.rem} px={s.px} />
+    ))}
+  </div>
+</ModeFrame>
+
+## Which step to reach for
+
+The scale is continuous, but a design system is only coherent if everyone reaches
+for the same rung. These are the defaults; deviate when the layout argues for it,
+not by habit.
+
+<ModeFrame mode="dark">
+  <table className="w-full border-collapse text-left text-sm">
+    <thead>
+      <tr className="border-b border-border">
+        <th className="py-2 pr-4 font-normal opacity-60">where</th>
+        <th className="py-2 pr-4 font-normal opacity-60">step</th>
+        <th className="py-2 font-normal opacity-60">example</th>
+      </tr>
+    </thead>
+    <tbody className="font-mono text-xs">
+      <tr className="border-b border-border/50">
+        <td className="py-2 pr-4">inside a control</td>
+        <td className="py-2 pr-4">2</td>
+        <td className="py-2">icon-to-label gap in a button</td>
+      </tr>
+      <tr className="border-b border-border/50">
+        <td className="py-2 pr-4">control padding</td>
+        <td className="py-2 pr-4">3 – 4</td>
+        <td className="py-2">px-4 py-2 on a medium button</td>
+      </tr>
+      <tr className="border-b border-border/50">
+        <td className="py-2 pr-4">between related rows</td>
+        <td className="py-2 pr-4">3</td>
+        <td className="py-2">label above an input</td>
+      </tr>
+      <tr className="border-b border-border/50">
+        <td className="py-2 pr-4">surface padding</td>
+        <td className="py-2 pr-4">4 – 6</td>
+        <td className="py-2">the inside of a card</td>
+      </tr>
+      <tr className="border-b border-border/50">
+        <td className="py-2 pr-4">between cards</td>
+        <td className="py-2 pr-4">4</td>
+        <td className="py-2">a list of matches</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">between sections</td>
+        <td className="py-2 pr-4">8 – 12</td>
+        <td className="py-2">two blocks of a tournament page</td>
+      </tr>
+    </tbody>
+  </table>
+</ModeFrame>
+
+## Spacing does not change with mode
+
+There is no light-mode spacing scale. Colour and elevation flip between modes;
+geometry does not. A layout that needs different spacing in light mode is a
+layout with a colour problem.
