@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "raqt-public",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/nelson/Sites/raqt/raqt-public && exec node node_modules/vite/bin/vite.js dev --port 3002 --mode staging"
+      ],
+      "port": 3002
+    }
+  ]
+}
