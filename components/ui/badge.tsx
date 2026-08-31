@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Slot } from "radix-ui";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 
 import { cn } from "@/lib/utils";
 
@@ -67,7 +67,7 @@ function Badge({
   ...props
 }: React.ComponentProps<"span"> &
   VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot.Root : "span";
+  const Comp = asChild ? Slot : "span";
 
   return (
     <Comp
@@ -79,7 +79,7 @@ function Badge({
       {variant === "live" ? <LiveDot /> : null}
       {/* `Slottable` marks which child the consumer's element replaces under
           `asChild`, so a badge rendered as a link keeps its dot. */}
-      <Slot.Slottable>{children}</Slot.Slottable>
+      <Slottable>{children}</Slottable>
     </Comp>
   );
 }

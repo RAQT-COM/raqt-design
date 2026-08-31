@@ -135,7 +135,11 @@ export const DestructiveConfirmation: Story = {
   ),
 };
 
-/** Long content scrolls inside the panel; the header and the scrim do not move. */
+/**
+ * Long content scrolls inside the panel, which caps at the viewport height less
+ * a margin. The panel scrolls as a whole — header and close button included —
+ * so nothing is pinned over the text; the page behind it does not move at all.
+ */
 export const LongContent: Story = {
   name: "Long scrolling content",
   render: () => (
