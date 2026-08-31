@@ -52,56 +52,20 @@ A **lane** is one unit of work owned by one agent session. Dependencies are hard
 
 ---
 
-## W0 — Scaffold
+## W0 — Scaffold ✅ done
 
-```bash
-cd /Users/nelson/Sites/raqt/raqt-design
-pnpm create vite . --template react-ts
-pnpm add -D tailwindcss @tailwindcss/vite
-pnpm add class-variance-authority clsx tailwind-merge @radix-ui/react-slot @radix-ui/react-dialog @radix-ui/react-label lucide-react
-pnpm dlx storybook@latest init --builder vite --type react
-pnpm add -D @storybook/addon-docs
-gh repo create RAQT-COM/raqt-design --public --source=. --remote=origin
-```
+Storybook is the only host; there is no Vite app, so `dev`/`build` were dropped. Scripts: `pnpm tokens` · `pnpm typecheck` · `pnpm storybook` · `pnpm build-storybook`.
 
-Components live at the **repo root**, not under `src/` — registry file paths depend on it. Set the `@/*` path alias to `./*` in `tsconfig.json` and mirror it in `vite.config.ts`. Delete the Vite demo files (`src/App.tsx`, `src/App.css`, `src/assets/`, `src/index.css`); keep `src/main.tsx` only if Storybook needs it.
+Components live at the **repo root**, not under `src/` — registry file paths depend on it. `@/*` resolves to `./*` in both `tsconfig.json` and `vite.config.ts`.
 
-Fonts load from Google Fonts in `.storybook/preview-head.html`:
+Four things later lanes need to know:
 
-```
-https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Inter:wght@400..700&display=swap
-```
+- **`pnpm-workspace.yaml` carries `allowBuilds: esbuild: true`.** pnpm 11 no longer reads the `pnpm` field in `package.json`; without this, esbuild's postinstall is skipped and Vite cannot build. If a lane sees `ERR_PNPM_IGNORED_BUILDS`, run `pnpm approve-builds --all`.
+- **TypeScript is v7**, which removed `baseUrl`. `paths` resolve relative to `tsconfig.json`.
+- **`tokens/dist/tokens.css` and `tokens/build.mjs` are placeholders.** W1 replaces both. Until then only Tailwind's stock palette exists — no `--color-*` Raqt tokens.
+- **`stories/00-Scaffold.mdx` is a smoke test.** W2 deletes it.
 
-`components.json`:
-
-```json
-{
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
-  "rsc": false,
-  "tsx": true,
-  "tailwind": { "config": "", "css": "tokens/dist/tokens.css", "baseColor": "neutral", "cssVariables": true, "prefix": "" },
-  "aliases": { "components": "@/components", "utils": "@/lib/utils", "ui": "@/components/ui", "lib": "@/lib", "hooks": "@/hooks" },
-  "iconLibrary": "lucide"
-}
-```
-
-Add to `package.json` scripts: `"tokens": "node tokens/build.mjs"`, and make `dev`/`build`/`storybook` all run `pnpm tokens` first.
-
-**Done when:** `pnpm storybook` opens with no errors, `pnpm tsc --noEmit` is clean, the GitHub repo exists and is public, and this tree is in place:
-
-```
-raqt-design/
-├── PLAN.md  docs/  package.json  vite.config.ts  tsconfig.json  components.json
-├── lib/utils.ts          # cn()
-├── tokens/               # empty, W1 fills it
-├── components/ui/        # empty
-├── components/patterns/  # empty
-├── stories/foundations/  # empty
-└── .storybook/
-```
-
----
+Verified: Storybook 10.5.10 boots on :6006, MDX renders, Tailwind v4 compiles (`rounded-lg` → 8px), Inter and Archivo both load, and Archivo's `wdth` axis responds (115% measures 394px against 335px at 100%). `pnpm typecheck` is clean.
 
 ## W1 — Tokens
 
