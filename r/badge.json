@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "title": "Raqt badge",
+  "description": "Raqt badge, the status vocabulary. Two families of variants that are not interchangeable: generic meaning — default, secondary, outline, success, warning, destructive, info — and Raqt match statuses — upcoming, live, finished, open. Say what a thing is (`variant=\"live\"`), never what it looks like (`variant=\"destructive\"` for a live match is wrong); the token layer decides the colour. `live` carries a pulsing dot that respects prefers-reduced-motion. `asChild` renders it as a link.",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "RAQT-COM/raqt-design/theme"
+  ],
+  "files": [
+    {
+      "path": "components/ui/badge.tsx",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { Slot, Slottable } from \"@radix-ui/react-slot\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * The status vocabulary.\n *\n * Two families live here and they are not interchangeable. The first seven\n * variants are **generic meaning** — the same seven any product needs. The last\n * four are **match statuses**, the domain's own words, wired to the\n * `--color-status-*` tokens. A match that is live is `live`, never\n * `destructive`: the badge says what a thing *is*, and the token layer decides\n * what that looks like. Retinting `live` later is then one token, not a search\n * through every screen for the badge that happened to be red.\n */\nconst badgeVariants = cva(\n  \"inline-flex w-fit shrink-0 items-center justify-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full border border-transparent px-2 py-0.5 text-xs font-medium transition-colors outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 [&>svg]:pointer-events-none [&>svg]:size-3\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary text-primary-foreground [a&]:hover:bg-primary/90\",\n        secondary:\n          \"bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/80\",\n        outline:\n          \"border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground\",\n        success: \"bg-success text-success-foreground [a&]:hover:bg-success/90\",\n        warning: \"bg-warning text-warning-foreground [a&]:hover:bg-warning/90\",\n        destructive:\n          \"bg-destructive text-destructive-foreground [a&]:hover:bg-destructive/90\",\n        info: \"bg-info text-info-foreground [a&]:hover:bg-info/90\",\n\n        upcoming: \"bg-status-upcoming text-status-upcoming-foreground\",\n        live: \"bg-status-live text-status-live-foreground\",\n        finished: \"bg-status-finished text-status-finished-foreground\",\n        open: \"bg-status-open text-status-open-foreground\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  },\n);\n\n/**\n * Only `live` moves, and only the dot moves — a badge that pulses in its\n * entirety turns a list of matches into a strobe. `animate-ping` is Tailwind's\n * own keyframe, so nothing is hand-authored here, and `motion-reduce` drops it\n * to a plain dot rather than to nothing: the dot is the signal, the pulse is\n * only emphasis.\n */\nfunction LiveDot() {\n  return (\n    <span aria-hidden=\"true\" className=\"relative flex size-1.5\">\n      <span className=\"absolute inline-flex size-full animate-ping rounded-full bg-current opacity-75 motion-reduce:hidden\" />\n      <span className=\"relative inline-flex size-1.5 rounded-full bg-current\" />\n    </span>\n  );\n}\n\nfunction Badge({\n  className,\n  variant = \"default\",\n  asChild = false,\n  children,\n  ...props\n}: React.ComponentProps<\"span\"> &\n  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {\n  const Comp = asChild ? Slot : \"span\";\n\n  return (\n    <Comp\n      data-slot=\"badge\"\n      data-variant={variant}\n      className={cn(badgeVariants({ variant }), className)}\n      {...props}\n    >\n      {variant === \"live\" ? <LiveDot /> : null}\n      {/* `Slottable` marks which child the consumer's element replaces under\n          `asChild`, so a badge rendered as a link keeps its dot. */}\n      <Slottable>{children}</Slottable>\n    </Comp>\n  );\n}\n\nexport { Badge, badgeVariants };\n",
+      "type": "registry:ui",
+      "target": "~/src/components/raqt/badge.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

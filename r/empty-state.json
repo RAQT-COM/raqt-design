@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty-state",
+  "title": "Raqt empty state",
+  "description": "Raqt empty state. Props: `icon`, `title`, `description`, `action` (usually a Button), and `variant` — default, or compact for an empty inside a panel, sidebar or table where a full display title would out-shout its container. Deliberately borderless: it is content, not a container, so it inherits whatever surface it is dropped onto. Use it for zero-result lists, unfiltered searches and not-yet-created states.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "RAQT-COM/raqt-design/theme"
+  ],
+  "files": [
+    {
+      "path": "components/ui/empty-state.tsx",
+      "content": "import type { ComponentProps, ReactNode } from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * The empty state, so nobody has to design one either.\n *\n * Deliberately borderless: an empty state is content, not a container. Drop it\n * inside a `Card`, a dashed well, or a bare region and it inherits whatever\n * surface it lands on rather than fighting it with a second edge.\n *\n * `compact` is for empties inside something else already — a panel, a sidebar,\n * a table — where the full display title would out-shout its own container.\n */\nconst emptyStateVariants = cva(\n  \"flex flex-col items-center justify-center text-center\",\n  {\n    variants: {\n      variant: {\n        default: \"gap-3 px-6 py-12\",\n        compact: \"gap-2 px-4 py-6\",\n      },\n    },\n    defaultVariants: { variant: \"default\" },\n  },\n);\n\n/**\n * The icon sits in a medallion rather than loose on the surface, so an icon of\n * any weight lands at the same optical size. Muted, never `primary` — the one\n * green thing in an empty state should be the action, if there is one.\n */\nconst mediaVariants = cva(\n  \"flex shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground\",\n  {\n    variants: {\n      variant: {\n        default: \"size-12 [&_svg]:size-5\",\n        compact: \"size-9 [&_svg]:size-4\",\n      },\n    },\n    defaultVariants: { variant: \"default\" },\n  },\n);\n\nconst titleVariants = cva(\"text-balance text-foreground\", {\n  variants: {\n    variant: {\n      default: \"font-display text-xl\",\n      compact: \"text-base font-semibold\",\n    },\n  },\n  defaultVariants: { variant: \"default\" },\n});\n\nconst descriptionVariants = cva(\n  \"max-w-prose text-pretty text-muted-foreground\",\n  {\n    variants: {\n      variant: { default: \"text-sm\", compact: \"text-xs\" },\n    },\n    defaultVariants: { variant: \"default\" },\n  },\n);\n\ntype EmptyStateProps = Omit<ComponentProps<\"div\">, \"title\"> &\n  VariantProps<typeof emptyStateVariants> & {\n    icon?: ReactNode;\n    title: ReactNode;\n    description?: ReactNode;\n    /** Usually a `Button`. Anything renderable works. */\n    action?: ReactNode;\n  };\n\nfunction EmptyState({\n  className,\n  variant = \"default\",\n  icon,\n  title,\n  description,\n  action,\n  ...props\n}: EmptyStateProps) {\n  return (\n    <div\n      data-slot=\"empty-state\"\n      data-variant={variant}\n      className={cn(emptyStateVariants({ variant }), className)}\n      {...props}\n    >\n      {icon ? (\n        <div data-slot=\"empty-state-media\" className={mediaVariants({ variant })}>\n          {icon}\n        </div>\n      ) : null}\n\n      <div className=\"flex flex-col gap-1\">\n        <p data-slot=\"empty-state-title\" className={titleVariants({ variant })}>\n          {title}\n        </p>\n        {description ? (\n          <p\n            data-slot=\"empty-state-description\"\n            className={descriptionVariants({ variant })}\n          >\n            {description}\n          </p>\n        ) : null}\n      </div>\n\n      {action ? (\n        <div\n          data-slot=\"empty-state-action\"\n          className={variant === \"compact\" ? \"pt-1\" : \"pt-2\"}\n        >\n          {action}\n        </div>\n      ) : null}\n    </div>\n  );\n}\n\nexport { EmptyState, emptyStateVariants };\n",
+      "type": "registry:ui",
+      "target": "~/src/components/raqt/empty-state.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

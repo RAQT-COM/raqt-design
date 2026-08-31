@@ -1,0 +1,159 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "raqt",
+  "homepage": "https://github.com/RAQT-COM/raqt-design",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:file",
+      "title": "Raqt theme",
+      "description": "The Raqt design tokens as one CSS file: colour, typography, spacing, radius and elevation. Paints the `.raqt` class and nothing else, so it retints only what is inside a `<div className=\"raqt\">` and leaves the rest of the host app untouched. Add `light` alongside it for the light mode (`className=\"raqt light\"`); dark is the default. Import it once, after the app's own stylesheet. Every Raqt component depends on this item.",
+      "files": [
+        {
+          "path": "tokens/dist/theme.css",
+          "type": "registry:file",
+          "target": "~/src/styles/raqt-theme.css"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Raqt button",
+      "description": "Raqt button. Variants: primary (default), secondary, ghost, destructive, outline. Sizes: sm, md (default), lg, icon. Props: `loading` swaps the label for a spinner and disables the button while preserving its width, `asChild` renders the styles onto a child element such as a link. All five interaction states are defined (default, hover, active, focus-visible, disabled). Reach for this for any action; use `size=\"icon\"` with an accessible label for icon-only buttons.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Raqt input",
+      "description": "Raqt text input. A bare `<input>` with Raqt's border, focus ring and disabled styling; it takes every native input prop and adds none of its own. It owns no error prop: invalid styling is driven entirely by `aria-invalid`, which the `field` component sets. Use it inside `field` whenever there is a label, a hint or validation.",
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Raqt field",
+      "description": "Raqt form field: label + control + hint or error message, wired together. Props: `label`, `hint`, `error`, `required`, `disabled`, `loading`, `children` (the control). Setting `error` is the only switch — it tints the label, puts `aria-invalid` on the control, points `aria-describedby` at the message and replaces the hint. The message line reserves its height, so validating a form never shifts the layout. Use this instead of hand-building a label and an error paragraph.",
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/field.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Raqt card",
+      "description": "Raqt card, the surface primitive every other container inherits from. Slots: Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter. A card nested inside another card automatically steps up one elevation and down one radius — no prop needed; `level` (1-3) overrides it for a surface that only reads as nested, such as a popover panel. `interactive` adds hover and focus affordances for a card that is itself a control. Use it for any panel, tile or grouped block.",
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/card.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Raqt badge",
+      "description": "Raqt badge, the status vocabulary. Two families of variants that are not interchangeable: generic meaning — default, secondary, outline, success, warning, destructive, info — and Raqt match statuses — upcoming, live, finished, open. Say what a thing is (`variant=\"live\"`), never what it looks like (`variant=\"destructive\"` for a live match is wrong); the token layer decides the colour. `live` carries a pulsing dot that respects prefers-reduced-motion. `asChild` renders it as a link.",
+      "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/badge.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/badge.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Raqt dialog",
+      "description": "Raqt modal dialog, built on Radix. Slots: Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose. Focus trap, escape-to-close and scroll lock come from Radix. Because Radix portals to document.body — outside the `.raqt` scope — DialogContent re-establishes the scope itself; pass `scope=\"raqt light\"` when the host page is in light mode. Use for confirmations and short forms, not for full pages.",
+      "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/dialog.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Raqt skeleton",
+      "description": "Raqt loading placeholder. A shape, not a component per shape: give it the size and radius of the thing it stands in for — `h-4 w-40` is a line of text, `size-10 rounded-full` an avatar. A shimmer travels across it, falling back to an opacity pulse under prefers-reduced-motion. The keyframes ship inside the file, so nothing else has to be installed. Use it for any content that arrives after first paint, in place of a spinner.",
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/skeleton.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/skeleton.tsx"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Raqt empty state",
+      "description": "Raqt empty state. Props: `icon`, `title`, `description`, `action` (usually a Button), and `variant` — default, or compact for an empty inside a panel, sidebar or table where a full display title would out-shout its container. Deliberately borderless: it is content, not a container, so it inherits whatever surface it is dropped onto. Use it for zero-result lists, unfiltered searches and not-yet-created states.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["RAQT-COM/raqt-design/theme"],
+      "files": [
+        {
+          "path": "components/ui/empty-state.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/empty-state.tsx"
+        }
+      ]
+    },
+    {
+      "name": "match-card",
+      "type": "registry:ui",
+      "title": "Raqt match card",
+      "description": "Raqt match card — the domain component. Renders one padel or pickleball match: two sides of one or two players each, the set-by-set score, a status badge and the court and time. Props: `status` (upcoming, live, finished), `sides` (exactly two, each `{ players, scores }`), `court`, `time`. An upcoming match shows its time in place of the score; a live one emphasises the set being played; a finished one dims the losing side. Exports MatchCardSkeleton, whose layout matches exactly. Composed entirely from card, badge and skeleton — pulling this in pulls those.",
+      "registryDependencies": [
+        "RAQT-COM/raqt-design/theme",
+        "RAQT-COM/raqt-design/card",
+        "RAQT-COM/raqt-design/badge",
+        "RAQT-COM/raqt-design/skeleton"
+      ],
+      "files": [
+        {
+          "path": "components/patterns/match-card.tsx",
+          "type": "registry:ui",
+          "target": "~/src/components/raqt/match-card.tsx"
+        }
+      ]
+    }
+  ]
+}

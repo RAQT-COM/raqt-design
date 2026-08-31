@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "title": "Raqt input",
+  "description": "Raqt text input. A bare `<input>` with Raqt's border, focus ring and disabled styling; it takes every native input prop and adds none of its own. It owns no error prop: invalid styling is driven entirely by `aria-invalid`, which the `field` component sets. Use it inside `field` whenever there is a label, a hint or validation.",
+  "registryDependencies": [
+    "RAQT-COM/raqt-design/theme"
+  ],
+  "files": [
+    {
+      "path": "components/ui/input.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * The input owns no error prop. Invalid styling is driven entirely by\n * `aria-invalid`, which `field` sets — so the accessible state and the\n * visible state can never disagree.\n *\n * `data-force` mirrors hover and focus for the story pages; see `button.tsx`.\n */\nfunction Input({ className, type, ...props }: React.ComponentProps<\"input\">) {\n  return (\n    <input\n      type={type}\n      data-slot=\"input\"\n      className={cn(\n        [\n          \"flex h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1\",\n          // `text-base` below the `md` breakpoint stops iOS zooming on focus.\n          \"text-base text-foreground outline-none transition-[color,border-color,box-shadow] md:text-sm\",\n          \"placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground\",\n          \"file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground\",\n          \"hover:border-ring/40 data-[force=hover]:border-ring/40\",\n          \"focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50\",\n          \"data-[force=focus]:border-ring data-[force=focus]:ring-3 data-[force=focus]:ring-ring/50\",\n          \"disabled:cursor-not-allowed disabled:opacity-50\",\n          // The focus rules recolour the border, so the invalid ones have to win\n          // on focus too — otherwise an invalid focused input shows a red ring\n          // around a green border.\n          \"aria-invalid:border-destructive aria-invalid:focus-visible:ring-destructive/50\",\n          \"aria-invalid:focus-visible:border-destructive\",\n          \"aria-invalid:data-[force=focus]:ring-destructive/50\",\n          \"aria-invalid:data-[force=focus]:border-destructive\",\n        ].join(\" \"),\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Input };\n",
+      "type": "registry:ui",
+      "target": "~/src/components/raqt/input.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}
