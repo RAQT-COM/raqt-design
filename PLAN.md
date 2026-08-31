@@ -67,7 +67,7 @@ Four things later lanes need to know:
 
 Verified: Storybook 10.5.10 boots on :6006, MDX renders, Tailwind v4 compiles (`rounded-lg` → 8px), Inter and Archivo both load, and Archivo's `wdth` axis responds (115% measures 394px against 335px at 100%). `pnpm typecheck` is clean.
 
-## W1 — Tokens
+## W1 — Tokens ✅ done
 
 Read [`docs/TOKENS.md`](docs/TOKENS.md) for every value. It is the contract; the other lanes have already been told what these tokens are called.
 
@@ -79,6 +79,16 @@ Write `tokens/source/*.json` (primitives + semantic, two layers, semantic refere
 The `.raqt` scope block is what makes retrofitting work: Tailwind utilities compile to `var(--color-primary)`, so redefining those properties inside a scope retint everything within it.
 
 **Done when:** `pnpm tokens` regenerates `dist/` deterministically, `tokens.css` imports cleanly into Storybook, a `bg-primary` div renders `#2BE07C`, adding `class="light"` to `<html>` flips the whole surface, and every semantic token in `docs/TOKENS.md` exists in the output.
+
+All five verified. Five things later lanes need to know:
+
+- **Three files come out of `dist/`, not two.** `theme.css` is the theme and paints `.raqt` and nothing else — that is the file W4 ships and W5 drops in. `tokens.css` is Storybook's entrypoint: it imports Tailwind, imports `theme.css`, and *then* claims `:root`, which is why dark is the default with no class on `<html>` and no edit to `.storybook/`. `tokens.ts` is the same values as a typed object.
+- **The retrofit works by redefining variables, never by re-registering names.** Tailwind compiles `bg-primary` to `var(--color-primary)` once, globally; a custom property declared on an element beats what it inherits, so setting `--color-primary` on `.raqt` retints everything inside and nothing outside. `theme.css` therefore registers only the *Raqt-only* names (surfaces, statuses, warning/info/success) with `@theme reference`. **Registering a shadcn-standard name in a host app suppresses the host's own value and recolours their entire app** — that was measured, not guessed. `.raqt` also carries shadcn's bare aliases (`--primary` as well as `--color-primary`) so the scope works whichever CSS convention the host uses.
+- **Tailwind only generates a utility whose class name appears literally in a source file.** A swatch grid that composes `` `bg-${token}` `` at runtime renders unstyled. W2's Colour page must either write the class names out literally or set `style={{ background: "var(--color-x)" }}` from `tokens.ts`.
+- **`shadow-e1/e2/e3` and `font-display` are `@utility` definitions, not theme keys.** Tailwind inlines a themed `--shadow-*` value into the utility to splice in the shadow colour, which would freeze elevation to whichever mode compiled it; owning the utility keeps it reading the live property so it flips with the mode. `font-display` is a utility so the family can never be applied without the width and tracking.
+- **`--color-status-*` resolved to `--color-status-<state>` plus `--color-status-<state>-foreground`.** `docs/TOKENS.md` left the `*` unexpanded; this matches how shadcn pairs `--color-primary` with `--color-primary-foreground`.
+
+`.gitignore`'s `dist/` also matched `tokens/dist/`, so the generated CSS was not committed. Un-ignored with `!tokens/dist/` on the user's call, so "emits, committed" above now holds and W4 can point `registry.json` straight at `tokens/dist/theme.css`.
 
 ---
 

@@ -1,5 +1,7 @@
 node_modules/
 dist/
+# ...except the emitted theme: the registry serves it and consumers read it from git.
+!tokens/dist/
 storybook-static/
 .DS_Store
 *.log
