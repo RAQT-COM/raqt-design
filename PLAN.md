@@ -2,6 +2,8 @@
 
 Read this file, then read [`docs/TOKENS.md`](docs/TOKENS.md). Both are contracts. Do not renegotiate them.
 
+**Tracked on [Raqt design system PoC](https://github.com/RAQT-COM/raqt-design/issues/1)** — the wayfinder map. Each lane below is a child issue with native blocking, so the tracker shows which lanes are takeable right now. **Claim a ticket by assigning it to yourself before starting any work**; an open, unassigned ticket is unclaimed, and that assignment is the only thing stopping two sessions from colliding.
+
 ## What this is
 
 A proof-of-concept design system for Raqt (pickleball/padel tournament platform). It exists to demonstrate a workflow to the product team — tokens → components → Storybook → distribution into other repos → AI building against the system — not to ship a production library. Everything here is throwaway-able.
