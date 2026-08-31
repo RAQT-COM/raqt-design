@@ -31,6 +31,9 @@ Every component item depends on `theme`, so pulling one component alone brings
 the tokens with it. `match-card` additionally pulls `card`, `badge` and
 `skeleton`.
 
+A bare address resolves against this repo's **default branch**. Pin a release by
+appending the ref — `RAQT-COM/raqt-design/button#v0.1.0`.
+
 Files land at:
 
 | item | target |
@@ -101,7 +104,10 @@ automatically before Storybook. Never edit `tokens/dist/` by hand.
 
 ## Status
 
-Tokens, the nine components and the Storybook are built. The registry itself
-(`registry.json`, `r/`, and the `v0.1.0` tag the commands above resolve against)
-is lane **W4** in [`PLAN.md`](PLAN.md) and is not published yet — the consuming
-instructions describe its agreed shape and are verified by W4 and W5, not here.
+Tokens, the nine components, the Storybook and the registry are built.
+`registry.json` validates, `r/` is committed, and `v0.1.0` is tagged. Every
+target and every dependency chain above was verified by installing all ten items
+into a scratch consumer.
+
+**Not pushed yet.** The commands above read `registry.json` from this repo's
+default branch, so they fail until `main` is on GitHub.
