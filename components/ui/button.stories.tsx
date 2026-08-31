@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 
 /**
  * One story per state. A product person opens this page and sees every state
- * at once — controls would hide exactly what we want them to look at.
+ * at once — a control panel would hide exactly what we want them to look at.
+ * `Playground`, last, is the other half: one button with every prop wired to a
+ * control, for reading the API rather than the design.
  *
  * Hover, active and focus are rendered through the component's own
  * `data-force` hook, so what you see is the real declared style rather than a
@@ -173,4 +175,31 @@ export const IconOnly: Story = {
       </Button>
     </Row>
   ),
+};
+
+/**
+ * The knobs. Every page above is a fixed matrix — the system, laid out. This one
+ * is the API instead: one button, every prop as a control. It answers a different
+ * question ("what is this like to *use*?"), and an awkward prop shows up here
+ * first.
+ */
+export const Playground: Story = {
+  args: {
+    children: "New match",
+    variant: "primary",
+    size: "md",
+    loading: false,
+    disabled: false,
+  },
+  argTypes: {
+    children: { control: "text", name: "label" },
+    variant: { control: "inline-radio", options: VARIANTS },
+    size: { control: "inline-radio", options: ["sm", "md", "lg", "icon"] },
+    loading: { control: "boolean" },
+    disabled: { control: "boolean" },
+    className: { control: "text" },
+    // Structural, not visual: `asChild` swaps the element and takes a child
+    // element rather than text, which a control cannot supply.
+    asChild: { table: { disable: true } },
+  },
 };

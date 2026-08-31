@@ -217,3 +217,67 @@ export const LightHost: Story = {
     </div>
   ),
 };
+
+/**
+ * The knobs. A dialog is a set of parts rather than one propful component, so
+ * these args drive the composition — the only real component props among them
+ * are `showCloseButton` and `scope`, both on `DialogContent`.
+ *
+ * Set `scope` to `raqt light` while the page is dark and the panel flips on its
+ * own: that is rule 10 working, not a story faking it.
+ */
+type PlaygroundArgs = {
+  title: string;
+  description: string;
+  showCloseButton: boolean;
+  scope: string;
+  form: boolean;
+};
+
+export const Playground: StoryObj<PlaygroundArgs> = {
+  parameters: {
+    controls: { include: ["title", "description", "showCloseButton", "scope", "form"] },
+  },
+  args: {
+    title: "Court 2 — Group B",
+    description: "Andersson / Lind vs. Ruiz / Novak, Saturday at 14:30.",
+    showCloseButton: true,
+    scope: "raqt",
+    form: false,
+  },
+  argTypes: {
+    title: { control: "text" },
+    description: { control: "text" },
+    showCloseButton: { control: "boolean" },
+    scope: {
+      control: "inline-radio",
+      options: ["raqt", "raqt light"],
+      description: "The theme scope re-established inside the portal.",
+    },
+    form: { control: "boolean", description: "Put a `field` in the panel." },
+  },
+  render: ({ title, description, showCloseButton, scope, form }) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="secondary">Open</Button>
+      </DialogTrigger>
+      <DialogContent scope={scope} showCloseButton={showCloseButton}>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          {description ? <DialogDescription>{description}</DialogDescription> : null}
+        </DialogHeader>
+        {form ? (
+          <Field label="Court" hint="Where the match is played.">
+            <Input placeholder="Court 2" />
+          </Field>
+        ) : null}
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Close</Button>
+          </DialogClose>
+          <Button>Follow match</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+};

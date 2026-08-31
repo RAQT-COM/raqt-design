@@ -17,7 +17,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 const meta = {
   title: "Components/Skeleton",
   component: Skeleton,
-  parameters: { layout: "padded" },
+  parameters: { layout: "fullscreen" },
+  decorators: [
+    (Story) => (
+      <div className="raqt min-h-screen bg-background p-8 text-foreground">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Skeleton>;
 
 export default meta;
@@ -101,4 +108,20 @@ export const List: Story = {
       <MatchCardSkeleton />
     </div>
   ),
+};
+
+/**
+ * The knobs — thin ones, honestly. A skeleton's API really is the class you give
+ * it, so the control is `className` and the point of the page is that no size,
+ * radius or animation prop was ever needed.
+ */
+export const Playground: Story = {
+  args: { className: "h-4 w-64" },
+  argTypes: {
+    className: {
+      control: "text",
+      description: "Size and radius. Tailwind utilities — `h-10 w-10 rounded-full`, say.",
+    },
+  },
+  render: (args) => <Skeleton {...args} />,
 };

@@ -110,3 +110,10 @@
   --shadow-e2: 0 2px 8px rgb(7 20 16 / 0.08);
   --shadow-e3: 0 8px 24px rgb(7 20 16 / 0.10);
 }
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

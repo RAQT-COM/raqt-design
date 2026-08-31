@@ -145,3 +145,34 @@ export const FormWithOneFieldInError: Story = {
     </form>
   ),
 };
+
+/**
+ * The knobs. The stories above each pin one prop to show what it does; this one
+ * hands you all of them at once. Worth trying: type something into `error` and
+ * watch the label, the border, the ring and the message all turn — one prop,
+ * four decisions you never have to make.
+ */
+export const Playground: Story = {
+  args: {
+    label: "Player name",
+    hint: "As it appears on the draw sheet.",
+    error: "",
+    required: false,
+    disabled: false,
+    loading: false,
+  },
+  argTypes: {
+    label: { control: "text" },
+    hint: { control: "text" },
+    error: {
+      control: "text",
+      description: "The whole invalid API — a non-empty string is what makes the field invalid.",
+    },
+    required: { control: "boolean" },
+    disabled: { control: "boolean" },
+    loading: { control: "boolean" },
+    className: { control: "text" },
+    // The control the field wraps. An element, so not something a control can set.
+    children: { table: { disable: true } },
+  },
+};

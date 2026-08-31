@@ -4,6 +4,7 @@ import {
   MatchCard,
   MatchCardSkeleton,
   type MatchCardProps,
+  type MatchStatus,
 } from "@/components/patterns/match-card";
 
 /**
@@ -238,4 +239,64 @@ export const DaySheet: Composition = {
       />
     </div>
   ),
+};
+
+/**
+ * The knobs. `sides` is a pair of objects, which no control can type, so the
+ * playground exposes the two things that actually vary — singles or doubles, and
+ * how many sets are on the board — and builds the pair from them.
+ */
+type PlaygroundArgs = {
+  status: MatchStatus;
+  shape: "singles" | "doubles";
+  sets: 0 | 1 | 2 | 3;
+  court: string;
+  time: string;
+  interactive: boolean;
+};
+
+const SET_SCORES: [number, number][] = [
+  [6, 2],
+  [4, 6],
+  [7, 5],
+];
+
+export const Playground: StoryObj<PlaygroundArgs> = {
+  // `sides` is built in `render`, so its inherited control would be a lie.
+  parameters: {
+    controls: { include: ["status", "shape", "sets", "court", "time", "interactive"] },
+  },
+  args: {
+    status: "live",
+    shape: "singles",
+    sets: 2,
+    court: "Centre Court",
+    time: "13:05",
+    interactive: false,
+  },
+  argTypes: {
+    status: { control: "inline-radio", options: ["upcoming", "live", "finished"] },
+    shape: { control: "inline-radio", options: ["singles", "doubles"] },
+    sets: {
+      control: { type: "range", min: 0, max: 3, step: 1 },
+      description: "Sets on the board. An upcoming match shows the time instead.",
+    },
+    court: { control: "text" },
+    time: { control: "text" },
+    interactive: { control: "boolean", description: "Passed through to `card`." },
+  },
+  render: ({ status, shape, sets, court, time, interactive }) => {
+    const base = shape === "doubles" ? DOUBLES : SINGLES;
+    const played = SET_SCORES.slice(0, sets);
+    return frame({
+      status,
+      court,
+      time,
+      interactive,
+      sides: [
+        { ...base.a, scores: played.map(([a]) => a) },
+        { ...base.b, scores: played.map(([, b]) => b) },
+      ],
+    });
+  },
 };

@@ -12,7 +12,14 @@ import { EmptyState } from "@/components/ui/empty-state";
 const meta = {
   title: "Components/Empty State",
   component: EmptyState,
-  parameters: { layout: "padded" },
+  parameters: { layout: "fullscreen" },
+  decorators: [
+    (Story) => (
+      <div className="raqt min-h-screen bg-background p-8 text-foreground">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof EmptyState>;
 
 export default meta;
@@ -91,5 +98,50 @@ export const InsideCard: Story = {
         <EmptyState {...args} />
       </CardContent>
     </Card>
+  ),
+};
+
+/**
+ * The knobs. `icon` and `action` take elements rather than text, so their
+ * controls pick from a short list of real ones through `mapping` — a control
+ * cannot type a React node, but it can choose between them.
+ */
+export const Playground: Story = {
+  args: {
+    variant: "default",
+    title: "No matches yet",
+    description: "Matches appear here as soon as the draw is published.",
+    icon: "trophy",
+    action: "new match",
+  },
+  argTypes: {
+    variant: { control: "inline-radio", options: ["default", "compact"] },
+    title: { control: "text" },
+    description: { control: "text" },
+    icon: {
+      control: "select",
+      options: ["none", "trophy", "search", "calendar"],
+      mapping: {
+        none: undefined,
+        trophy: <Trophy />,
+        search: <Search />,
+        calendar: <CalendarPlus />,
+      },
+    },
+    action: {
+      control: "select",
+      options: ["none", "new match", "clear filters"],
+      mapping: {
+        none: undefined,
+        "new match": <Button>New match</Button>,
+        "clear filters": <Button variant="secondary">Clear filters</Button>,
+      },
+    },
+    className: { control: "text" },
+  },
+  render: (args) => (
+    <div className="w-[28rem]">
+      <EmptyState {...args} />
+    </div>
   ),
 };

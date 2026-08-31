@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
  * needs) and **match status** (the domain's own four, wired to
  * `--color-status-*`). Reach for the domain word when the thing is a match —
  * `live`, not `destructive` — and retinting later stays a token change.
+ *
+ * `Playground`, last, is the same component with every prop on a control.
  */
 const meta = {
   title: "Components/Badge",
@@ -171,4 +173,36 @@ export const BothModes: Story = {
       )}
     />
   ),
+};
+
+/**
+ * The knobs. The pages above are the vocabulary; this is the API — one badge,
+ * every prop as a control, for checking how it is to use rather than how it
+ * looks. Note there are only two props: the whole surface area is `variant` and
+ * what you put inside.
+ */
+export const Playground: Story = {
+  args: { variant: "default", children: "Live" },
+  argTypes: {
+    children: { control: "text", name: "label" },
+    variant: {
+      control: "select",
+      options: [
+        "default",
+        "secondary",
+        "outline",
+        "success",
+        "warning",
+        "destructive",
+        "info",
+        "upcoming",
+        "live",
+        "finished",
+        "open",
+      ],
+    },
+    className: { control: "text" },
+    // Takes an element, not text — see `AsLink`.
+    asChild: { table: { disable: true } },
+  },
 };

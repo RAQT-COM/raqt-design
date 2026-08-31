@@ -59,6 +59,13 @@ reaches a consumer, over `shadcn add`.
 **consumer** — anything that depends on this repo, whether through the registry
 or otherwise. `raqt-public` is the first one.
 
+**ship** — `pnpm ship`. Rebuild, validate, commit, push `main`. Because a bare
+address resolves at `main@HEAD`, this *is* publishing; there is no other step.
+
+**release** — `pnpm release <bump>`. A ship that also tags. Distinct from ship in
+one way only: it produces a ref a consumer can pin to. *Shipping is what reaches
+consumers; releasing is what lets them stay behind.*
+
 **Claude Design system** — a consumer that does not exist yet. Its role is known
 (it would depend on this repo); its mechanism is not. Listed because
 "Claude Design system" is the phrase that collapses back into "design system" in

@@ -156,6 +156,12 @@ makes the component unusable by keyboard, and that is not a visual preference. A
 thing that shows data is not done until it has all three: loaded, **loading**,
 **empty**.
 
+The pointer cursor is not one of the five, because it is not yours to declare:
+Tailwind v4's preflight dropped the `cursor: pointer` v3 gave buttons, and the
+theme restores it for every enabled `button` and `[role="button"]` in the scope.
+Write `cursor-pointer` only for something clickable that is *not* a button — an
+interactive `card` is the one in this library.
+
 **9 · Dark is the truth, light is the check.** Design in dark — it is the default
 and it is what most of Raqt's users see. Then flip to light before calling it
 done. Almost every mode bug is one of the rules above already broken: a hardcoded

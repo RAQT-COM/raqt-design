@@ -181,3 +181,80 @@ export const BothModes: Story = {
     />
   ),
 };
+
+/**
+ * The knobs. A card is a composition, so its playground carries story-only args
+ * for which slots to render alongside the component's own two props — that split
+ * is itself worth seeing: `level` and `interactive` are the entire API, and
+ * everything else on screen is something you passed as a child.
+ */
+type PlaygroundArgs = {
+  level: 1 | 2 | 3;
+  interactive: boolean;
+  title: string;
+  description: string;
+  action: boolean;
+  footer: boolean;
+  nested: boolean;
+};
+
+export const Playground: StoryObj<PlaygroundArgs> = {
+  // The args below are the story's own, so the panel is pinned to them —
+  // otherwise docgen adds every `div` prop `Card` inherits to the list.
+  parameters: {
+    controls: {
+      include: ["level", "interactive", "title", "description", "action", "footer", "nested"],
+    },
+  },
+  args: {
+    level: 1,
+    interactive: false,
+    title: "Spring Open",
+    description: "Doubles · 16 pairs",
+    action: true,
+    footer: true,
+    nested: false,
+  },
+  argTypes: {
+    level: {
+      control: "inline-radio",
+      options: [1, 2, 3],
+      description: "Elevation. Left unset in real use — a nested card steps itself up.",
+    },
+    interactive: { control: "boolean" },
+    title: { control: "text" },
+    description: { control: "text" },
+    action: { control: "boolean", description: "The header's top-right slot." },
+    footer: { control: "boolean", description: "A footer slot with a button in it." },
+    nested: { control: "boolean", description: "A card inside the card — the elevation rule, applying itself." },
+  },
+  render: ({ level, interactive, title, description, action, footer, nested }) => (
+    <div className="w-[26rem]">
+      <Card level={level} interactive={interactive}>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          {description ? <CardDescription>{description}</CardDescription> : null}
+          {action ? (
+            <CardAction>
+              <Badge variant="live">Live</Badge>
+            </CardAction>
+          ) : null}
+        </CardHeader>
+        {nested ? (
+          <CardContent>
+            <Card>
+              <CardContent className="text-xs text-muted-foreground">
+                A nested surface — one step up, one radius down, unasked.
+              </CardContent>
+            </Card>
+          </CardContent>
+        ) : null}
+        {footer ? (
+          <CardFooter className="justify-end">
+            <Button size="sm">Follow</Button>
+          </CardFooter>
+        ) : null}
+      </Card>
+    </div>
+  ),
+};

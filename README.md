@@ -73,6 +73,11 @@ The theme registers only Raqt-only names (`surface-*`, `status-*`, `warning`,
 `info`, `success`) with Tailwind. It never re-registers a shadcn-standard name —
 doing so would suppress your app's own value for it and recolour your whole app.
 
+Besides the custom properties, the theme carries exactly one rule: a `button` or
+`[role="button"]` inside the scope gets `cursor: pointer`, which Tailwind v4's
+preflight no longer supplies. It sits in `@layer base`, so any `cursor-*` utility
+of yours still wins, and it reaches nothing outside `.raqt`.
+
 ### 4. Light mode
 
 Dark is the default. Add `light` alongside the scope for a light surface:

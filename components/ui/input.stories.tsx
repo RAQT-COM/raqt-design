@@ -114,3 +114,33 @@ export const WithLeadingIcon: Story = {
     </Row>
   ),
 };
+
+/**
+ * The knobs. The rows above are the states laid out for reading; this is one
+ * input with every prop on a control, for driving it by hand. `value` is
+ * deliberately absent — type into the field instead, which is the only way to
+ * see selection, caret and the invalid-while-focused rule behave.
+ */
+export const Playground: Story = {
+  args: {
+    placeholder: "Player name",
+    type: "text",
+    disabled: false,
+    readOnly: false,
+    "aria-invalid": false,
+  },
+  argTypes: {
+    placeholder: { control: "text" },
+    type: {
+      control: "select",
+      options: ["text", "email", "password", "number", "search", "file"],
+    },
+    disabled: { control: "boolean" },
+    readOnly: { control: "boolean" },
+    "aria-invalid": {
+      control: "boolean",
+      description: "The whole invalid API. In a form, `field` sets this from its `error`.",
+    },
+    className: { control: "text" },
+  },
+};

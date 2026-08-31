@@ -185,3 +185,10 @@
   --border: #DCE7E1;
   --input: #B4C9BF;
 }
+
+@layer base {
+  .raqt button:not(:disabled),
+  .raqt [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
