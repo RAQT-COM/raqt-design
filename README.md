@@ -45,6 +45,17 @@ Files land at:
 Components deliberately do **not** land in your `components/ui/`. Yours stays
 yours.
 
+To pull a **newer version** of something you already have, `add` will skip files
+that exist — pass `--overwrite`:
+
+```bash
+pnpm dlx shadcn@latest add --overwrite RAQT-COM/raqt-design/theme
+```
+
+That replaces those files wholesale, so commit your app first. If you have this
+repo checked out as a sibling, `pnpm sync` from it does the same thing and then
+verifies the bytes actually arrived — see [Releasing](#releasing).
+
 ### 2. Import the theme
 
 After your own stylesheet, so it is the later declaration:
@@ -103,16 +114,71 @@ pnpm install
 pnpm storybook
 ```
 
+| command | does |
+|---|---|
+| `pnpm build` | regenerates `tokens/dist/` and `r/` |
+| `pnpm verify` | `build`, then validates `registry.json` and runs `tsc --noEmit` |
+| `pnpm ship` | `verify`, commit, push `main` — consumers see it immediately |
+| `pnpm release <bump>` | `ship`, then bump `package.json` and tag `v<version>` |
+| `pnpm sync` | re-installs the registry into the consuming app |
+
 `pnpm tokens` regenerates `tokens/dist/` from `tokens/source/*.json` — it runs
-automatically before Storybook. Never edit `tokens/dist/` by hand.
-`pnpm typecheck` runs `tsc --noEmit`.
+automatically before Storybook. Never edit `tokens/dist/` by hand, and never edit
+`r/` by hand either; both are generated.
+
+## Releasing
+
+There is no npm package. **The registry is the repo**: consumers read `r/*.json`
+straight off GitHub, so "published" means "pushed to `main`". Two consequences
+shape the whole workflow:
+
+- `r/` inlines the contents of every component file. Editing a component without
+  re-running the build ships the *old* component to every consumer — silently,
+  with no error anywhere.
+- A bare address resolves against `main` **at HEAD**, not at the latest tag. You
+  do not need to cut a version to test a change.
+
+`pnpm ship` exists so neither can be forgotten. It rebuilds first, so a stale
+`r/` is repaired and swept into the same commit rather than left behind:
+
+```bash
+pnpm ship -m "button: tighten focus ring"
+```
+
+That runs the build, validates the registry, typechecks, shows you exactly what
+it is about to commit, asks, then pushes. Cut a version only when you want
+something pinnable:
+
+```bash
+pnpm release patch
+```
+
+which does everything `ship` does and then bumps `package.json`, tags `v0.1.1`,
+and pushes the tag. `major`, `minor` and an explicit `1.2.3` also work. The tag
+is what `#v0.1.1` in a consumer's address resolves to.
+
+### Testing a change in a consuming app
+
+`pnpm sync` re-installs into a sibling checkout — `../raqt-public` by default,
+or wherever `RAQT_CONSUMER` points:
+
+```bash
+pnpm ship -m "wip" && pnpm sync
+```
+
+With no arguments it detects which items that app already has and re-pulls
+exactly those with `--overwrite`. Name items to pull more (`pnpm sync dialog
+field`), or `--ref v0.1.0` to pull a pinned version instead of `main@HEAD`.
+
+One trap worth knowing: **`raw.githubusercontent.com` caches for about five
+minutes.** A re-add immediately after a push can hand back the previous version
+and look like your change did nothing. `sync` compares the theme that landed
+against this repo's build and tells you when they differ, so a cache hit reads as
+a warning rather than as a baffling no-op. Wait, re-run `pnpm sync`.
 
 ## Status
 
-Tokens, the nine components, the Storybook and the registry are built.
-`registry.json` validates, `r/` is committed, and `v0.1.0` is tagged. Every
-target and every dependency chain above was verified by installing all ten items
-into a scratch consumer.
-
-**Not pushed yet.** The commands above read `registry.json` from this repo's
-default branch, so they fail until `main` is on GitHub.
+Tokens, the nine components, the Storybook and the registry are built and pushed.
+`registry.json` validates both locally and at `RAQT-COM/raqt-design`, `r/` is
+committed, and `v0.1.0` is tagged. Every target and every dependency chain above
+was verified by installing all ten items into a scratch consumer.
