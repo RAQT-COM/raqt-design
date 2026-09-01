@@ -50,13 +50,16 @@ function Field({
   const isDisabled = disabled || loading;
 
   const control = React.isValidElement(children)
-    ? React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
-        id: controlId,
-        disabled: isDisabled,
-        required: required || undefined,
-        "aria-invalid": invalid || undefined,
-        "aria-describedby": message ? messageId : undefined,
-      })
+    ? React.cloneElement(
+        children as React.ReactElement<Record<string, unknown>>,
+        {
+          id: controlId,
+          disabled: isDisabled,
+          required: required || undefined,
+          "aria-invalid": invalid || undefined,
+          "aria-describedby": message ? messageId : undefined,
+        },
+      )
     : children;
 
   return (
@@ -70,7 +73,7 @@ function Field({
         htmlFor={controlId}
         className={cn(
           "text-sm font-medium leading-none",
-          invalid ? "text-destructive" : "text-foreground",
+          invalid ? "text-amber-400" : "text-foreground",
           isDisabled && "opacity-50",
         )}
       >
