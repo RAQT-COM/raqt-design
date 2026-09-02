@@ -175,6 +175,15 @@ const tokensCss = `${banner}
 @import "tailwindcss";
 @import "./theme.css";
 
+/* Documentation is not a source. Tailwind v4 auto-detects sources from the repo
+   root, which sweeps in the prose under .design-sync/ — and a class NAMED in prose
+   gets compiled, even when the prose names it as an example of something that does
+   not exist. That is not hypothetical: .design-sync/conventions.md tells the
+   design agent which utilities exist, and citing two absent ones silently created
+   both, making its own claim false. Excluding the directory keeps the compiled set
+   equal to what the components and stories actually use. */
+@source not "../../.design-sync";
+
 @theme {
 ${decls([...colors.map((t) => [t.name, t.dark]), ...scales])}
 }

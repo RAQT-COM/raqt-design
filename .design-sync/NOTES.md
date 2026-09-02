@@ -72,6 +72,28 @@ The six `Foundations/*` storybook entries stay nulled in `titleMap`: they are MD
 doc pages, not components, and their content is covered by `DESIGN.md` §2/§5/§6
 in prose the guidelines now carry verbatim.
 
+## Documentation used to compile itself into the stylesheet
+
+`[GENERAL]` Tailwind v4 auto-detects sources from the repo root, which swept in
+the prose under `.design-sync/`. A class **named** in prose gets compiled — even
+when the prose names it as an example of a class that does not exist. The
+conventions header cited two absent utilities to teach the design agent that the
+compiled set is fixed, and naming them created both, making its own claim false.
+
+`tokens/dist/tokens.css` now carries `@source not "../../.design-sync"`. Proof it
+works: after the exclusion the scraped stylesheet returned to the byte-identical
+hash it had before the header existed, and `styleSha` matched the project anchor
+again. The whole apparent styling change was documentation polluting the scan.
+
+Two things follow:
+
+- Prose under `.design-sync/` is safe to write freely — it is no longer a source.
+- **`stories/**` still is, correctly.** `stories/foundations/03-Spacing.mdx` cites
+  an arbitrary gap step as a counter-example, so that step is compiled and shipped
+  even though the system tells you not to use it. Harmless, but it means the
+  compiled set is slightly wider than "what components use". Do not exclude
+  `stories/` to fix it — those files are the storybook's real source.
+
 ## Re-sync risks — what to watch
 
 - **The barrel is a second component list.** Add a tenth component to
@@ -88,5 +110,7 @@ in prose the guidelines now carry verbatim.
 - **The upload plan must include `assets/**`.** It is not in the converter's
   default write globs, so a re-sync that reuses the documented plan silently drops
   the logo, logotype and app icon. Add the path at `finalize_plan` time.
+- **A counter-example in a scanned file becomes real.** Before citing a class as
+  absent anywhere Tailwind scans, confirm the file is outside the source set.
 - Story cap was raised to `--max-stories 11` to cover MatchCard's 11 stories.
   A component that grows past 11 will have its tail silently uncaptured.
