@@ -87,9 +87,10 @@ know what `.raqt` is.
 
 ## Installing it in a Claude Design organization
 
-**This is the route to hand someone else.** It needs no CLI, no tooling and no
-access to anybody's Claude Code session — only that the person doing it can
-administer the target organization.
+**The route to hand someone else for the initial install.** It needs no CLI and
+no tooling — only that the person doing it can administer the target
+organization. See [Updating it afterwards](#updating-it-afterwards) for what
+happens when the system changes, because this step does not repeat itself.
 
 In [Claude Design](https://claude.ai/design), pick the organization, complete the
 onboarding flow, and give it this repository:
@@ -114,18 +115,36 @@ Then **switch the Published toggle on** — in the organization's settings, via
 is on, projects created from the Claude Design homescreen still use the default
 system.
 
-## Re-pushing during development
+## Updating it afterwards
 
-For iterating on this repo's own design system, Claude Code can write to a
-project directly with the `DesignSync` tool:
+**Generation is a snapshot, not a subscription.** Linking this repo feeds one
+extraction run — the "this will take about 5 minutes" step — and what comes out
+is a materialised project of files. Pushing to `main` afterwards changes nothing
+in Claude Design. None of Anthropic's three Claude Design articles documents a
+linked repository re-syncing, and the design system project we have contains
+generated artifacts (`_ds_manifest.json`, `_ds_bundle.js`) rather than a view
+onto git.
 
-> push design-system/dist to the Raqt design system project
+So adding a tenth component means updating the design system deliberately. Three
+ways, in order of how well they fit this repo:
 
-It reads `dist/`, locks the paths with `finalize_plan`, then `write_files`.
-`/design-login` must have been run once in an interactive session.
+1. **`/design-sync` in Claude Code** — the documented import path, and the only
+   incremental one: it diffs and pushes a component at a time rather than
+   replacing wholesale. Run `pnpm ds` first, then ask Claude Code to push
+   `design-system/dist`. Requires `/design-login` once, with an account that can
+   write to the target design system.
+2. **Remix** — open the design system from organization settings and use the
+   *Remix* button for a chat interface to adjust it. Good for wording and
+   arrangement; not for re-importing sixteen regenerated cards.
+3. **Generate again** — organizations can hold more than one design system, so a
+   fresh run against the updated repo is a legitimate reset. Blunt: it discards
+   any Remix edits.
 
-Project: `c8b2b84e-002a-4e69-9b07-ebed10a34e03` — "Design System", owned by Nelson.
+Route 1 is why `pnpm ds` exists. Change a token, re-run it, push — the cards are
+regenerated from `tokens/dist/theme.css`, so they cannot drift from the contract.
 
-This is a shortcut, not the supported path, and it only reaches projects that
-account can write to. Anyone setting the system up for another organization
-should use the route above.
+Whoever maintains Raqt's design system needs an account in *that* organization
+for route 1; it is per-account access, not a property of this repo.
+
+Project id for this repo's own copy:
+`c8b2b84e-002a-4e69-9b07-ebed10a34e03` — "Design System", owned by Nelson.
