@@ -40,6 +40,7 @@ Files land at:
 | item | target |
 |---|---|
 | `theme` | `src/styles/raqt-theme.css` |
+| `rules` | `.claude/skills/raqt-design/SKILL.md` |
 | the eight `ui` components | `src/components/raqt/<name>.tsx` |
 | `match-card` | `src/components/raqt/match-card.tsx` |
 
@@ -100,6 +101,28 @@ Dark is the default. Add `light` alongside the scope for a light surface:
 
 `--color-primary` and `--color-ring` hold the same value in both modes.
 
+### 5. Teach your agent the rules
+
+The components carry the system; they do not carry the *reasons*. The `rules`
+item installs the design language as a project-level agent skill:
+
+```bash
+pnpm dlx shadcn@latest add RAQT-COM/raqt-design/rules
+```
+
+It writes one file, `.claude/skills/raqt-design/SKILL.md`, and nothing else — no
+import, no runtime behaviour. Claude Code picks it up on its own when it writes
+UI in that repo, so a component the library has never had still comes out
+looking like Raqt.
+
+It is generated from [`DESIGN.md`](DESIGN.md) and `registry.json` rather than
+written by hand, so it is the same contract this repo is built to, not a summary
+of it that drifts. `pnpm sync` refreshes it alongside everything else.
+
+It is deliberately **not** a dependency of `theme` — adding a stylesheet should
+not write agent configuration into a repo that may not want any. Add it once,
+per repo, on purpose.
+
 ### Overlays
 
 Radix portals to `document.body`, which is outside your `.raqt` element, so a
@@ -117,15 +140,17 @@ pnpm storybook
 
 | command | does |
 |---|---|
-| `pnpm build` | regenerates `tokens/dist/` and `r/` |
+| `pnpm build` | regenerates `tokens/dist/`, `skills/raqt-design/` and `r/` |
 | `pnpm verify` | `build`, then validates `registry.json` and runs `tsc --noEmit` |
 | `pnpm ship` | `verify`, commit, push `main` — consumers see it immediately |
 | `pnpm release <bump>` | `ship`, then bump `package.json` and tag `v<version>` |
 | `pnpm sync` | re-installs the registry into the consuming app |
 
 `pnpm tokens` regenerates `tokens/dist/` from `tokens/source/*.json` — it runs
-automatically before Storybook. Never edit `tokens/dist/` by hand, and never edit
-`r/` by hand either; both are generated.
+automatically before Storybook. `tokens/dist/`, `skills/raqt-design/SKILL.md` and
+`r/` are all generated; edit their sources instead. The skill's sources are
+`DESIGN.md` and `registry.json`, and its emitter refuses to write a file that
+still references a path only this repo has.
 
 ## Releasing
 

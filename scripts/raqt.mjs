@@ -116,10 +116,13 @@ const bump = (current, kind) => {
 const doBuild = () => {
   step("Regenerating derived files");
   run("node", ["tokens/build.mjs"]);
+  // Before the shadcn build: the `rules` item's file is this script's output, so
+  // building the registry first would package the previous run's skill.
+  run("node", ["skills/build.mjs"]);
   // Not the default output dir. shadcn writes to public/r unless told otherwise, and
   // this repo serves r/ — a wrong -o here silently publishes nothing.
   shadcn(["build", "--output", "r"]);
-  ok("tokens/dist/ and r/ rebuilt");
+  ok("tokens/dist/, skills/ and r/ rebuilt");
 };
 
 const doVerify = () => {
@@ -166,7 +169,8 @@ const doShip = async (opts) => {
     console.log(changed.map((p) => `      ${p}`).join("\n"));
     // The check that earns this script its keep: r/ is derived, so if the rebuild above
     // changed it, whatever is committed right now is stale relative to the source.
-    const stale = changed.filter((p) => p.startsWith("r/") || p.startsWith("tokens/dist/"));
+    const derived = ["r/", "tokens/dist/", "skills/raqt-design/"];
+    const stale = changed.filter((p) => derived.some((d) => p.startsWith(d)));
     if (stale.length) warn(`${stale.length} generated file(s) were out of date — rebuilt, and included above`);
 
     if (!(await confirm(`Commit ${changed.length} file(s) and push to ${branch}?`, opts))) {
@@ -215,6 +219,7 @@ const consumerRoot = () =>
 const installedItems = (consumer) => {
   const items = [];
   if (existsSync(join(consumer, "src/styles/raqt-theme.css"))) items.push("theme");
+  if (existsSync(join(consumer, ".claude/skills/raqt-design/SKILL.md"))) items.push("rules");
   const dir = join(consumer, "src/components/raqt");
   if (existsSync(dir)) {
     const known = new Set(registry().items.map((i) => i.name));

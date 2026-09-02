@@ -17,6 +17,19 @@
       ]
     },
     {
+      "name": "rules",
+      "type": "registry:file",
+      "title": "Raqt design language (agent skill)",
+      "description": "The Raqt design language as a project-level agent skill: the token vocabulary, the ten rules for building a component the library does not have, and the iconography set. Lands at `.claude/skills/raqt-design/SKILL.md`, where Claude Code picks it up on its own whenever it writes UI in the repo. Generated from DESIGN.md, so it is the same contract this system is built to and not a summary of it. Add it once per repo that consumes Raqt; nothing imports it and it changes no runtime behaviour.",
+      "files": [
+        {
+          "path": "skills/raqt-design/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/raqt-design/SKILL.md"
+        }
+      ]
+    },
+    {
       "name": "button",
       "type": "registry:ui",
       "title": "Raqt button",
