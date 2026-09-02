@@ -258,3 +258,57 @@ icon beside a label repeats the label, so it is hidden from the accessibility
 tree. An icon-only `button` (`size="icon"`) carries an `sr-only` label, as
 `dialog`'s close does. And never let the glyph be the only carrier — status is
 colour *and* glyph *and* text, because any one of the three fails for somebody.
+
+## The marks
+
+Three assets in [`assets/brand/`](https://github.com/RAQT-COM/raqt-design/tree/main/assets/brand), and choosing between them is one question: how
+much room is there, and does the reader already know what Raqt is.
+
+| asset | what | floor | for |
+|---|---|---|---|
+| `logo.png` | the wordmark over the tagline | ~160px wide | first contact — marketing, the login screen, a footer |
+| `logotype.png` | the wordmark alone | ~90px wide | in-product chrome — app header, nav |
+| `icon.png` | the **R** alone, on its own ground | — | home screen, favicon, avatar |
+
+The floor on the full logo is set by the **tagline**, not the wordmark: it is
+drawn at about a fifth of the wordmark's height and stops resolving well before
+**RAQT** does. That is the whole reason the logotype exists — the same mark with
+the fragile part removed. Below the logotype's floor, use the icon.
+
+**The lockups are masks, not pictures.** `logo.png` and `logotype.png` are
+white-ish artwork on transparency, and only the alpha channel carries the shape.
+So they are applied with `mask-image` and painted from a token:
+
+```css
+background: var(--color-foreground);
+mask: url("…/logotype.png") no-repeat center/contain;
+```
+
+One file per mark serves both modes and inverts by itself when the mode flips —
+the same reason an icon takes `currentColor`. A second baked file per mode would
+be a second value nobody can find or change. That is rule 1 applied to artwork.
+
+**There are two grounds, and they are the two values `background` resolves to.**
+Ink in dark, the near-white in light. A field of `primary` behind a mark is not a
+third ground: it is legible — 10.8:1 — and still wrong, because `primary` is the
+signal for the one thing to do next and a logo is never an action. That is rule 5.
+The mark takes `foreground`; never `primary`, never `muted-foreground`, never a
+tint. Its proportions are the file's — no stretching, condensing or rotating.
+
+**Neither file carries a margin.** Both are cropped tight — `logo.png`'s ink runs
+to the canvas edge on three sides, `logotype.png`'s on two — so clear space is
+always the layout's job and is not something anyone can eyeball from the asset.
+Until the brand ratifies a figure, leave the cap height of the wordmark on all
+four sides.
+
+`icon.png` is the exception to all of it. It is opaque, carries its own white
+ground, and is drawn by iOS, Android and the browser tab — none of which know
+what `.raqt` is. It is a picture; do not try to token-drive it.
+
+> **Open, and deliberately not decided here.** The icon's charcoal is `#2B2F30`,
+> a neutral. The system's near-black is `#071410`, green-tinted ink, and that is
+> what the masked marks resolve to in light mode. They read as the same colour
+> alone and visibly differ side by side, and no token names the charcoal. Either
+> the icon moves onto the ink or the charcoal earns a `brand-*` primitive — a
+> contract change either way, which is why it is written down rather than fixed
+> quietly.

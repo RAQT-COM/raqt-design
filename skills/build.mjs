@@ -59,6 +59,8 @@ const STORYBOOK = `https://${OWNER.toLowerCase()}.github.io/${REPO_NAME}`;
  */
 const LINKS = [
   [/`docs\/TOKENS\.md`/g, `[the token contract](${REPO_URL}/blob/main/docs/TOKENS.md)`],
+  [/`assets\/brand\/([a-z]+\.png)`/g, `[\`$1\`](${REPO_URL}/blob/main/assets/brand/$1)`],
+  [/\bin `assets\/brand\/`/g, `in [\`assets/brand/\`](${REPO_URL}/tree/main/assets/brand)`],
   [
     /the Storybook \*Foundations → Iconography\* page/g,
     `[Foundations → Iconography](${STORYBOOK}) in Raqt's Storybook`,
@@ -67,16 +69,28 @@ const LINKS = [
 
 const reroot = (md) => LINKS.reduce((out, [pattern, to]) => out.replace(pattern, to), md);
 
+/** The DESIGN.md sections that travel into a consuming repo, in order. */
+const LIFTED = ["2. Token reference", "4. Rules for inventing", "5. Iconography", "6. The marks"];
+
 /**
  * The rewrites above are per-section, so none of them is individually required.
  * What *is* required is that nothing repo-local survives into the finished file:
  * a path only this repo has is a dead reference in every consuming repo, and
  * DESIGN.md is free to grow new ones between builds.
  */
-const DANGLING = [/(?<!\/)\bdocs\/[A-Z]+\.md\b/, /\bStorybook \*/, /\bPLAN\.md\b/, /\bCONTEXT\.md\b/];
+const DANGLING = [
+  /(?<!\/)\bdocs\/[A-Z]+\.md\b/,
+  /\bassets\/brand\b/,
+  /\bStorybook \*/,
+  /\bPLAN\.md\b/,
+  /\bCONTEXT\.md\b/,
+];
 
 function assertSelfContained(md) {
-  const body = md.replace(/\]\(https?:\/\/[^)]+\)/g, "]()"); // already-absolute links are fine
+  // Strip whole markdown links whose target is absolute: a repo path inside one is
+  // reachable by anyone, text and all. Stripping only the URL left the path in the
+  // link text and tripped this guard on its own rewrites.
+  const body = md.replace(/\[[^\]]*\]\(https?:\/\/[^)]+\)/g, "");
   const dead = DANGLING.filter((p) => p.test(body)).map((p) => `${p} → ${body.match(p)[0]}`);
   if (dead.length) {
     throw new Error(
@@ -163,6 +177,10 @@ ${reroot(section("4. Rules for inventing"))}
 ## Iconography
 
 ${reroot(section("5. Iconography"))}
+
+## The marks
+
+${reroot(section("6. The marks"))}
 `;
 
 assertSelfContained(SKILL);
@@ -172,5 +190,5 @@ mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, SKILL);
 console.log(
   `skill: ${SKILL.split("\n").length} lines → skills/raqt-design/SKILL.md ` +
-    `(${components.length} components, 3 sections lifted from DESIGN.md)`,
+    `(${components.length} components, ${LIFTED.length} sections lifted from DESIGN.md)`,
 );
