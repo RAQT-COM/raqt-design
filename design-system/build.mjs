@@ -706,7 +706,13 @@ add("foundations/logo.html", {
 .floor figure{margin:0;text-align:center}
 .floor figcaption{font-size:var(--text-xs);color:var(--color-muted-foreground);margin-top:8px}
 .floor .bad{color:var(--color-destructive)}
-.dont{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.dont{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.grounds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.gr{border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-background);min-height:150px;display:flex;align-items:center;justify-content:center;padding:28px}
+.gr.plate{background:var(--color-primary);border-color:transparent}
+.gr.plate .mark{background:var(--color-background)}
+.ratio{font-family:ui-monospace,Menlo,monospace;font-size:var(--text-xs);color:var(--color-muted-foreground)}
+.no{color:var(--color-destructive);font-weight:600}
 .dont div{border:1px solid var(--color-border);border-radius:var(--radius-md);padding:18px;text-align:center}
 .dont .mark{margin:0 auto 12px}
 .dont b{display:block;font-size:var(--text-xs);color:var(--color-destructive);text-transform:uppercase;letter-spacing:.06em}`,
@@ -723,6 +729,26 @@ ${head("Logo, logotype & app icon", "Three marks, one decision: how much room is
   <div class="raqt light" style="background:var(--color-background);color:var(--color-foreground)">${modePanel("Light", "#071410", "Nothing swapped the file — <code>foreground</code> changed and the mask followed.")}</div>
 </div>
 <div class="raqt"><div class="page">
+<h2>Grounds the mark may sit on</h2>
+<p class="lede">Two, and they are the two <code>background</code> resolves to. The mark is
+<code>foreground</code> on <code>background</code> in whichever mode it lands in — that pairing is the
+whole rule, and it is why there is one file rather than one per ground.</p>
+<div class="grounds">
+  <div class="raqt">
+    <div class="gr">${mark("type", 190)}</div>
+    <p class="cap">Ink ground — the default.<br><span class="ratio">#EAF5EF on #071410 · 16.8:1</span></p>
+  </div>
+  <div class="raqt light">
+    <div class="gr">${mark("type", 190)}</div>
+    <p class="cap" style="color:var(--color-muted-foreground)">Light ground.<br><span class="ratio">#071410 on #F2F7F4 · 17.4:1</span></p>
+  </div>
+  <div class="raqt">
+    <div class="gr plate">${mark("type", 190)}</div>
+    <p class="cap"><span class="no">Not a green plate.</span> Legible — 10.8:1 — and still wrong: <code>primary</code> is
+    the signal for the one thing to do next, and a field of it behind a logo spends the loudest colour in the system on
+    the one element that is never an action. Rule 5. Use the ink or light ground and let the green stay scarce.</p>
+  </div>
+</div>
 <h2>Size floor — this is what picks the mark</h2>
 <div class="floor">
   <figure>${mark("logo", 210)}<figcaption>logo · 210px ✓</figcaption></figure>
@@ -742,6 +768,7 @@ ${head("Logo, logotype & app icon", "Three marks, one decision: how much room is
 <h2>Don't</h2>
 <div class="dont">
   <div>${mark("type", 150, "background:var(--color-primary)")}<b>Not in the green</b></div>
+  <div style="background:var(--color-primary);border-color:transparent">${mark("type", 150, "background:var(--color-background)")}<b style="color:var(--color-background)">Not on a green plate</b></div>
   <div>${mark("type", 150, "background:var(--color-muted-foreground)")}<b>Not at reduced contrast</b></div>
   <div>${mark("type", 150, "transform:scaleX(1.3)")}<b>Never stretched</b></div>
   <div>${mark("logo", 110)}<b>Not below its floor</b></div>
