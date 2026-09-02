@@ -1,10 +1,10 @@
 # Claude Design
 
-How the Raqt design system gets into [Claude Design](https://claude.ai/design),
-and who owns what once it is there.
+How this repository becomes a design system inside
+[Claude Design](https://claude.ai/design), and who owns what once it is there.
 
-There is no build step in this folder and nothing here is pushed anywhere. This
-file is documentation.
+Nothing in this folder runs. It is documentation. The working files live in
+[`.design-sync/`](../.design-sync).
 
 ## Who owns what
 
@@ -15,86 +15,98 @@ The single rule, and the one that is easy to get wrong:
 
 | lives in | who writes it | edit it? |
 |---|---|---|
-| `DESIGN.md`, `docs/TOKENS.md` | you | **yes** — this is the design language |
+| `DESIGN.md`, `CONTEXT.md`, `docs/` | you | **yes** — the design language |
 | `tokens/source/*.json` | you | **yes** — the values |
 | `components/**`, `assets/brand/**` | you | **yes** |
-| `tokens/dist/`, `skills/`, `r/` | `pnpm build` | no — generated, from the above |
-| everything in the Claude Design project | Claude Design | **no** — regenerated wholesale |
+| `.design-sync/` config, notes, conventions | you | **yes** — the sync's memory |
+| `tokens/dist/`, `skills/`, `r/`, `dist/` | `pnpm build` | no — generated |
+| everything in the Claude Design project | the sync | **no** — replaced wholesale |
 
-The Claude Design project is a *materialised snapshot*. It contains `.jsx`
-components, `tokens/*.css`, `guidelines/*.html` cards and a `ui_kits/` app that
-Claude wrote by reading this repo. They look editable and are not: the next
-generation replaces them, and any edit made there is silently lost.
+The project is a materialised snapshot. It holds compiled `.jsx`, `.d.ts`,
+preview cards and token CSS that the sync wrote by reading this repo. They look
+editable and are not: the next sync replaces them, and an edit made there is
+silently lost. Fix it here and re-sync.
 
-If something in Claude Design is wrong, **fix it here and regenerate.** The one
-exception is Remix (below), for a change too small to justify a regeneration —
-and even then, write the same fix back into this repo or it dies at the next run.
+## Two routes, and why we use this one
 
-## Installing it in an organization
+Claude Design can build a design system two ways.
 
-Anyone who can administer the target organization can do this. No CLI, no
-tooling, no access to anybody's session.
+**Web onboarding** links the repo and lets Claude *infer* a design system from
+it. It writes rich prose and looks impressive. It is also a model reading a
+codebase, so another organization running it gets a different result — and the
+one time we ran it, it invented a rule ("on green, knock the mark back to the
+ink") that contradicts §6 of `DESIGN.md`.
 
-In [Claude Design](https://claude.ai/design), select the organization, complete
-the onboarding flow, and give it this repository:
+**`/design-sync` in Claude Code** converts the repo deterministically: the
+components are your *compiled bundle*, the tokens are emitted from
+`tokens/source/`, and the prose is your own files copied verbatim. Every preview
+is graded against this repo's own Storybook render before it ships. Run it twice,
+or run it on another machine, and the output is the same.
+
+We use the second. Same inputs, same design system, every time.
+
+## Syncing
+
+```bash
+pnpm ds:sync      # tokens, the compiled entry, the reference storybook
+```
+
+Then, in Claude Code:
 
 ```
-https://github.com/RAQT-COM/raqt-design
+/design-sync
 ```
 
-The repo is public, so linking needs no token. Claude Design accepts a linked
-codebase as source material and extracts the palette, typography, components and
-spacing from it — see Anthropic's
-[Set up your design system in Claude Design](https://support.claude.com/en/articles/14604397-set-up-your-design-system-in-claude-design).
+`pnpm ds:sync` prepares the three inputs the converter reads and stops. It cannot
+upload: the converter lives in `.ds-sync/`, which Claude Code stages from its own
+bundled copy of the skill, at a path carrying a version and a content hash. No
+script here can find it, and pinning one would break on the next release.
 
-Then **switch the Published toggle on**, in the organization's settings via
-*Open* beside the design system. Generating is not publishing: until that toggle
-is on, projects created from the Claude Design homescreen still use the default
-system.
+The sync diffs against the project's anchor and re-verifies only what changed —
+untouched components cost nothing.
 
-### What to put in the onboarding fields
+**Two things it needs from you:**
 
-The blurb and notes are the only steering the extractor gets, so spend them on
-what it would otherwise get wrong:
+- `/design-login` once, with an account that can write to the target project.
+  This is per account, not per repo: whoever maintains another organization's
+  design system needs an account in *that* organization.
+- **`assets/**` in the upload plan's writes and deletes.** It is not in the
+  converter's default globs, so the logo, logotype and app icon silently drop
+  without it.
 
-- **Dark is the default mode, not an alternative.** Most systems it has seen are
-  light-first; ours is the reverse.
-- **The ground is near-black green-tinted ink (`#071410`), never grey.**
-- **`#2BE07C` is a signal, not a wash** — one element per screen, never a plate
-  behind a logo or a field of colour.
-- **Two typefaces with a hard boundary**: Archivo stretched 115% at `--text-xl`
-  and up, Inter below it.
-- **Do not take brand colours from `assets/brand/icon.png`** — its charcoal
-  `#2B2F30` is a neutral that is not in the palette.
+Uploading is not publishing. The **Published** toggle, in the organization's
+settings via *Open* beside the design system, is what makes new projects inherit
+it.
 
-## Updating it when the system changes
+## What this repo has to supply that most do not
 
-**Generation is a snapshot, not a subscription.** Linking feeds one extraction
-run. Pushing to `main` afterwards changes nothing in Claude Design — no
-documented mechanism re-fetches the repo.
+`raqt-design` ships **source** over a shadcn registry. It has no library build,
+and the sync's storybook shape resolves a compiled entry *hard* — it will not
+synthesise one. Three committed files close that gap:
 
-So adding a component or moving a token means updating deliberately:
+| file | does |
+|---|---|
+| `.design-sync/entry.tsx` | a barrel re-exporting all nine components |
+| `.design-sync/build-dist.mjs` | esbuild → `dist/index.js`; `tsc` → declarations |
+| `.design-sync/tsconfig.dts.json` | the declaration build |
 
-1. **Regenerate** — the default. Run it again against `main`. Orgs can hold more
-   than one design system, so this is not destructive, and it is the only route
-   that picks up new components.
-2. **Remix** — open the design system from organization settings and use the
-   *Remix* button for a chat interface. For a one-line correction where a full
-   regeneration is overkill. Write the same fix back into this repo.
+`dist/` stays gitignored; these three make it reproducible. `package.json` gained
+`"types": "dist/index.d.ts"`, which is where the converter reads the export
+surface — without it every component drops out.
 
-`/design-sync` in Claude Code can also write to a project directly, and is a
-documented import path. It is per-account: whoever maintains Raqt's design system
-needs `/design-login` with an account in *that* organization. Prefer regeneration
-— it is reproducible by anyone with organization access and leaves no artifacts
-that only one person's machine can produce.
+**The barrel is a second component list.** Add a tenth component to
+`registry.json` and forget the barrel, and it reaches every consuming repo but
+never reaches Claude Design. `pnpm verify` fails when the two disagree.
 
-## Things the last generation got wrong
+## Before you trust a sync
 
-Worth checking after any run, because they have happened:
-
-- **A logo on a green plate.** The extractor learns from rendered examples, and a
-  *picture* of a prohibited pairing reads as an example to copy — the caption
-  does not survive. State prohibitions in prose; only render what is allowed.
-- **Paraphrased rules.** It wrote "never recoloured" for a mark that *is*
-  recoloured, from `foreground`, via its alpha channel. Read the generated
-  `guidelines/*.html` before trusting them.
+- Read [`.design-sync/NOTES.md`](../.design-sync/NOTES.md) first. It carries the
+  traps a previous run already paid for, and a **Re-sync risks** section naming
+  what can go stale.
+- `.design-sync/conventions.md` is prepended to the generated README and read by
+  the design agent on every build. It enumerates the exact utility classes that
+  exist — the shipped stylesheet is *compiled* Tailwind, a fixed set, not a
+  runtime — so re-validate its tables against `_ds_bundle.css` whenever the
+  stories change.
+- Every story is graded against the Storybook render. Accept a `close` only with
+  a note saying what is off and what you tried.

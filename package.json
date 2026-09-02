@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "tokens": "node tokens/build.mjs",
+    "ds:sync": "node .design-sync/prepare.mjs",
     "typecheck": "tsc --noEmit",
     "build": "node scripts/raqt.mjs build",
     "verify": "node scripts/raqt.mjs verify",

@@ -12,9 +12,9 @@ serves the rules alongside the components.
 - [`docs/TOKENS.md`](docs/TOKENS.md) — the token contract.
 - [`docs/COMPONENTS.md`](docs/COMPONENTS.md) — the per-component spec.
 - [Storybook](https://raqt-com.github.io/raqt-design/) — the components, live.
-- [`design-system/`](design-system/README.md) — how this repo becomes a
-  [Claude Design](https://claude.ai/design) system, and who owns what once it is
-  there. Read before touching anything generated.
+- [`design-system/`](design-system/README.md) — how `pnpm ds:sync` turns this repo
+  into a [Claude Design](https://claude.ai/design) system, and who owns what once
+  it is there. Read before touching anything generated.
 
 > **Proof of concept.** This exists to demonstrate a workflow, not to ship a
 > production library. See [`PLAN.md`](PLAN.md).
@@ -144,6 +144,7 @@ pnpm storybook
 | command | does |
 |---|---|
 | `pnpm build` | regenerates `tokens/dist/`, `skills/raqt-design/` and `r/` |
+| `pnpm ds:sync` | prepares a [Claude Design](design-system/README.md) sync, then hands off to `/design-sync` |
 | `pnpm verify` | `build`, then validates `registry.json` and runs `tsc --noEmit` |
 | `pnpm ship` | `verify`, commit, push `main` — consumers see it immediately |
 | `pnpm release <bump>` | `ship`, then bump `package.json` and tag `v<version>` |
