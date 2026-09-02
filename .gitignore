@@ -8,3 +8,13 @@ storybook-static/
 .env*
 !.env.example
 .wayfinder/
+
+# design-sync: build artifacts, scratch, verification state. The durable set
+# (config.json, NOTES.md, conventions.md, previews/, overrides/) stays committed.
+.design-sync/sb-reference/
+.design-sync/learnings/
+.design-sync/.cache/
+.design-sync/node_modules
+.design-sync/*.log
+.ds-sync/
+ds-bundle/

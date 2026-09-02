@@ -1,0 +1,41 @@
+{
+  "projectId": "ec1766c9-7e12-4a72-99ef-604a14584acc",
+  "pkg": "raqt-design",
+  "globalName": "RaqtDesign",
+  "shape": "storybook",
+  "storybookConfigDir": ".storybook",
+  "storybookStatic": ".design-sync/sb-reference",
+  "buildCmd": "pnpm tokens && node .design-sync/build-dist.mjs",
+  "entry": "dist/index.js",
+  "titleMap": {
+    "Empty State": "EmptyState",
+    "Match Card": "MatchCard",
+    "Colour": null,
+    "Grammar": null,
+    "Iconography": null,
+    "Radius & Elevation": null,
+    "Spacing": null,
+    "Typography": null
+  },
+  "overrides": {
+    "Card": {
+      "cardMode": "column"
+    },
+    "EmptyState": {
+      "cardMode": "column"
+    },
+    "Field": {
+      "cardMode": "column"
+    },
+    "Input": {
+      "cardMode": "column"
+    },
+    "Skeleton": {
+      "cardMode": "column"
+    },
+    "MatchCard": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

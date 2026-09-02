@@ -175,6 +175,34 @@ const doVerify = () => {
   step("Type-checking");
   run("pnpm", ["typecheck"]);
   ok("no type errors");
+
+  step("Design-sync barrel");
+  checkBarrel();
+};
+
+/**
+ * `.design-sync/entry.tsx` is a SECOND list of this library's components: the
+ * shadcn registry ships source, so design-sync needs a compiled entry, and that
+ * barrel is what it compiles. The two lists drifting is silent and expensive —
+ * a component added to the registry but not the barrel reaches every consuming
+ * repo and never reaches Claude Design. This is the only place that can catch it.
+ */
+const checkBarrel = () => {
+  const barrelPath = join(root, ".design-sync/entry.tsx");
+  if (!existsSync(barrelPath)) return info(c.dim("no .design-sync/entry.tsx — design-sync not set up here"));
+
+  const pascal = (name) => name.replace(/(^|-)([a-z])/g, (_, __, ch) => ch.toUpperCase());
+  const expected = registry().items.filter((i) => i.type === "registry:ui").map((i) => pascal(i.name));
+  const barrel = readFileSync(barrelPath, "utf8");
+  const missing = expected.filter((n) => !new RegExp(`\\b${n}\\b`).test(barrel));
+
+  if (missing.length) {
+    die(
+      `.design-sync/entry.tsx does not export: ${missing.join(", ")}`,
+      "Add them to the barrel, or Claude Design will not get them. See design-sync/README.md.",
+    );
+  }
+  ok(`barrel exports all ${expected.length} registry component(s)`);
 };
 
 /** Files git considers changed, as a flat list of paths. */
