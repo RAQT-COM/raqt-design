@@ -650,70 +650,101 @@ ${head("Match card", "The domain component — the one thing in the library that
 </div>`,
 });
 
-
 /* ------------------------------------------------------------------ */
-/* Brand — the mark                                                    */
+/* Brand — three marks                                                 */
 /* ------------------------------------------------------------------ */
 /**
- * `assets/brand/logo.png` is pure white artwork on transparency — every palette
- * entry is #FFFFFF and only the alpha varies. That makes it an alpha *mask*
- * rather than a picture, so the lockup is painted with `mask-image` and takes
- * its colour from a token. One file, both modes, and the mark follows the theme
- * for the same reason an icon takes `currentColor`: a second baked PNG is a
- * second value nobody can find or change.
+ * Two of the three brand assets are white-ish artwork on transparency, and
+ * `mask-image` reads the alpha channel alone — the ink colour in the file is
+ * never sampled. (`logo.png` is a palette PNG whose every entry is #FFFFFF;
+ * `logotype.png` is RGBA at #FAFAFA. The difference does not survive masking,
+ * which is the point.) So both are painted from a token and follow the theme
+ * into light mode by themselves, for the same reason an icon takes
+ * `currentColor`. A second baked PNG per mode would be a second value nobody
+ * can find or change.
+ *
+ * `icon.png` is the exception and stays a picture: it is opaque, it carries its
+ * own white ground, and it is rendered by iOS, Android and the browser tab —
+ * none of which know what `.raqt` is.
  */
-const MARK_B64 = readFileSync(join(REPO, "assets/brand/logo.png")).toString("base64");
-const ICON_B64 = readFileSync(join(REPO, "assets/brand/icon.png")).toString("base64");
-const MARK_URL = `data:image/png;base64,${MARK_B64}`;
+const b64 = (p) => readFileSync(join(REPO, "assets/brand", p)).toString("base64");
+const LOGO_URL = `data:image/png;base64,${b64("logo.png")}`;
+const TYPE_URL = `data:image/png;base64,${b64("logotype.png")}`;
 /* icon.png carries JPEG bytes under a .png name — declared honestly here. */
-const ICON_URL = `data:image/jpeg;base64,${ICON_B64}`;
+const ICON_URL = `data:image/jpeg;base64,${b64("icon.png")}`;
 
-const markPanel = (label, note) => `<div class="mk">
+/** Intrinsic ratios, so every rendering below is the asset's own proportion. */
+const LOGO_AR = 768 / 423;   // 1.816 — wordmark over tagline
+const TYPE_AR = 1870 / 501;  // 3.733 — wordmark alone
+
+const mark = (which, w, extra = "") =>
+  `<div class="mark ${which}" style="width:${w}px;height:${Math.round(w / (which === "logo" ? LOGO_AR : TYPE_AR))}px;${extra}"></div>`;
+
+const modePanel = (label, fg, note) => `<div class="mk">
   <span class="mode">${label}</span>
-  <div class="mark"></div>
-  <p class="cap">${note}</p>
+  <div class="col" style="gap:22px">${mark("logo", 210)}${mark("type", 260)}</div>
+  <p class="cap">Both painted <code>--color-foreground</code> — <code>${fg}</code> here. ${note}</p>
 </div>`;
 
 add("foundations/logo.html", {
   group: "Brand",
-  title: "Logo & app icon",
+  title: "Logo, logotype & app icon",
   extraCss: `.mk{padding:40px}
-.mark{width:280px;height:154px;background:var(--color-foreground);
-  -webkit-mask:url("${MARK_URL}") no-repeat center/contain;mask:url("${MARK_URL}") no-repeat center/contain}
-.clear{position:relative;display:inline-block;padding:38px;border:1px dashed var(--color-border);border-radius:var(--radius-md)}
-.clear .mark{width:220px;height:121px}
-.icon{width:120px;height:120px;border-radius:26px;display:block}
+.mark{background:var(--color-foreground);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+.mark.logo{-webkit-mask-image:url("${LOGO_URL}");mask-image:url("${LOGO_URL}")}
+.mark.type{-webkit-mask-image:url("${TYPE_URL}");mask-image:url("${TYPE_URL}")}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.three>div{background:var(--color-surface-1);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:22px}
+.three .box{height:104px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.three h3{font-family:var(--font-display);font-stretch:115%;letter-spacing:-.01em;font-size:var(--text-base);margin:0 0 4px}
+.three p{margin:0;font-size:var(--text-sm);color:var(--color-muted-foreground);line-height:1.45}
+.three .when{margin-top:10px;font-size:var(--text-xs);color:var(--color-primary)}
+.clear{position:relative;display:inline-block;padding:34px;border:1px dashed var(--color-border);border-radius:var(--radius-md)}
+.icon{width:104px;height:104px;border-radius:23px;display:block}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
-.dont{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.floor{display:flex;align-items:flex-end;gap:26px;flex-wrap:wrap}
+.floor figure{margin:0;text-align:center}
+.floor figcaption{font-size:var(--text-xs);color:var(--color-muted-foreground);margin-top:8px}
+.floor .bad{color:var(--color-destructive)}
+.dont{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .dont div{border:1px solid var(--color-border);border-radius:var(--radius-md);padding:18px;text-align:center}
-.dont .mark{width:150px;height:82px;margin:0 auto 10px}
-.dont b{display:block;font-size:var(--text-xs);color:var(--color-destructive);text-transform:uppercase;letter-spacing:.06em}
-.sizes{display:flex;align-items:flex-end;gap:28px}
-.sizes .mark{background:var(--color-foreground)}`,
+.dont .mark{margin:0 auto 12px}
+.dont b{display:block;font-size:var(--text-xs);color:var(--color-destructive);text-transform:uppercase;letter-spacing:.06em}`,
   body: `<div class="page" style="padding-bottom:16px">
-${head("Logo & app icon", "One asset, painted by the theme. The lockup ships as white artwork on transparency, which makes it an alpha mask rather than a picture — so it is applied with mask-image and takes its colour from a token, exactly as an icon takes currentColor.")}
+${head("Logo, logotype & app icon", "Three marks, one decision: how much room is there, and does the reader already know what Raqt is. Two of the three are alpha masks painted by a token, so they invert with the mode on their own — there is no light-mode file to keep in sync.")}
+<div class="three">
+  <div><div class="box">${mark("logo", 190)}</div><h3>Logo</h3><p>The full lockup — wordmark over the tagline. The only mark that says what Raqt <i>is</i>.</p><p class="when">First contact: marketing, the login screen, a footer, a printed draw sheet.</p></div>
+  <div><div class="box">${mark("type", 230)}</div><h3>Logotype</h3><p>Wordmark alone. Reads at a third of the height because nothing small has to survive.</p><p class="when">In-product chrome: app header, nav bar, anywhere the reader is already inside Raqt.</p></div>
+  <div><div class="box"><img class="icon" src="${ICON_URL}" alt="Raqt app icon"></div><h3>App icon</h3><p>The <b>R</b> alone, on its own opaque ground. A picture, not a mask.</p><p class="when">Home screen, favicon, avatar — any square the platform draws for you.</p></div>
+</div>
 </div>
 <div class="page split" style="padding:0">
-  <div class="raqt">${markPanel("Dark — the default", "Painted <code>--color-foreground</code> (<code>#EAF5EF</code>). The mark is never the green: <code>primary</code> marks the one thing to do next, and a logo is not an action.")}</div>
-  <div class="raqt light" style="background:var(--color-background);color:var(--color-foreground)">${markPanel("Light", "Painted <code>--color-foreground</code> (<code>#071410</code>). Inverting for the ground is the rule; the mark follows <code>foreground</code>, so it inverts by itself when the mode flips.")}</div>
+  <div class="raqt">${modePanel("Dark — the default", "#EAF5EF", "The mark is never the green: <code>primary</code> marks the one thing to do next, and a logo is not an action.")}</div>
+  <div class="raqt light" style="background:var(--color-background);color:var(--color-foreground)">${modePanel("Light", "#071410", "Nothing swapped the file — <code>foreground</code> changed and the mask followed.")}</div>
 </div>
 <div class="raqt"><div class="page">
-<h2>Clear space and minimum size</h2>
-<div class="two">
-  <div><div class="clear"><div class="mark"></div></div><p class="cap"><b style="color:var(--color-foreground)">Proposed, not yet ratified:</b> clear space on all four sides equal to the cap height of the wordmark. Nothing sets in it, including the edge of the surface the mark sits on. Replace this with the real rule if the brand has one.</p></div>
-  <div><div class="sizes"><div class="mark" style="width:200px;height:110px"></div><div class="mark" style="width:120px;height:66px"></div><div class="mark" style="width:72px;height:40px"></div></div><p class="cap">200 · 120 · 72px. The binding constraint is the <b>tagline</b>, not the wordmark: <i>Pickleball, family &amp; friends</i> is set small and stops resolving well before <b>RAQT</b> does. It is unreadable at 72px and marginal at 120px, so below roughly 160px the lockup wants a wordmark-only variant — which does not exist yet. Until it does, use the app icon at small sizes.</p></div>
+<h2>Size floor — this is what picks the mark</h2>
+<div class="floor">
+  <figure>${mark("logo", 210)}<figcaption>logo · 210px ✓</figcaption></figure>
+  <figure>${mark("logo", 160)}<figcaption>logo · 160px — floor</figcaption></figure>
+  <figure>${mark("logo", 96)}<figcaption class="bad">logo · 96px ✗ tagline gone</figcaption></figure>
+  <figure>${mark("type", 150)}<figcaption>logotype · 150px ✓</figcaption></figure>
+  <figure>${mark("type", 90)}<figcaption>logotype · 90px — floor</figcaption></figure>
+  <figure><img class="icon" src="${ICON_URL}" alt="" style="width:40px;height:40px;border-radius:9px"><figcaption>icon · 40px ✓</figcaption></figure>
 </div>
-<h2>App icon</h2>
+<p class="cap" style="margin-top:14px">The binding constraint on the <b>logo</b> is never <b>RAQT</b> — it is the tagline, set at roughly a fifth of the wordmark's height. Below about 160px wide it stops resolving and the lockup becomes a wordmark with a grey smudge under it, which is worse than a wordmark. That is the whole reason the logotype exists: it is the same mark with the fragile part removed, so it holds down to about 90px. Below that, the icon.</p>
+<h2>Clear space</h2>
 <div class="two">
-  <div><img class="icon" src="${ICON_URL}" alt="Raqt app icon"><p class="cap">1024×1024, opaque, charcoal <code>#2B2F30</code> on white. It carries its own ground and sits <b>outside</b> the theme — a platform icon is rendered by iOS, Android and the browser tab, none of which know what <code>.raqt</code> is. Do not try to token-drive it.</p></div>
-  <div><p class="lede">The glyph occupies 600 of 1024px, centred — about 59%, which clears the iOS icon safe area on all sides. The icon is the <b>R</b> alone; the lockup is the full <b>RAQT</b> wordmark plus tagline. They are the only two brand assets, and there is no wordmark-only middle term between them.</p>
-  <p class="lede"><b style="color:var(--color-foreground)">Open question.</b> The icon's charcoal is <code>#2B2F30</code>, a neutral. The system's near-black is <code>#071410</code>, green-tinted ink. They are close enough to read as the same colour in isolation and visibly different side by side, and no token names the charcoal. Either the icon moves to the ink, or the charcoal gets a <code>brand-*</code> primitive of its own — until then it is an undocumented value.</p></div>
+  <div><div class="clear">${mark("type", 200)}</div><p class="cap"><b style="color:var(--color-foreground)">Both files are cropped tight — there is no built-in margin.</b> <code>logo.png</code>'s ink runs to the canvas edge on three sides and <code>logotype.png</code>'s on two; set either one flush in a header and the glyphs touch the box. Clear space is the layout's job, always, and it is not something a designer can eyeball from the asset.</p><p class="cap"><b style="color:var(--color-foreground)">Proposed, not yet ratified:</b> clear space on all four sides equal to the cap height of the wordmark, as drawn here. Nothing sets in it, including the edge of the surface the mark sits on. Replace this with the real rule if the brand has one.</p></div>
+  <div><p class="lede"><b style="color:var(--color-foreground)">Open question — the charcoal.</b> The app icon is <code>#2B2F30</code>, a neutral. The system's near-black is <code>#071410</code>, green-tinted ink, and that is what the masked marks are painted in light mode. They read as the same colour alone and visibly differ side by side. No token names <code>#2B2F30</code>, so as it stands it is an undocumented value — which by §4 is a contract change, not something to inline. Either the icon moves onto the ink, or the charcoal earns a <code>brand-*</code> primitive.</p>
+  <p class="lede"><code>assets/brand/icon.png</code> also carries JPEG bytes under a <code>.png</code> name. Nothing is broken — the emitter declares it <code>image/jpeg</code> — but the name is wrong.</p></div>
 </div>
 <h2>Don't</h2>
 <div class="dont">
-  <div><div class="mark" style="background:var(--color-primary)"></div><b>Not in the green</b></div>
-  <div><div class="mark" style="background:var(--color-muted-foreground)"></div><b>Not at reduced contrast</b></div>
-  <div><div class="mark" style="transform:scaleX(1.35)"></div><b>Never stretched</b></div>
+  <div>${mark("type", 150, "background:var(--color-primary)")}<b>Not in the green</b></div>
+  <div>${mark("type", 150, "background:var(--color-muted-foreground)")}<b>Not at reduced contrast</b></div>
+  <div>${mark("type", 150, "transform:scaleX(1.3)")}<b>Never stretched</b></div>
+  <div>${mark("logo", 110)}<b>Not below its floor</b></div>
 </div>
 </div></div>`,
 });

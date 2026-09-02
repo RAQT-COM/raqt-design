@@ -43,9 +43,24 @@ That marker is load-bearing. A file without one is uploaded but never indexed.
 
 ## The brand assets
 
-`assets/brand/logo.png` is white artwork on transparency — every palette entry is
-`#FFFFFF` and only the alpha varies. That makes it an alpha **mask** rather than a
-picture, so `foundations/logo.html` paints it with `mask-image` and a token:
+Three marks, picked by how much room there is and whether the reader already
+knows what Raqt is:
+
+| file | what | floor | for |
+|---|---|---|---|
+| `logo.png` | wordmark + tagline, 768×423 | ~160px wide | first contact — marketing, login, footers |
+| `logotype.png` | wordmark alone, 1870×501 | ~90px wide | in-product chrome — header, nav |
+| `icon.png` | the **R**, 1024×1024 | — | home screen, favicon, avatar |
+
+The floor on the logo is set by the **tagline**, not the wordmark: it is drawn at
+about a fifth of the wordmark's height and turns to mush well before **RAQT**
+does. That is what the logotype is for.
+
+`logo.png` and `logotype.png` are white-ish artwork on transparency — the first a
+palette PNG whose every entry is `#FFFFFF`, the second RGBA at `#FAFAFA`.
+`mask-image` reads the **alpha channel** alone, so that difference never survives.
+Both are therefore alpha **masks** rather than pictures, and `foundations/logo.html`
+paints them with `mask-image` and a token:
 
 ```css
 .mark {
@@ -54,12 +69,21 @@ picture, so `foundations/logo.html` paints it with `mask-image` and a token:
 }
 ```
 
-One file serves both modes and the mark inverts by itself when the mode flips —
-for the same reason an icon takes `currentColor`. A second baked PNG would be a
-second value nobody can find or change.
+One file per mark serves both modes and inverts by itself when the mode flips —
+for the same reason an icon takes `currentColor`. A second baked PNG per mode
+would be a second value nobody can find or change.
 
-`assets/brand/icon.png` carries **JPEG** bytes under a `.png` name. The emitter
-declares it honestly as `image/jpeg`; renaming it is a separate call.
+Two things the pixels say that the files don't:
+
+- **Both are cropped tight.** `logo.png`'s ink runs to the canvas edge on three
+  sides, `logotype.png`'s on two. Neither carries a built-in margin, so clear
+  space is always the layout's job.
+- `icon.png` carries **JPEG** bytes under a `.png` name. The emitter declares it
+  honestly as `image/jpeg`; renaming it is a separate call.
+
+`icon.png` is the one asset that stays a picture — it is opaque, carries its own
+white ground, and is drawn by iOS, Android and the browser tab, none of which
+know what `.raqt` is.
 
 ## Pushing to Claude Design
 
