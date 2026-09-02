@@ -85,9 +85,39 @@ Two things the pixels say that the files don't:
 white ground, and is drawn by iOS, Android and the browser tab, none of which
 know what `.raqt` is.
 
-## Pushing to Claude Design
+## Installing it in a Claude Design organization
 
-There is no CLI. Ask Claude Code, which has the `DesignSync` tool:
+**This is the route to hand someone else.** It needs no CLI, no tooling and no
+access to anybody's Claude Code session — only that the person doing it can
+administer the target organization.
+
+In [Claude Design](https://claude.ai/design), pick the organization, complete the
+onboarding flow, and give it this repository:
+
+```
+https://github.com/RAQT-COM/raqt-design
+```
+
+The repo is public, so linking needs no token. Claude Design accepts a linked or
+uploaded codebase as source material and extracts colour, typography, components
+and spacing from it — see Anthropic's
+[Set up your design system in Claude Design](https://support.claude.com/en/articles/14604397-set-up-your-design-system-in-claude-design).
+
+`design-system/dist/` is **committed** precisely so this route works: linking the
+repo exposes the sixteen rendered cards and `globals.css` directly, rather than
+leaving Claude Design to infer the system from Tailwind class strings and a CSS
+file full of `@theme` at-rules. If uploading rather than linking, upload that
+folder plus `DESIGN.md`, `docs/TOKENS.md` and `assets/brand/`.
+
+Then **switch the Published toggle on** — in the organization's settings, via
+*Open* beside the design system. Uploading is not publishing: until that toggle
+is on, projects created from the Claude Design homescreen still use the default
+system.
+
+## Re-pushing during development
+
+For iterating on this repo's own design system, Claude Code can write to a
+project directly with the `DesignSync` tool:
 
 > push design-system/dist to the Raqt design system project
 
@@ -96,5 +126,6 @@ It reads `dist/`, locks the paths with `finalize_plan`, then `write_files`.
 
 Project: `c8b2b84e-002a-4e69-9b07-ebed10a34e03` — "Design System", owned by Nelson.
 
-Uploading is not publishing. The **Published** toggle in Claude Design is what
-makes new projects in the organization inherit this system.
+This is a shortcut, not the supported path, and it only reaches projects that
+account can write to. Anyone setting the system up for another organization
+should use the route above.

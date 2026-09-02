@@ -2,6 +2,9 @@ node_modules/
 dist/
 # ...except the emitted theme: the registry serves it and consumers read it from git.
 !tokens/dist/
+# ...and the Claude Design bundle, for the same reason: linking this repo is how
+# another organization installs the system, and Claude Design reads it from git.
+!design-system/dist/
 storybook-static/
 .DS_Store
 *.log

@@ -12,6 +12,9 @@ serves the rules alongside the components.
 - [`docs/TOKENS.md`](docs/TOKENS.md) — the token contract.
 - [`docs/COMPONENTS.md`](docs/COMPONENTS.md) — the per-component spec.
 - [Storybook](https://raqt-com.github.io/raqt-design/) — the components, live.
+- [`design-system/`](design-system/README.md) — the same system as preview cards
+  for [Claude Design](https://claude.ai/design). Link this repo there to install
+  it in an organization.
 
 > **Proof of concept.** This exists to demonstrate a workflow, not to ship a
 > production library. See [`PLAN.md`](PLAN.md).
