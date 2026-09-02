@@ -12,9 +12,9 @@ serves the rules alongside the components.
 - [`docs/TOKENS.md`](docs/TOKENS.md) — the token contract.
 - [`docs/COMPONENTS.md`](docs/COMPONENTS.md) — the per-component spec.
 - [Storybook](https://raqt-com.github.io/raqt-design/) — the components, live.
-- [`design-system/`](design-system/README.md) — the same system as preview cards
-  for [Claude Design](https://claude.ai/design). Link this repo there to install
-  it in an organization.
+- [`design-system/`](design-system/README.md) — how this repo becomes a
+  [Claude Design](https://claude.ai/design) system, and who owns what once it is
+  there. Read before touching anything generated.
 
 > **Proof of concept.** This exists to demonstrate a workflow, not to ship a
 > production library. See [`PLAN.md`](PLAN.md).
@@ -150,10 +150,17 @@ pnpm storybook
 | `pnpm sync` | re-installs the registry into the consuming app |
 
 `pnpm tokens` regenerates `tokens/dist/` from `tokens/source/*.json` — it runs
-automatically before Storybook. `tokens/dist/`, `skills/raqt-design/SKILL.md` and
-`r/` are all generated; edit their sources instead. The skill's sources are
-`DESIGN.md` and `registry.json`, and its emitter refuses to write a file that
-still references a path only this repo has.
+automatically before Storybook.
+
+**`tokens/dist/`, `skills/raqt-design/` and `r/` are generated.** Edit their
+sources — `tokens/source/*.json`, `DESIGN.md`, `registry.json`, `components/` —
+never the output. `pnpm build` names any generated file it overwrites, so a hand
+edit is reported rather than silently lost, and the skill's emitter refuses to
+write a file that still references a path only this repo has.
+
+The design system inside Claude Design is generated too, from this repo, and is
+likewise never hand-edited. See
+[`design-system/README.md`](design-system/README.md).
 
 ## Releasing
 

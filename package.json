@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "tokens": "node tokens/build.mjs",
-    "ds": "pnpm tokens && node design-system/build.mjs",
     "typecheck": "tsc --noEmit",
     "build": "node scripts/raqt.mjs build",
     "verify": "node scripts/raqt.mjs verify",

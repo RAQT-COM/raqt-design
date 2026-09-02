@@ -105,6 +105,10 @@ description: >-
   mode or inside a portal.
 ---
 
+<!-- GENERATED from DESIGN.md and registry.json by skills/build.mjs in
+     ${ADDRESS}. Edits here are overwritten by the next \`pnpm build\` and never
+     reach anyone else — raise the change against DESIGN.md instead. -->
+
 # Raqt design language
 
 Everything below is the contract, not advice. **Apply every rule** — a component

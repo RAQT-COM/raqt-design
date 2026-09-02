@@ -14,6 +14,7 @@
 // with a green checkmark. The build-then-check-git-dirty dance below is what turns
 // that failure mode into an error message.
 
+import { createHash } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createInterface } from "node:readline/promises";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -22,6 +23,8 @@ import { fileURLToPath } from "node:url";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const pkgPath = join(root, "package.json");
+
+const isDerived = (p) => DERIVED.some((d) => p.startsWith(d));
 
 /* ---------- output ---------- */
 
@@ -113,8 +116,30 @@ const bump = (current, kind) => {
 
 /* ---------- steps ---------- */
 
+/** Everything written by a generator rather than by a person. */
+const DERIVED = ["tokens/dist/", "skills/raqt-design/", "r/"];
+
+/** path -> sha1 of contents, for every file under DERIVED that exists right now. */
+const hashDerived = () => {
+  const out = new Map();
+  for (const dir of DERIVED) {
+    const abs = join(root, dir);
+    if (!existsSync(abs)) continue;
+    for (const name of readdirSync(abs, { recursive: true, withFileTypes: true })) {
+      if (!name.isFile()) continue;
+      const rel = join(dir, name.parentPath.slice(abs.length), name.name).replace(/\/+/g, "/");
+      out.set(rel, createHash("sha1").update(readFileSync(join(name.parentPath, name.name))).digest("hex"));
+    }
+  }
+  return out;
+};
+
 const doBuild = () => {
   step("Regenerating derived files");
+
+  // Hash the derived tree first, so the rebuild can tell you what it overwrote.
+  const before = hashDerived();
+
   run("node", ["tokens/build.mjs"]);
   // Before the shadcn build: the `rules` item's file is this script's output, so
   // building the registry first would package the previous run's skill.
@@ -123,6 +148,20 @@ const doBuild = () => {
   // this repo serves r/ — a wrong -o here silently publishes nothing.
   shadcn(["build", "--output", "r"]);
   ok("tokens/dist/, skills/ and r/ rebuilt");
+
+  // Whatever the rebuild changed, the old bytes were not generator output. Usually
+  // that is the point — you edited a source and the derived files caught up. But it
+  // is also the only signal that someone hand-edited a generated file, so say what
+  // was overwritten either way. Silence here is how somebody spends an afternoon
+  // editing SKILL.md and wonders why nothing ever reaches a consumer.
+  const overwritten = [...hashDerived()].filter(([f, h]) => before.get(f) !== h).map(([f]) => f);
+  if (overwritten.length) {
+    warn(`rebuilt ${overwritten.length} generated file(s) — any hand edits to these are now gone:`);
+    console.log(overwritten.slice(0, 8).map((f) => `      ${f}`).join("\n"));
+    if (overwritten.length > 8) console.log(`      ${c.dim(`…and ${overwritten.length - 8} more`)}`);
+    console.log(`  ${c.dim("Sources are DESIGN.md, docs/TOKENS.md, tokens/source/*.json, components/,")}`);
+    console.log(`  ${c.dim("registry.json. design-system/README.md has the full ownership table.")}`);
+  }
 };
 
 const doVerify = () => {
@@ -169,8 +208,7 @@ const doShip = async (opts) => {
     console.log(changed.map((p) => `      ${p}`).join("\n"));
     // The check that earns this script its keep: r/ is derived, so if the rebuild above
     // changed it, whatever is committed right now is stale relative to the source.
-    const derived = ["r/", "tokens/dist/", "skills/raqt-design/"];
-    const stale = changed.filter((p) => derived.some((d) => p.startsWith(d)));
+    const stale = changed.filter(isDerived);
     if (stale.length) warn(`${stale.length} generated file(s) were out of date — rebuilt, and included above`);
 
     if (!(await confirm(`Commit ${changed.length} file(s) and push to ${branch}?`, opts))) {
