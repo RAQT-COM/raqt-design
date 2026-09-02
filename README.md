@@ -2,9 +2,12 @@
 
 The Raqt design system — tokens plus the rules for building with them — and a
 nine-component library built on it. Dark-default, green-grounded, distributed to
-other repos over a [shadcn registry](https://ui.shadcn.com/docs/registry).
+other repos over a [shadcn registry](https://ui.shadcn.com/docs/registry) that
+serves the rules alongside the components.
 
-- [`DESIGN.md`](DESIGN.md) — the design language. Hand this to an agent.
+- [`DESIGN.md`](DESIGN.md) — the design language. Hand this to an agent, or pull
+  it into a repo as a skill with
+  [`add RAQT-COM/raqt-design/rules`](#5-teach-your-agent-the-rules).
 - [`CONTEXT.md`](CONTEXT.md) — what each word in this project names.
 - [`docs/TOKENS.md`](docs/TOKENS.md) — the token contract.
 - [`docs/COMPONENTS.md`](docs/COMPONENTS.md) — the per-component spec.
@@ -103,25 +106,22 @@ Dark is the default. Add `light` alongside the scope for a light surface:
 
 ### 5. Teach your agent the rules
 
-The components carry the system; they do not carry the *reasons*. The `rules`
-item installs the design language as a project-level agent skill:
+**One registry item is not a component.** `rules` installs the design language
+itself, as a project-level agent skill:
 
 ```bash
 pnpm dlx shadcn@latest add RAQT-COM/raqt-design/rules
 ```
 
-It writes one file, `.claude/skills/raqt-design/SKILL.md`, and nothing else — no
-import, no runtime behaviour. Claude Code picks it up on its own when it writes
-UI in that repo, so a component the library has never had still comes out
-looking like Raqt.
+It writes `.claude/skills/raqt-design/SKILL.md` and nothing else — no import, no
+runtime behaviour. Claude Code picks it up on its own when it writes UI in that
+repo, so a component the library has never had still comes out looking like
+Raqt. Generated from [`DESIGN.md`](DESIGN.md), so it is the contract rather than
+a summary of it that drifts.
 
-It is generated from [`DESIGN.md`](DESIGN.md) and `registry.json` rather than
-written by hand, so it is the same contract this repo is built to, not a summary
-of it that drifts. `pnpm sync` refreshes it alongside everything else.
-
-It is deliberately **not** a dependency of `theme` — adding a stylesheet should
-not write agent configuration into a repo that may not want any. Add it once,
-per repo, on purpose.
+Add it once per repo, deliberately: it is not a dependency of `theme`, because
+adding a stylesheet should not write agent configuration into a repo that may
+not want any.
 
 ### Overlays
 
