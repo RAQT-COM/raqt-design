@@ -8,6 +8,7 @@ other repos over a [shadcn registry](https://ui.shadcn.com/docs/registry).
 - [`CONTEXT.md`](CONTEXT.md) — what each word in this project names.
 - [`docs/TOKENS.md`](docs/TOKENS.md) — the token contract.
 - [`docs/COMPONENTS.md`](docs/COMPONENTS.md) — the per-component spec.
+- [Storybook](https://raqt-com.github.io/raqt-design/) — the components, live.
 
 > **Proof of concept.** This exists to demonstrate a workflow, not to ship a
 > production library. See [`PLAN.md`](PLAN.md).
