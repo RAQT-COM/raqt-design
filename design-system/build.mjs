@@ -709,8 +709,10 @@ add("foundations/logo.html", {
 .dont{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
 .grounds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
 .gr{border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-background);min-height:150px;display:flex;align-items:center;justify-content:center;padding:28px}
-.gr.plate{background:var(--color-primary);border-color:transparent}
-.gr.plate .mark{background:var(--color-background)}
+.gr.note{display:block;padding:22px;background:var(--color-surface-1)}
+.gr.note p{margin:0;font-size:var(--text-sm);line-height:1.5;color:var(--color-muted-foreground)}
+.bounds{margin:0;padding-left:20px;max-width:80ch}
+.bounds li{font-size:var(--text-sm);line-height:1.55;color:var(--color-muted-foreground);margin-bottom:8px}
 .ratio{font-family:ui-monospace,Menlo,monospace;font-size:var(--text-xs);color:var(--color-muted-foreground)}
 .no{color:var(--color-destructive);font-weight:600}
 .dont div{border:1px solid var(--color-border);border-radius:var(--radius-md);padding:18px;text-align:center}
@@ -743,10 +745,10 @@ whole rule, and it is why there is one file rather than one per ground.</p>
     <p class="cap" style="color:var(--color-muted-foreground)">Light ground.<br><span class="ratio">#071410 on #F2F7F4 · 17.4:1</span></p>
   </div>
   <div class="raqt">
-    <div class="gr plate">${mark("type", 190)}</div>
-    <p class="cap"><span class="no">Not a green plate.</span> Legible — 10.8:1 — and still wrong: <code>primary</code> is
-    the signal for the one thing to do next, and a field of it behind a logo spends the loudest colour in the system on
-    the one element that is never an action. Rule 5. Use the ink or light ground and let the green stay scarce.</p>
+    <div class="gr note"><p><span class="no">A field of <code>primary</code> is not a third ground.</span>
+    The mark on green measures 10.8:1, so it is perfectly legible — and still wrong. <code>primary</code> is
+    the signal for the one thing to do next, and a plate of it behind a logo spends the loudest colour in the
+    system on the one element that is never an action. Rule 5. Let the green stay scarce.</p></div>
   </div>
 </div>
 <h2>Size floor — this is what picks the mark</h2>
@@ -765,14 +767,20 @@ whole rule, and it is why there is one file rather than one per ground.</p>
   <div><p class="lede"><b style="color:var(--color-foreground)">Open question — the charcoal.</b> The app icon is <code>#2B2F30</code>, a neutral. The system's near-black is <code>#071410</code>, green-tinted ink, and that is what the masked marks are painted in light mode. They read as the same colour alone and visibly differ side by side. No token names <code>#2B2F30</code>, so as it stands it is an undocumented value — which by §4 is a contract change, not something to inline. Either the icon moves onto the ink, or the charcoal earns a <code>brand-*</code> primitive.</p>
   <p class="lede"><code>assets/brand/icon.png</code> also carries JPEG bytes under a <code>.png</code> name. Nothing is broken — the emitter declares it <code>image/jpeg</code> — but the name is wrong.</p></div>
 </div>
-<h2>Don't</h2>
-<div class="dont">
-  <div>${mark("type", 150, "background:var(--color-primary)")}<b>Not in the green</b></div>
-  <div style="background:var(--color-primary);border-color:transparent">${mark("type", 150, "background:var(--color-background)")}<b style="color:var(--color-background)">Not on a green plate</b></div>
-  <div>${mark("type", 150, "background:var(--color-muted-foreground)")}<b>Not at reduced contrast</b></div>
-  <div>${mark("type", 150, "transform:scaleX(1.3)")}<b>Never stretched</b></div>
-  <div>${mark("logo", 110)}<b>Not below its floor</b></div>
-</div>
+<h2>Out of bounds</h2>
+<p class="lede">Stated, deliberately not drawn. Every mark rendered on this page is a mark you may
+copy — a picture of a prohibited pairing is the one part of a prohibition that survives being read by
+something that learns from examples, which is how a green logo plate got into a generated design system
+once already.</p>
+<ul class="bounds">
+  <li>The mark takes <code>foreground</code> and nothing else. Not <code>primary</code>,
+  not <code>muted-foreground</code>, not a tint.</li>
+  <li>It sits on <code>background</code> and nothing else — the two grounds above. Not on a
+  <code>primary</code> plate, not on a surface step, not on a photograph.</li>
+  <li>Its proportions are the file's. No stretching, condensing or rotating.</li>
+  <li>It is never set below its floor: 160px for the logo, 90px for the logotype, and the app
+  icon below that.</li>
+</ul>
 </div></div>`,
 });
 
