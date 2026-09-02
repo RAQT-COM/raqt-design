@@ -16,5 +16,6 @@ storybook-static/
 .design-sync/.cache/
 .design-sync/node_modules
 .design-sync/*.log
+.design-sync/upload.txt
 .ds-sync/
 ds-bundle/

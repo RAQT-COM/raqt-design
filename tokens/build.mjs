@@ -263,6 +263,120 @@ function stripComments(node) {
   return node;
 }
 
+/* ---------- root/ — the token layer as its own artifact ---------- */
+
+/* theme.css scopes everything to `.raqt`, which is right for a host app and wrong
+   for a tool that reads a stylesheet to learn the palette: it finds the tokens
+   behind a class it has no reason to apply. These five files are the same values
+   on `:root`, split by concern, in the order a person reads a design system —
+   colour first.
+   
+   They exist because Claude Design was falling back to scraping the compiled
+   Tailwind stylesheet, which carries 55 `--tw-*` internals and buries `primary`
+   far down the list. A named, ordered palette is not cosmetic there: it is what
+   the design agent reads to learn the brand. Emitted from the same `primitives`
+   and `semantic` sources as everything else, so they cannot drift. */
+
+/** The primitive ramps, written out so the palette shows its structure. */
+const rampDecls = Object.entries(primitives.color).flatMap(([ramp, steps]) =>
+  typeof steps === "string"
+    ? [[`--${ramp}`, steps]]
+    : Object.entries(steps).map(([step, value]) => [`--${ramp}-${step}`, value]),
+);
+
+/** A semantic value, expressed as `var(--ramp-step)` when it names a primitive. */
+const byHex = new Map(rampDecls.map(([name, value]) => [value.toUpperCase(), name]));
+const ref = (value) => {
+  const hit = byHex.get(String(value).toUpperCase());
+  return hit ? `var(${hit})` : value;
+};
+
+const rootFiles = {
+  // Colour leads: it is what a reader looks for first, and what the design agent
+  // needs before it can place anything on a surface.
+  "colors.css": `${banner}
+
+/* Layer 1 — the primitive ramps. */
+:root {
+${decls(rampDecls)}
+}
+
+/* Layer 2 — the semantic names components actually use. Dark is the default. */
+:root {
+${decls(colors.map((t) => [t.name, ref(t.dark)]))}
+${decls(standardColors.map((t) => { const [n, v] = alias(t, "dark"); return [n, ref(v)]; }))}
+}
+
+/* Only what differs in light. A token absent here is identical in both modes. */
+:root.light,
+.light {
+${decls(colors.filter(differs).map((t) => [t.name, ref(t.light)]))}
+${decls(standardColors.filter(differs).map((t) => { const [n, v] = alias(t, "light"); return [n, ref(v)]; }))}
+}
+`,
+
+  "typography.css": `${banner}
+
+/* Two faces, and the boundary between them is a rule: --text-xl and above are
+   display type and take the font-display utility, which sets family, width and
+   tracking together. --text-lg and below are Inter. */
+:root {
+${decls([
+  ["--font-sans", font.sans],
+  ["--font-display", font.display],
+  ["--font-display-stretch", display.stretch],
+  ["--font-display-tracking", display.tracking],
+  ...Object.entries(text).flatMap(([step, t]) => [
+    [`--text-${step}`, t.size],
+    [`--text-${step}--line-height`, t.lineHeight],
+  ]),
+])}
+}
+`,
+
+  "spacing.css": `${banner}
+
+/* --spacing is the multiplier Tailwind generates every rung from. The named
+   steps are the rungs docs/TOKENS.md documents, for use outside a utility. */
+:root {
+${decls([
+  ["--spacing", spacing.base],
+  ...[1, 2, 3, 4, 5, 6, 8, 10, 12, 16].map((n) => [
+    `--space-${n}`,
+    `calc(${spacing.base} * ${n})`,
+  ]),
+])}
+}
+`,
+
+  "radius.css": `${banner}
+
+/* Radius steps DOWN as elevation steps up: a card at rounded-lg holds a row at
+   rounded-md, which holds a chip at rounded-sm. */
+:root {
+${decls([
+  ...Object.entries(radius).map(([step, value]) => [`--radius-${step}`, value]),
+  ["--radius", radius[radiusDefault]],
+])}
+}
+`,
+
+  "elevation.css": `${banner}
+
+/* In dark, elevation is surface lightness plus a hairline border, so the shadows
+   are none. In light, the three surfaces are all white and the shadow does the
+   work. One vocabulary, two implementations. */
+:root {
+${decls(shadows.map((t) => [t.name, t.dark]))}
+}
+
+:root.light,
+.light {
+${decls(shadows.filter(differs).map((t) => [t.name, t.light]))}
+}
+`,
+};
+
 /* ---------- write ---------- */
 
 mkdirSync(join(here, "dist"), { recursive: true });
@@ -270,7 +384,12 @@ writeFileSync(dist("theme.css"), themeCss);
 writeFileSync(dist("tokens.css"), tokensCss);
 writeFileSync(dist("tokens.ts"), ts);
 
+mkdirSync(join(here, "dist", "root"), { recursive: true });
+for (const [name, css] of Object.entries(rootFiles)) {
+  writeFileSync(join(here, "dist", "root", name), css);
+}
+
 console.log(
   `tokens: ${colors.length} colours, ${shadows.length} elevations, ${Object.keys(text).length} type steps ` +
-    `→ dist/theme.css, dist/tokens.css, dist/tokens.ts`,
+    `→ dist/theme.css, dist/tokens.css, dist/tokens.ts, dist/root/ (${Object.keys(rootFiles).length} files)`,
 );

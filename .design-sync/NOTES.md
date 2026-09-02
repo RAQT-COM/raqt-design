@@ -42,6 +42,36 @@ Fix, all committed:
 - `[FONT_REMOTE]` is expected. Inter and Archivo come from Google Fonts through
   an `@import` in `styles.css`. Nothing ships them locally.
 
+## Completeness: tokens, guidelines and the marks
+
+The first sync shipped only components and a scraped stylesheet, which read as
+thin next to an LLM-generated design system. Three config-level fixes closed the
+gap, all deterministic:
+
+- **`tokensGlob` does nothing without `tokensPkg`.** `copyTokens` returns early
+  when the package is unset, and it resolves the package by name under
+  `--node-modules` — which a package's own repo never contains. `build-dist.mjs`
+  creates `node_modules/raqt-design -> .` on every build. `node_modules` is
+  gitignored, so a fresh clone has no link, and losing it silently drops the
+  whole token layer back to the Tailwind scrape.
+- **`tokens/dist/root/`** is a fifth output of `tokens/build.mjs`: the same values
+  on `:root`, split by concern, colour first. It exists because the app was
+  reading the compiled Tailwind stylesheet, whose 55 `--tw-*` internals pushed
+  `--color-primary` far down the palette. Semantic tokens reference the ramps
+  (`--color-primary: var(--green-400)`), so the structure is legible.
+- **`guidelinesGlob` REPLACES the default** (`docs/guides/**/*.md`, `docs/*.md`,
+  `guides/**/*.md`). Setting it without re-listing `docs/*.md` would silently drop
+  `TOKENS.md` and `COMPONENTS.md`. It now ships `DESIGN.md`, `CONTEXT.md` and
+  both docs.
+- **`guidelinesGlob` is `.md`/`.mdx` only** — `matchGlob` checks `isDocExt` and
+  logs a skip for anything else. The brand PNGs cannot ride through it. They are
+  copied into `ds-bundle/assets/brand/` after the final build and need
+  `assets/**` in the upload plan's writes and deletes.
+
+The six `Foundations/*` storybook entries stay nulled in `titleMap`: they are MDX
+doc pages, not components, and their content is covered by `DESIGN.md` §2/§5/§6
+in prose the guidelines now carry verbatim.
+
 ## Re-sync risks — what to watch
 
 - **The barrel is a second component list.** Add a tenth component to
@@ -55,5 +85,8 @@ Fix, all committed:
   class table against `_ds_bundle.css` on every re-sync.
 - Every one of the 71 stories graded `match` from images on this run, with no
   `close` accepted and nothing skipped. A future `close` deserves scrutiny.
+- **The upload plan must include `assets/**`.** It is not in the converter's
+  default write globs, so a re-sync that reuses the documented plan silently drops
+  the logo, logotype and app icon. Add the path at `finalize_plan` time.
 - Story cap was raised to `--max-stories 11` to cover MatchCard's 11 stories.
   A component that grows past 11 will have its tail silently uncaptured.

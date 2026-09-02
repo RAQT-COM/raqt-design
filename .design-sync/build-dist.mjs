@@ -13,11 +13,24 @@
 
 import { build } from "../.ds-sync/node_modules/esbuild/lib/main.js";
 import { execFileSync } from "node:child_process";
-import { globSync, writeFileSync } from "node:fs";
+import { existsSync, globSync, mkdirSync, symlinkSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+// The converter resolves the package by name under --node-modules, and a package's
+// own source repo never contains itself. Without this link `cfg.tokensPkg` cannot
+// resolve, `copyTokens` returns nothing, and the design system falls back to the
+// scraped Tailwind stylesheet — 55 `--tw-*` internals ahead of the real palette.
+// Recreated on every build because node_modules is gitignored: a fresh clone has
+// no link, and a sync that silently loses the token layer is worse than a slow one.
+const selfLink = join(root, "node_modules", "raqt-design");
+if (!existsSync(selfLink)) {
+  mkdirSync(dirname(selfLink), { recursive: true });
+  symlinkSync(root, selfLink, "dir");
+  console.log("node_modules/raqt-design -> . (self-link for the token copy)");
+}
 
 // react/react-dom stay external: the converter vendors its own copies and the
 // preview pages load them from _vendor/. Bundling a second React here would give
