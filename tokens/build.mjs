@@ -402,6 +402,18 @@ writeFileSync(dist("theme.css"), themeCss);
 writeFileSync(dist("tokens.css"), tokensCss);
 writeFileSync(dist("tokens.ts"), ts);
 
+/* The same values as data. tokens.ts is `as const` TypeScript, which a plain .mjs
+   cannot import - and .design-sync/cards.mjs needs these to draw the foundation
+   cards from real values instead of restating them. */
+writeFileSync(
+  dist("tokens.json"),
+  JSON.stringify(
+    { primitives: stripComments(primitives), semanticColors: colors, elevationShadows: shadows,
+      typography: { fonts: font, display, scale: text }, radius, radiusDefault, spacing },
+    null, 2,
+  ) + "\n",
+);
+
 mkdirSync(join(here, "dist", "root"), { recursive: true });
 for (const [name, css] of Object.entries(rootFiles)) {
   writeFileSync(join(here, "dist", "root", name), css);
@@ -409,5 +421,5 @@ for (const [name, css] of Object.entries(rootFiles)) {
 
 console.log(
   `tokens: ${colors.length} colours, ${shadows.length} elevations, ${Object.keys(text).length} type steps ` +
-    `→ dist/theme.css, dist/tokens.css, dist/tokens.ts, dist/root/ (${Object.keys(rootFiles).length} files)`,
+    `→ dist/theme.css, dist/tokens.css, dist/tokens.ts, dist/tokens.json, dist/root/ (${Object.keys(rootFiles).length} files)`,
 );

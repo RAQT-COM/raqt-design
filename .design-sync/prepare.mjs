@@ -115,6 +115,8 @@ console.log(`
     · ${c.cyan("/design-login")} once, with an account that can write to the target
     · ${c.bold("assets/**")} in the upload plan's writes AND deletes — it is not in the
       converter's defaults, so the logo, logotype and app icon drop without it
+    · ${c.cyan("pnpm ds:cards")} AFTER the converter runs — it emits the Brand/Colors/
+      Type/Elevation/Spacing cards, which the converter itself never produces
 
   Target: ${c.dim(cfg.projectId)}
   ${c.dim(`https://claude.ai/design/p/${cfg.projectId}`)}

@@ -121,6 +121,29 @@ The auto-generated design system shows 167 tokens and zero `--tw-*` only because
 a model hand-wrote its component stylesheet. That tidiness is the inference this
 sync exists to avoid.
 
+## The foundation cards are a separate step
+
+`cfg.guidelinesGlob` copies markdown, and markdown is stored but never becomes a
+card: the app's Brand / Colors / Type / Elevation / Spacing sections come from
+HTML files whose FIRST LINE carries `<!-- @dsCard group=… name=… -->`. The
+converter emits none, so a sync without this step ships components and tokens and
+no foundations at all.
+
+`.design-sync/cards.mjs` (`pnpm ds:cards`) emits 16 of them from
+`tokens/dist/tokens.json` — the same emitter that writes theme.css — so a card
+cannot disagree with the theme. It also recomputes the anchor's `auxSha` with the
+converter's own `auxShaFor`, because `package-build.mjs` writes `_ds_sync.json`
+before these files exist and a stale anchor would report guidelines churn on every
+future sync.
+
+**It must run AFTER the converter**, which wipes `--out`. Order for any sync:
+
+    pnpm ds:sync  ->  /design-sync  ->  pnpm ds:cards  ->  upload
+
+A card renders only what is ALLOWED. Prohibitions go in prose — a picture of a
+banned pairing is the part of the ban that survives being read by something that
+learns from examples, which is how a green logo plate reached a design system once.
+
 ## Re-sync risks — what to watch
 
 - **The barrel is a second component list.** Add a tenth component to
@@ -137,6 +160,8 @@ sync exists to avoid.
 - **The upload plan must include `assets/**`.** It is not in the converter's
   default write globs, so a re-sync that reuses the documented plan silently drops
   the logo, logotype and app icon. Add the path at `finalize_plan` time.
+- **Forget `pnpm ds:cards` and the foundations silently vanish.** The converter
+  never emits them, so a plain re-sync leaves the project with components only.
 - **Adding or deleting a fork re-grades every component.** Forks are in the grade
   contract, so `.design-sync/overrides/` changes cost one full re-verify. Budget
   for it; it is also the right verification for a change that touches the CSS.
