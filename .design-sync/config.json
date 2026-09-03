@@ -44,5 +44,8 @@
     "CONTEXT.md",
     "docs/*.md"
   ],
-  "tokensPkg": "raqt-design"
+  "tokensPkg": "raqt-design",
+  "libOverrides": {
+    "css-fallback.mjs": "trims the storybook CSS scrape: drops declarations our tokens/ already make and @property rules nothing references, so the palette is not buried in Tailwind internals"
+  }
 }

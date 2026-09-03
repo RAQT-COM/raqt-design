@@ -94,6 +94,33 @@ Two things follow:
   compiled set is slightly wider than "what components use". Do not exclude
   `stories/` to fix it — those files are the storybook's real source.
 
+## The token list: why it is 209 and not 167
+
+The app builds its token list from every custom property in styles.css's @import
+closure, and the raw storybook scrape contributed 151 of them. Two committed
+changes cut that to a clean list without inventing anything:
+
+- **`.design-sync/overrides/css-fallback.mjs`** (declared in `cfg.libOverrides`)
+  trims the scrape before it is written: a declaration this repo's
+  `tokens/dist/root/*.css` already makes is dropped (223 of them, counting the
+  light-mode blocks), and an `@property --tw-*` rule that no `var()` references
+  is dropped (12). Both are provable, not judged.
+- **`tokens/dist/root/palette.css`** splits the primitive ramps out of
+  `colors.css`. The app lists tokens in filename order, so the semantic names now
+  lead: `--color-primary` moved from index 47 to 6.
+
+**43 `--tw-*` remain, and they must.** They back Tailwind's composition strings —
+`filter: var(--tw-blur,) … var(--tw-sepia,)`, `font-variant-numeric:
+var(--tw-ordinal,) var(--tw-slashed-zero,) …` — and their `inherits: false` is
+what stops each leaking down the tree. Removing them makes `shadow-*`, `ring-*`,
+`rotate-*`, gradients and `tabular-nums` silently no-op or bleed. The numeric one
+exists because MatchCard uses `tabular-nums`. They now sit alone in
+`_ds_bundle.css`, which sorts last, so they no longer interleave with the palette.
+
+The auto-generated design system shows 167 tokens and zero `--tw-*` only because
+a model hand-wrote its component stylesheet. That tidiness is the inference this
+sync exists to avoid.
+
 ## Re-sync risks — what to watch
 
 - **The barrel is a second component list.** Add a tenth component to
@@ -110,6 +137,9 @@ Two things follow:
 - **The upload plan must include `assets/**`.** It is not in the converter's
   default write globs, so a re-sync that reuses the documented plan silently drops
   the logo, logotype and app icon. Add the path at `finalize_plan` time.
+- **Adding or deleting a fork re-grades every component.** Forks are in the grade
+  contract, so `.design-sync/overrides/` changes cost one full re-verify. Budget
+  for it; it is also the right verification for a change that touches the CSS.
 - **A counter-example in a scanned file becomes real.** Before citing a class as
   absent anywhere Tailwind scans, confirm the file is outside the source set.
 - Story cap was raised to `--max-stories 11` to cover MatchCard's 11 stories.

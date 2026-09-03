@@ -301,16 +301,14 @@ const ref = (value) => {
 };
 
 const rootFiles = {
-  // Colour leads: it is what a reader looks for first, and what the design agent
-  // needs before it can place anything on a surface.
+  // Colour leads, and inside colour the SEMANTIC names lead. The app lists tokens
+  // in filename order, so splitting the ramps into palette.css puts the names a
+  // designer actually looks for - primary, background, foreground - at the top
+  // instead of forty entries down behind green-50..950 and ink-25..950.
   "colors.css": `${banner}
 
-/* Layer 1 — the primitive ramps. */
-:root {
-${decls(rampDecls)}
-}
-
-/* Layer 2 — the semantic names components actually use. Dark is the default. */
+/* The semantic names components use. Dark is the default. Values reference the
+   ramps in palette.css; custom properties resolve at use, so order never matters. */
 :root {
 ${decls(colors.map((t) => [t.name, ref(t.dark)]))}
 ${decls(standardColors.map((t) => { const [n, v] = alias(t, "dark"); return [n, ref(v)]; }))}
@@ -321,6 +319,17 @@ ${decls(standardColors.map((t) => { const [n, v] = alias(t, "dark"); return [n, 
 .light {
 ${decls(colors.filter(differs).map((t) => [t.name, ref(t.light)]))}
 ${decls(standardColors.filter(differs).map((t) => { const [n, v] = alias(t, "light"); return [n, ref(v)]; }))}
+}
+`,
+
+  // The raw ramps, referenced by colors.css. Their own file so they do not bury
+  // the semantic layer - a designer reaches for `primary`, not `green-400`.
+  "palette.css": `${banner}
+
+/* Layer 1 - the primitive ramps. Components never name these directly (rule 1);
+   they exist so the semantic layer has something to point at. */
+:root {
+${decls(rampDecls)}
 }
 `,
 
