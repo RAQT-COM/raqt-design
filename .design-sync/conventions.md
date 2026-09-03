@@ -1,5 +1,21 @@
 # Building with Raqt
 
+## Load the vendored React, not a CDN one
+
+The bundle binds to `window.React`, and these components are built against
+**React 19**. The design system ships its own copy — load that, before the
+bundle, instead of a CDN React:
+
+```html
+<script src="_ds/<folder>/_vendor/react.js"></script>
+<script src="_ds/<folder>/_ds_bundle.js"></script>
+<link rel="stylesheet" href="_ds/<folder>/styles.css">
+```
+
+`_vendor/react.js` carries React and ReactDOM together; `_vendor/react-dom.js`
+is only a marker file. Mount into a dedicated node, never the host page's own
+React root, so the two trees cannot collide.
+
 **No provider and no wrapper.** Every token is declared on `:root, :host`, so a
 component is styled the moment it renders. Dark is the default — it is what
 Raqt's users see, and light is the check, not the baseline. For a light surface,
