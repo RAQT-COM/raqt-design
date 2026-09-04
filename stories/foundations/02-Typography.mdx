@@ -92,7 +92,29 @@ is the token, the `px` is what it resolves to at a 16px root.
     family={typography.scale.xs.family}
     sample="LABELS, BADGES, TABLE HEADERS"
   />
+  <TypeSpecimen
+    step="2xs"
+    size={typography.scale["2xs"].size}
+    lineHeight={typography.scale["2xs"].lineHeight}
+    family={typography.scale["2xs"].family}
+    sample="Court 4 · Seed 6 · 14:20"
+  />
+  <TypeSpecimen
+    step="3xs"
+    size={typography.scale["3xs"].size}
+    lineHeight={typography.scale["3xs"].lineHeight}
+    family={typography.scale["3xs"].family}
+    sample="QF · SF · FINAL"
+  />
 </ModeFrame>
+
+<Rule>
+  **`2xs` and `3xs` are the caption floor, not a general small size.** They exist
+  for mobile chrome the reading scale cannot carry: timeline stamps, seed
+  numbers, avatar initials, bracket-stage labels. `3xs` is the floor and takes
+  uppercase micro-labels only — never a sentence, never body copy. If a caption
+  needs `3xs` to fit, the layout is usually the thing to change.
+</Rule>
 
 ## The two families side by side
 

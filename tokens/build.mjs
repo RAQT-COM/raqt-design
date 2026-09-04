@@ -54,7 +54,13 @@ const shadows = modal("shadow", "--shadow-");
 const decls = (pairs, indent = "  ") =>
   pairs.map(([name, value]) => `${indent}${name}: ${value};`).join("\n");
 
-const { font, display, text, radius, radiusDefault, spacing, shadcnStandard } = semantic;
+const { font, display, radiusDefault, spacing, shadcnStandard } = semantic;
+
+/* `text` and `radius` are iterated key-by-key to build token names, so an `_comment`
+   key in them would emit `--text-_comment`. `modal()` already drops those for the
+   mode-paired groups; these two need the same filter before anything reads them. */
+const text = stripComments(semantic.text);
+const radius = stripComments(semantic.radius);
 
 // Names stock shadcn/Tailwind already owns. See the note in semantic.json: the
 // distributable must leave these alone at the Tailwind-theme level.
@@ -183,6 +189,16 @@ const tokensCss = `${banner}
    both, making its own claim false. Excluding the directory keeps the compiled set
    equal to what the components and stories actually use. */
 @source not "../../.design-sync";
+
+/* Tailwind only generates a utility whose class name appears literally in a
+   source file, so a token no component has reached for yet gets a name and no
+   class. That is fine inside this repo — a component that needs the rung writes
+   it. It is not fine downstream: the compiled stylesheet IS the vocabulary for
+   Claude Design, and a caption rung reachable only as \`var(--text-2xs)\` is a
+   rung that gets hand-written as a raw px instead. These two are the caption
+   floor and were added for exactly that reason, so they ship as classes from
+   the start. */
+@source inline("text-{2,3}xs");
 
 @theme {
 ${decls([...colors.map((t) => [t.name, t.dark]), ...scales])}
@@ -355,14 +371,17 @@ ${decls([
   "spacing.css": `${banner}
 
 /* --spacing is the multiplier Tailwind generates every rung from. The named
-   steps are the rungs docs/TOKENS.md documents, for use outside a utility. */
+   steps are the rungs docs/TOKENS.md documents, for use outside a utility —
+   derived from documentedSteps so this file cannot claim a different scale than
+   the docs do. Half steps are reachable through the utilities and through
+   calc(var(--spacing) * n); they get no name here because a custom property
+   cannot carry the dot. */
 :root {
 ${decls([
   ["--spacing", spacing.base],
-  ...[1, 2, 3, 4, 5, 6, 8, 10, 12, 16].map((n) => [
-    `--space-${n}`,
-    `calc(${spacing.base} * ${n})`,
-  ]),
+  ...spacing.documentedSteps
+    .filter(Number.isInteger)
+    .map((n) => [`--space-${n}`, `calc(${spacing.base} * ${n})`]),
 ])}
 }
 `,

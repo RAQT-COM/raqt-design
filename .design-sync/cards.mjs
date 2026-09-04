@@ -241,14 +241,16 @@ ${Object.entries(T.primitives.color)
 /* --- Type -------------------------------------------------------------- */
 
 cards["type-scale.html"] = page({
-  group: "Type", name: "The scale", viewport: "700x340",
-  subtitle: "Eight steps, each shipping its own line height",
+  group: "Type", name: "The scale", viewport: "700x400",
+  subtitle: `${Object.keys(T.typography.scale).length} steps, each shipping its own line height`,
   css: `.r{display:grid;grid-template-columns:96px 84px 1fr;gap:14px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--color-border)}
 .r i{font-style:normal;font-size:var(--text-xs);font-family:ui-monospace,Menlo,monospace;color:var(--color-muted-foreground)}
 .r em{font-style:normal;font-size:var(--text-xs);color:var(--color-primary);text-transform:uppercase;letter-spacing:.06em}
 .disp{font-family:var(--font-display);font-stretch:115%;letter-spacing:-.01em}`,
   body: `<h2>The scale</h2>
-<p>Line heights ship paired with every step — it is a type ramp, not a font-size list.</p>
+<p>Line heights ship paired with every step — it is a type ramp, not a font-size list. <code>2xs</code> and <code>3xs</code>
+are the caption floor for mobile chrome — timeline stamps, seed numbers, stage labels. Use them instead of writing a raw
+<code>10px</code>; <code>3xs</code> takes uppercase micro-labels only, never a sentence.</p>
 ${Object.entries(T.typography.scale).reverse().map(([k, v]) =>
     `<div class="r"><i>--text-${k}</i><em>${v.family === "display" ? "display" : "read"}</em>
 <span class="${v.family === "display" ? "disp" : ""}" style="font-size:${v.size};line-height:${v.lineHeight}">Raqt Open — Semifinal</span></div>`).join("")}`,
@@ -298,7 +300,7 @@ or type weight — tokens that differ from the card in both modes.</p>`,
 
 cards["elevation-radius.html"] = page({
   group: "Elevation", name: "Radius", viewport: "700x200",
-  subtitle: Object.entries(T.radius).map(([k, v]) => `${k} ${v}`).join(" · ") + " — nesting steps down",
+  subtitle: Object.entries(T.radius).map(([k, v]) => `${k} ${v}`).join(" · ") + " — nesting steps down; full is the pill",
   css: `.row{gap:18px}
 .b{width:76px;height:76px;background:var(--color-surface-2);border:1px solid var(--color-border)}
 figure{margin:0;text-align:center}
@@ -306,7 +308,8 @@ figcaption{font-size:var(--text-xs);color:var(--color-muted-foreground);margin-t
   body: `<h2>Radius</h2>
 <p>Radius steps <b>down</b> as elevation steps up: a card at <code>rounded-lg</code> holds a row at <code>rounded-md</code>,
 which holds a chip at <code>rounded-sm</code>. <code>--radius</code> aliases <code>${T.radiusDefault}</code> for hand-pasted
-shadcn CSS.</p>
+shadcn CSS. <code>rounded-full</code> is off the ladder — it is the pill for avatars, count bubbles and status dots, so
+reach for the token instead of writing <code>999px</code>.</p>
 <div class="row">${Object.entries(T.radius).map(([k, v]) =>
     `<figure><div class="b" style="border-radius:${v}"></div><figcaption>${k}<br>${v}</figcaption></figure>`).join("")}</div>`,
 });

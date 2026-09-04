@@ -122,6 +122,8 @@ Archivo on Google Fonts is a variable font with a `wdth` axis. Display type uses
 
 | token | size / line-height |
 |---|---|
+| `--text-3xs` | `0.625rem / 0.875rem` |
+| `--text-2xs` | `0.6875rem / 0.875rem` |
 | `--text-xs` | `0.75rem / 1rem` |
 | `--text-sm` | `0.875rem / 1.25rem` |
 | `--text-base` | `1rem / 1.5rem` |
@@ -133,15 +135,22 @@ Archivo on Google Fonts is a variable font with a `wdth` axis. Display type uses
 
 `xl` and above are display sizes: Archivo, stretched. `lg` and below are Inter.
 
+`3xs` and `2xs` are the caption floor. They exist for mobile chrome the reading scale cannot carry — timeline stamps, seed numbers, avatar initials, bracket-stage labels. `3xs` is the floor and takes uppercase micro-labels only; anything read as a sentence starts at `sm`. They were added because designs kept landing below `xs` and the sizes were hand-written as raw px instead.
+
 ## Radius
 
 ```
---radius-sm: 0.375rem   /*  6px */
---radius-md: 0.625rem   /* 10px — default */
---radius-lg: 0.875rem   /* 14px */
---radius-xl: 1.25rem    /* 20px */
+--radius-sm:   0.375rem   /*  6px */
+--radius-md:   0.625rem   /* 10px — default */
+--radius-lg:   0.875rem   /* 14px */
+--radius-xl:   1.25rem    /* 20px */
+--radius-full: 9999px     /* the pill */
 ```
+
+`sm` through `lg` are the nesting ladder. `xl` is for full-bleed hero surfaces. `full` is the pill — avatars, count bubbles, status dots — and is never a nesting step. It is a token so that nobody writes `999px` by hand.
 
 ## Spacing
 
-Tailwind v4 generates the whole scale from one base. Emit `--spacing: 0.25rem` and nothing else — hand-authoring `--spacing-1`, `--spacing-2` is Tailwind v3 thinking and produces a scale that fights the generated one. Document the resulting steps on the Spacing foundations page.
+Tailwind v4 generates the whole scale from one base, so `--spacing: 0.25rem` is the source of truth — hand-authoring `--spacing-1`, `--spacing-2` is Tailwind v3 thinking and produces a scale that fights the generated one.
+
+`tokens/dist/root/spacing.css` additionally names the documented integer steps as `--space-1 … --space-24`. Those are for consumers that read a stylesheet rather than compile utilities — Claude Design, chiefly — so a layout outside a utility still lands on the 4px grid. They are derived from `documentedSteps`, so the file cannot claim a scale this document does not. Half steps get no name: a custom property cannot carry the dot. Reach for `calc(var(--spacing) * 1.5)` there.

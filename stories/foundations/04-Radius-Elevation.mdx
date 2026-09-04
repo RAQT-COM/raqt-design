@@ -22,11 +22,12 @@ import {
 
 ## Radius
 
-Four steps. `--radius-md` is the default — a bare `rounded-md`, and the `--radius`
-alias shadcn components read, both resolve to it.
+Five steps. `--radius-md` is the default — a bare `rounded-md`, and the `--radius`
+alias shadcn components read, both resolve to it. `--radius-full` is the pill:
+avatars, count bubbles, status dots. It sits off the nesting ladder, like `xl`.
 
 <ModeFrame mode="dark">
-  <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+  <div className="grid grid-cols-2 gap-6 sm:grid-cols-5">
     {Object.entries(radius).map(([step, rem]) => (
       <RadiusSpecimen key={step} step={step} rem={rem} />
     ))}
@@ -144,6 +145,7 @@ The two scales are used together, one rung at a time.
   </table>
   <div className="mt-3 text-sm opacity-60">
     rounded-xl · {rem2px(radius.xl)} is off the elevation ladder. It is for
-    full-bleed hero surfaces, not for nesting.
+    full-bleed hero surfaces, not for nesting. rounded-full is off it too — it
+    is the pill, and a pill is never a step.
   </div>
 </ModeFrame>

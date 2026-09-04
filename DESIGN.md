@@ -74,8 +74,15 @@ a `-foreground`. A match's state is a domain fact, not a severity.
 
 ### Type, radius, spacing
 
-`--text-xs` … `--text-4xl` · `--radius-sm|md|lg|xl` · `--spacing` (`0.25rem`,
-Tailwind generates the rest) · the `font-display` and `shadow-e*` utilities.
+`--text-3xs` … `--text-4xl` · `--radius-sm|md|lg|xl|full` · `--spacing`
+(`0.25rem`, Tailwind generates the rest) · the `font-display` and `shadow-e*`
+utilities.
+
+`--text-2xs` (11px) and `--text-3xs` (10px) are the caption floor, for mobile
+chrome the reading scale cannot carry: timeline stamps, seed numbers, avatar
+initials, bracket-stage labels. `3xs` takes uppercase micro-labels only —
+anything read as a sentence starts at `sm`. `--radius-full` is the pill:
+avatars, count bubbles, status dots. Write the token, never `999px`.
 
 ---
 

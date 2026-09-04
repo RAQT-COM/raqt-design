@@ -110,6 +110,8 @@ export const typography = {
   },
   display: { stretch: "115%", tracking: "-0.01em" },
   scale: {
+    "3xs": { size: "0.625rem", lineHeight: "0.875rem", family: "sans" },
+    "2xs": { size: "0.6875rem", lineHeight: "0.875rem", family: "sans" },
     "xs": { size: "0.75rem", lineHeight: "1rem", family: "sans" },
     "sm": { size: "0.875rem", lineHeight: "1.25rem", family: "sans" },
     "base": { size: "1rem", lineHeight: "1.5rem", family: "sans" },
@@ -126,6 +128,7 @@ export const radius = {
   "md": "0.625rem",
   "lg": "0.875rem",
   "xl": "1.25rem",
+  "full": "9999px",
 } as const;
 
 /** Tailwind generates the whole scale from `base`; these are the steps worth showing. */

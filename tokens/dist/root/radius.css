@@ -7,5 +7,6 @@
   --radius-md: 0.625rem;
   --radius-lg: 0.875rem;
   --radius-xl: 1.25rem;
+  --radius-full: 9999px;
   --radius: 0.625rem;
 }

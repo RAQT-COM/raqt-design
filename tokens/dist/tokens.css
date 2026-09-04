@@ -12,6 +12,16 @@
    equal to what the components and stories actually use. */
 @source not "../../.design-sync";
 
+/* Tailwind only generates a utility whose class name appears literally in a
+   source file, so a token no component has reached for yet gets a name and no
+   class. That is fine inside this repo — a component that needs the rung writes
+   it. It is not fine downstream: the compiled stylesheet IS the vocabulary for
+   Claude Design, and a caption rung reachable only as `var(--text-2xs)` is a
+   rung that gets hand-written as a raw px instead. These two are the caption
+   floor and were added for exactly that reason, so they ship as classes from
+   the start. */
+@source inline("text-{2,3}xs");
+
 @theme {
   --color-background: #071410;
   --color-foreground: #EAF5EF;
@@ -50,6 +60,10 @@
   --color-status-open: #08582D;
   --color-status-open-foreground: #5BE79F;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --text-3xs: 0.625rem;
+  --text-3xs--line-height: 0.875rem;
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 0.875rem;
   --text-xs: 0.75rem;
   --text-xs--line-height: 1rem;
   --text-sm: 0.875rem;
@@ -70,6 +84,7 @@
   --radius-md: 0.625rem;
   --radius-lg: 0.875rem;
   --radius-xl: 1.25rem;
+  --radius-full: 9999px;
   --spacing: 0.25rem;
 }
 
