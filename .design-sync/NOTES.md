@@ -169,3 +169,36 @@ learns from examples, which is how a green logo plate reached a design system on
   absent anywhere Tailwind scans, confirm the file is outside the source set.
 - Story cap was raised to `--max-stories 11` to cover MatchCard's 11 stories.
   A component that grows past 11 will have its tail silently uncaptured.
+- **A new token needs a component to use it, or `@source inline`.** Tailwind only
+  compiles a class whose name appears literally in a scanned source file, so a
+  token nothing uses yet ships as a token with **no utility** — and the header's
+  class table then claims a class that does not exist. `--text-2xs`/`--text-3xs`
+  were added as the caption floor with no component using them; `tokens.css`
+  carries `@source inline("text-{2,3}xs")` to force them into the compiled set.
+  Add the same line for any future rung introduced ahead of its first use.
+- **Rebuild `sb-reference` after ANY change to `tokens/dist/tokens.css`.** The
+  shipped stylesheet is scraped from the reference build, so a directive added
+  there (`@source inline`, `@source not`) is invisible until the reference is
+  rebuilt. This cost one wasted converter run: the class table validated against
+  a `storybook-static/` build while the converter scraped a stale reference.
+- **`upload.aux: true` on a re-sync is usually the cards, not churn.** The driver
+  computes `auxSha` before `pnpm ds:cards` runs, and the cards are part of
+  `guidelines/`. Run the cards, then compare the sidecar's `auxSha` with the
+  remote's before concluding anything needs uploading — on a no-op re-sync they
+  are equal and the correct action is to upload nothing.
+
+## The shipped `.d.ts` drops types the props reference
+
+`[GENERAL]` The converter emits the props interface and the component
+declaration, and nothing else — a named type the interface *references* is not
+carried over. `MatchCard.d.ts` ships `sides: readonly [MatchSide, MatchSide]`
+with `MatchSide` undeclared; `dist/dts/components/patterns/match-card.d.ts`
+declares it. `MatchCard.prompt.md` does not close the gap either: its examples
+spread `DOUBLES.a` fixtures, so `players` never appears literally in either
+shipped file, and the design agent has to infer the shape of a side.
+
+`package-validate.mjs` reports "all .d.ts parse cleanly" — parsing is not
+resolving, so this passes every gate. `.design-sync/conventions.md` states the
+shape (`each { players, scores }`) in its component map, which is currently the
+only shipped place the agent can read it. Keep that line until the converter
+carries referenced types. Worth reporting upstream.
