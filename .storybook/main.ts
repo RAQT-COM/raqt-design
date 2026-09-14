@@ -7,6 +7,9 @@ const config: StorybookConfig = {
     "../components/**/*.stories.@(ts|tsx)",
   ],
   addons: ["@storybook/addon-docs"],
+  // the screen gallery loads each mockup as its own document, so it needs the
+  // raw html + images served verbatim rather than bundled
+  staticDirs: [{ from: "../stories/experiments/screens", to: "/screens" }],
   framework: { name: "@storybook/react-vite", options: {} },
 };
 
