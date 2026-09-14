@@ -19,3 +19,6 @@ storybook-static/
 .design-sync/upload.txt
 .ds-sync/
 ds-bundle/
+
+# seeded design-canvas payloads — regenerate from design/*.dc.html
+design/raqt-*.html
