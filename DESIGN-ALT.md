@@ -51,9 +51,10 @@ reads editorial, which is the wrong sport.
   raised, `#464646` track. **(measured)**
 - **A different surface means someone else's content.** Partner and broadcast
   tiles sit on navy `#0f192b`; RAQT's own content never does. **(measured)**
-- **Home is washed, content is flat.** The diagonal green wash belongs to the
-  feed. Tournament, results and bracket screens are pure black. **(measured:
-  3 of 3 content frames)**
+- **One blurred green blob, behind every screen.** It belongs to the app, not
+  to a screen: each screen parks it somewhere different, and navigating moves it
+  rather than replacing it. It sits behind opaque cards, so it only ever shows
+  through gutters and margins — never behind text.
 - Status red is reserved for live and destructive. It is not a brand colour.
 
 ## 4. Photography and icons
@@ -114,13 +115,16 @@ fast out, abrupt settle, almost no bounce-back.
 
 - Never `ease-in-out`. Never 300ms.
 - No ambient motion, no idle drift, no scroll-triggered reveals.
+- **One exception: the backdrop.** The blob is further away than the UI, so it
+  lags — content snaps at ~200ms while the blob drifts over ~620ms. That
+  difference is what reads as depth. Nothing else gets an exception.
 - Expressive choreography lives in Celebrate only. Frequency and personality are
   inversely proportional.
 
 ## 8. Diagonals
 
-- One angle across the whole app, taken from the backdrop wash. **(measured:
-  ~33° from horizontal)**
+- One angle across the whole app: ~33° from horizontal. **(originally measured
+  off the backdrop wash, which is now a blob — see contradiction 7)**
 - Background and structural elements only. Never on text blocks or tap targets.
 - If a screen has two angles, one is wrong.
 
@@ -165,3 +169,8 @@ The reference frames disagree. These need a decision, not a rule:
    Ellipsis, or drop it?
 6. **Screen margin.** The feed uses 10px, all three tournament screens use 15px.
    Two values is one too many.
+7. **Where the 33° comes from.** The diagonal was derived from the backdrop
+   wash. The backdrop is now a blob with no angle, so the number is currently
+   orphaned — either re-anchor it to something or drop §8.
+8. **Display face.** §2 asks for a face that echoes the wordmark; nothing has
+   been chosen. Archivo is standing in. This is the largest remaining gap.

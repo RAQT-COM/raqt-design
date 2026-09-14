@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { BLOB, Backdrop } from "./backdrop";
+
 const logotype = new URL("../../assets/brand/logotype.png", import.meta.url).href;
 const courtSrc = new URL("./assets/court.png", import.meta.url).href;
 const feedSrc = new URL("./assets/feed.png", import.meta.url).href;
@@ -9,16 +11,6 @@ const niklasSrc = new URL("./assets/niklas.png", import.meta.url).href;
 const navMeSrc = new URL("./assets/nav-me.png", import.meta.url).href;
 const coachesSrc = new URL("./assets/coaches.png", import.meta.url).href;
 
-// Sampling the export shows the green has a diagonal top edge — it reaches
-// y~90 on the right but only y~390 on the left — while its lower edge fades
-// straight down, gone by y~760. So it is one diagonal wash plus a vertical
-// fade to black, under a grey key light in the top-left corner.
-const SCREEN_BACKDROP = [
-  "radial-gradient(78% 30% at 10% 9%, #2f2f2f 0%, rgba(0,0,0,0) 76%)",
-  "linear-gradient(to bottom, rgba(0,0,0,0) 48%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0.9) 86%, #000000 100%)",
-  "linear-gradient(143deg, rgba(0,0,0,0) 30%, #15571c 42%, #13541b 100%)",
-  "#000000",
-].join(", ");
 
 function StatusBar() {
   return (
@@ -236,12 +228,14 @@ function TabBar() {
   );
 }
 
-export function StartFeed() {
+export function StartFeed({ backdrop = true }: { backdrop?: boolean }) {
   return (
     <div
-      className="relative flex h-[874px] w-[402px] flex-col overflow-hidden text-white antialiased"
-      style={{ background: SCREEN_BACKDROP, fontFamily: "Inter, system-ui, sans-serif" }}
+      className="relative h-[874px] w-[402px] overflow-hidden text-white antialiased"
+      style={{ fontFamily: "Inter, system-ui, sans-serif" }}
     >
+      {backdrop && <Backdrop pose={BLOB.feed} />}
+      <div className="relative z-10 flex h-full flex-col">
       <StatusBar />
       <Header />
       <div className="flex flex-col gap-[10px] px-[10px]">
@@ -262,6 +256,7 @@ export function StartFeed() {
         <FeedCard />
       </div>
       <TabBar />
+      </div>
     </div>
   );
 }

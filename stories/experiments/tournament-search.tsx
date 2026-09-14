@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 
+import { BLOB, Backdrop } from "./backdrop";
+
 const courtSrc = new URL("./assets/court.png", import.meta.url).href;
 const feedSrc = new URL("./assets/feed.png", import.meta.url).href;
 const navMeSrc = new URL("./assets/nav-me.png", import.meta.url).href;
@@ -182,7 +184,7 @@ function TabBar() {
   );
 }
 
-export function TournamentSearch() {
+export function TournamentSearch({ backdrop = true }: { backdrop?: boolean }) {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState(COUNTRIES[0]);
   const [status, setStatus] = useState<Status>("All");
@@ -201,9 +203,11 @@ export function TournamentSearch() {
 
   return (
     <div
-      className="relative flex h-[874px] w-[402px] flex-col overflow-hidden bg-black text-white antialiased"
+      className="relative h-[874px] w-[402px] overflow-hidden text-white antialiased"
       style={{ fontFamily: "Inter, system-ui, sans-serif" }}
     >
+      {backdrop && <Backdrop pose={BLOB.search} />}
+      <div className="relative z-10 flex h-full flex-col">
       <style>{`@keyframes sheet-up{from{transform:translateY(100%)}to{transform:translateY(0)}}.no-bar{scrollbar-width:none}.no-bar::-webkit-scrollbar{display:none}`}</style>
 
       <StatusBar />
@@ -296,6 +300,7 @@ export function TournamentSearch() {
       </div>
 
       <TabBar />
+      </div>
 
       {sheetOpen && (
         <CountrySheet
