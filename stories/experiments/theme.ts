@@ -55,6 +55,17 @@ const LIGHT: Record<string, string> = {
   "--logo-filter": "invert(1)",
 };
 
+/**
+ * §11 — one focus treatment, everywhere. Green because focus is actionable, and
+ * offset so it stays visible on the PLAY button, which is already green.
+ *
+ * Never remove it without replacing it: an element whose outline is suppressed
+ * with nothing in its place is unusable by keyboard, which is a defect and not
+ * a visual preference.
+ */
+export const FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--green-ink)]";
+
 export const THEME: Record<Mode, CSSProperties> = {
   dark: DARK as CSSProperties,
   light: LIGHT as CSSProperties,

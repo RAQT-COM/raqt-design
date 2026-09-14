@@ -161,7 +161,52 @@ Assume the user is on a phone, mid-tournament, in a hurry.
   messages.
 - A filter shows its current state without being opened.
 
-## 10. Adding a screen
+## 10. States
+
+Adopted from `DESIGN.md` §4 rule 8, because this spec had a whole section on
+motion and nothing on states — and every control built against it was keyboard-
+unusable as a result.
+
+- An interactive thing is not done until it has **rest, hover, active,
+  `focus-visible`** and, where it can occur, **disabled**.
+- **Focus is never removed without a replacement.** `outline-none` with nothing
+  in its place is a defect, not a visual preference. One treatment, defined once
+  as `FOCUS` in `theme.ts`, used everywhere.
+- **If it has a press state, it is a control.** A `<div>` that scales on tap is
+  a button that forgot to say so — it cannot be reached, focused or activated
+  from a keyboard.
+- A thing that shows data is not done until it has **loaded, loading and
+  empty**.
+
+## 11. Surfaces and light
+
+Adopted from `DESIGN.md` §4 rule 3, which predicted a bug this spec shipped.
+
+- **A surface step separates a box from the box around it. It cannot carry
+  emphasis inside a box**, because on the light ground the surfaces converge.
+  Emphasis within a card comes from ink tier, weight, or the recessed step —
+  never from "raised".
+- Three levels is the whole ladder: recessed, surface, raised. A design needing
+  a fourth is too deep; flatten it.
+- **Anything portalled has to re-establish the ground.** The tokens are custom
+  properties set on `Screen`. A sheet, popover or dialog that portals to
+  `document.body` lands outside them and silently loses every colour.
+- Light does not create mode bugs, it reveals rule breaks that were already
+  there. Design on dark, check on light before calling it done.
+
+## 12. The marks
+
+Adopted from `DESIGN.md` §6 — the correct solution already existed and this
+spec was flipping the wordmark with a CSS filter instead.
+
+- The lockups are **masks, not pictures**. `logotype.png` is near-white artwork
+  on transparency; only the alpha carries the shape. Paint it from a token with
+  `mask-image`, and one file serves both grounds and inverts itself.
+- The mark takes the ink colour. Never green — a logo is not an action.
+- Neither file carries a margin. Until the brand ratifies a figure, leave the
+  cap height of the wordmark clear on all four sides.
+
+## 13. Adding a screen
 
 - **Render it as a `<Screen depth={n}>`.** That is what supplies the backdrop,
   the status bar and the footer. Never assemble those yourself — a screen should
@@ -192,6 +237,9 @@ Assume the user is on a phone, mid-tournament, in a hurry.
 - [ ] Could a user finish this task without typing?
 - [ ] Is the screen a `Screen`, with a `depth` that matches where it sits?
 - [ ] Does it hold up on both grounds, with nothing hardcoded that should flip?
+- [ ] Does every control have focus, hover and press — and is anything with a
+      press state actually a control?
+- [ ] Does anything portalled still have the ground?
 
 ## Open contradictions
 
@@ -210,5 +258,8 @@ The reference frames disagree. These need a decision, not a rule:
    Ellipsis, or drop it?
 6. **Screen margin.** The feed uses 10px, all three tournament screens use 15px.
    Two values is one too many.
-7. **Display face.** §2 asks for a face that echoes the wordmark; nothing has
+7. **Caption floor.** `DESIGN.md` sets one at 10px and says it exists because
+   designs kept landing below it and getting hand-written as raw px. This spec
+   uses 9px for "+ 12 online now". Raise it or argue for it.
+8. **Display face.** §2 asks for a face that echoes the wordmark; nothing has
    been chosen. Archivo is standing in. This is the largest remaining gap.

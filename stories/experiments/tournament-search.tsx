@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { SNAP } from "./motion";
 import { Screen } from "./screen";
+import { FOCUS } from "./theme";
 import type { Mode } from "./theme";
 import { NotificationBell } from "./tab-bar";
 
@@ -47,8 +48,9 @@ function StatusPill({ open }: { open: boolean }) {
 
 function TournamentCard({ t }: { t: Tournament }) {
   return (
-    <article
-      className="overflow-hidden rounded-[20px] bg-[var(--surface)] transition-transform duration-100 active:scale-[0.985]"
+    <button
+      type="button"
+      className={`block w-full overflow-hidden rounded-[20px] bg-[var(--surface)] text-left transition-transform duration-100 active:scale-[0.985] ${FOCUS}`}
       style={{ transitionTimingFunction: SNAP }}
     >
       <img src={t.image} alt="" className="h-[112px] w-full object-cover" />
@@ -74,7 +76,7 @@ function TournamentCard({ t }: { t: Tournament }) {
           </span>
         </div>
       </div>
-    </article>
+    </button>
   );
 }
 
@@ -93,7 +95,7 @@ function CountrySheet({
         type="button"
         aria-label="Dismiss"
         onClick={onClose}
-        className="absolute inset-0 bg-black/60"
+        className={`absolute inset-0 bg-black/60 ${FOCUS}`}
       />
       <div
         className="relative rounded-t-[24px] bg-[var(--recessed)] px-[15px] pt-[10px] pb-[22px]"
@@ -107,8 +109,10 @@ function CountrySheet({
               key={c}
               type="button"
               onClick={() => onPick(c)}
-              className={`flex w-full items-center justify-between rounded-[14px] px-[13px] py-[13px] text-left text-[15px] font-semibold transition-transform duration-100 active:scale-[0.98] ${
-                active ? "bg-[var(--surface)] text-[var(--ink)]" : "text-[var(--ink-dim)]"
+              className={`flex w-full items-center justify-between rounded-[14px] px-[13px] py-[13px] text-left text-[15px] font-semibold transition-transform duration-100 active:scale-[0.98] ${FOCUS} ${
+                active
+                  ? "bg-[var(--surface)] text-[var(--ink)]"
+                  : "text-[var(--ink-dim)] hover:text-[var(--ink)]"
               }`}
               style={{ transitionTimingFunction: SNAP }}
             >
@@ -161,7 +165,7 @@ export function TournamentSearch({
             type="button"
             aria-label="Back"
             onClick={onBack}
-            className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[var(--ink)] transition-transform duration-100 active:scale-[0.9]"
+            className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[var(--ink)] transition-transform duration-100 active:scale-[0.9] ${FOCUS}`}
             style={{ transitionTimingFunction: SNAP }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -178,7 +182,9 @@ export function TournamentSearch({
           Tournaments
         </h1>
 
-        <div className="mt-[18px] flex h-[46px] items-center gap-[9px] rounded-[14px] bg-[var(--recessed)] px-[13px]">
+        <div
+          className={`mt-[18px] flex h-[46px] items-center gap-[9px] rounded-[14px] bg-[var(--recessed)] px-[13px] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--green-ink)]`}
+        >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden>
             <circle cx="10.5" cy="10.5" r="7.5" stroke="var(--ink-dim)" strokeWidth="2.2" />
             <path d="m16.2 16.2 4.8 4.8" stroke="var(--ink-dim)" strokeWidth="2.2" strokeLinecap="round" />
@@ -196,7 +202,7 @@ export function TournamentSearch({
           <button
             type="button"
             onClick={() => setSheetOpen(true)}
-            className="flex h-[40px] min-w-0 flex-1 items-center justify-between rounded-[13px] bg-[var(--recessed)] px-[13px] transition-transform duration-100 active:scale-[0.97]"
+            className={`flex h-[40px] min-w-0 flex-1 items-center justify-between rounded-[13px] bg-[var(--recessed)] px-[13px] transition-transform duration-100 hover:bg-[var(--surface)] active:scale-[0.97] ${FOCUS}`}
             style={{ transitionTimingFunction: SNAP }}
           >
             <span className="truncate text-[11px] font-bold tracking-[0.04em] uppercase">
@@ -214,8 +220,10 @@ export function TournamentSearch({
                 key={s}
                 type="button"
                 onClick={() => setStatus(s)}
-                className={`h-full rounded-[10px] px-[12px] text-[11px] font-bold tracking-[0.04em] uppercase transition-transform duration-100 active:scale-[0.94] ${
-                  status === s ? "bg-[var(--raised)] text-[var(--ink)]" : "text-[var(--ink-dim)]"
+                className={`h-full rounded-[10px] px-[12px] text-[11px] font-bold tracking-[0.04em] uppercase transition-transform duration-100 active:scale-[0.94] ${FOCUS} ${
+                  status === s
+                    ? "bg-[var(--raised)] text-[var(--ink)]"
+                    : "text-[var(--ink-dim)] hover:text-[var(--ink)]"
                 }`}
                 style={{ transitionTimingFunction: SNAP }}
               >
