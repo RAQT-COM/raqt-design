@@ -6,23 +6,23 @@
    one replaces the host's entry for it and suppresses the host's own value, which
    would recolour their entire app. Those are retinted below instead. */
 @theme reference {
-  --color-warning: #FFA51F;
-  --color-warning-foreground: #04120C;
-  --color-success: #2BE07C;
-  --color-success-foreground: #04120C;
+  --color-warning: #FFC233;
+  --color-warning-foreground: #12140F;
+  --color-success: #4A7C6A;
+  --color-success-foreground: #FFFFFF;
   --color-info: #4FC3F7;
   --color-info-foreground: #06263A;
-  --color-surface-1: #0E211A;
-  --color-surface-2: #142E24;
-  --color-surface-3: #1B3329;
-  --color-status-upcoming: #142E24;
-  --color-status-upcoming-foreground: #8AA79A;
-  --color-status-live: #F04444;
+  --color-surface-1: #1A1E1B;
+  --color-surface-2: #242824;
+  --color-surface-3: #2E3330;
+  --color-status-upcoming: #242824;
+  --color-status-upcoming-foreground: #B8B3A7;
+  --color-status-live: #C4432F;
   --color-status-live-foreground: #FFFFFF;
-  --color-status-finished: #1B3329;
-  --color-status-finished-foreground: #B4C9BF;
-  --color-status-open: #08582D;
-  --color-status-open-foreground: #5BE79F;
+  --color-status-finished: #2E3330;
+  --color-status-finished-foreground: #B8B3A7;
+  --color-status-open: #0F281C;
+  --color-status-open-foreground: #8FB59A;
 }
 
 @utility shadow-e1 {
@@ -39,73 +39,78 @@
 
 @utility font-display {
   font-family: var(--font-display);
-  font-stretch: 115%;
-  letter-spacing: -0.01em;
+  font-stretch: 100%;
+  letter-spacing: -0.04em;
 }
 
 /* The scope. Custom properties declared on an element beat what it inherits, so
    `.raqt` always wins inside itself no matter what the host's `:root` says — and
-   changes nothing outside itself. That asymmetry is the whole retrofit story. */
-.raqt {
-  --color-background: #071410;
-  --color-foreground: #EAF5EF;
-  --color-card: #0E211A;
-  --color-card-foreground: #EAF5EF;
-  --color-popover: #0E211A;
-  --color-popover-foreground: #EAF5EF;
-  --color-primary: #2BE07C;
-  --color-primary-foreground: #04120C;
-  --color-secondary: #142E24;
-  --color-secondary-foreground: #EAF5EF;
-  --color-muted: #142E24;
-  --color-muted-foreground: #8AA79A;
-  --color-accent: #1B3329;
-  --color-accent-foreground: #EAF5EF;
-  --color-destructive: #F04444;
+   changes nothing outside itself. That asymmetry is the whole retrofit story.
+
+   Two product skins share boxing (type, radius, space) and ink. `.raqt` /
+   `.raqt.theme-player` is Sage (mobile). `.raqt.theme-referee` is linen/gold.
+   Add `light` alongside either for the paper mode the canvases actually use. */
+.raqt,
+.raqt.theme-player {
+  --color-background: #12140F;
+  --color-foreground: #EFECE4;
+  --color-card: #2E3330;
+  --color-card-foreground: #EFECE4;
+  --color-popover: #2E3330;
+  --color-popover-foreground: #EFECE4;
+  --color-primary: #4A7C6A;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #242824;
+  --color-secondary-foreground: #EFECE4;
+  --color-muted: #242824;
+  --color-muted-foreground: #B8B3A7;
+  --color-accent: #2E3330;
+  --color-accent-foreground: #EFECE4;
+  --color-destructive: #C4432F;
   --color-destructive-foreground: #FFFFFF;
-  --color-warning: #FFA51F;
-  --color-warning-foreground: #04120C;
-  --color-success: #2BE07C;
-  --color-success-foreground: #04120C;
+  --color-warning: #FFC233;
+  --color-warning-foreground: #12140F;
+  --color-success: #4A7C6A;
+  --color-success-foreground: #FFFFFF;
   --color-info: #4FC3F7;
   --color-info-foreground: #06263A;
-  --color-border: #1B3329;
-  --color-input: #2C5142;
-  --color-ring: #2BE07C;
-  --color-surface-1: #0E211A;
-  --color-surface-2: #142E24;
-  --color-surface-3: #1B3329;
-  --color-status-upcoming: #142E24;
-  --color-status-upcoming-foreground: #8AA79A;
-  --color-status-live: #F04444;
+  --color-border: #4A4F4B;
+  --color-input: #4A4F4B;
+  --color-ring: #4A7C6A;
+  --color-surface-1: #1A1E1B;
+  --color-surface-2: #242824;
+  --color-surface-3: #2E3330;
+  --color-status-upcoming: #242824;
+  --color-status-upcoming-foreground: #B8B3A7;
+  --color-status-live: #C4432F;
   --color-status-live-foreground: #FFFFFF;
-  --color-status-finished: #1B3329;
-  --color-status-finished-foreground: #B4C9BF;
-  --color-status-open: #08582D;
-  --color-status-open-foreground: #5BE79F;
+  --color-status-finished: #2E3330;
+  --color-status-finished-foreground: #B8B3A7;
+  --color-status-open: #0F281C;
+  --color-status-open-foreground: #8FB59A;
   --shadow-e1: none;
   --shadow-e2: none;
   --shadow-e3: none;
-  --background: #071410;
-  --foreground: #EAF5EF;
-  --card: #0E211A;
-  --card-foreground: #EAF5EF;
-  --popover: #0E211A;
-  --popover-foreground: #EAF5EF;
-  --primary: #2BE07C;
-  --primary-foreground: #04120C;
-  --secondary: #142E24;
-  --secondary-foreground: #EAF5EF;
-  --muted: #142E24;
-  --muted-foreground: #8AA79A;
-  --accent: #1B3329;
-  --accent-foreground: #EAF5EF;
-  --destructive: #F04444;
+  --background: #12140F;
+  --foreground: #EFECE4;
+  --card: #2E3330;
+  --card-foreground: #EFECE4;
+  --popover: #2E3330;
+  --popover-foreground: #EFECE4;
+  --primary: #4A7C6A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #242824;
+  --secondary-foreground: #EFECE4;
+  --muted: #242824;
+  --muted-foreground: #B8B3A7;
+  --accent: #2E3330;
+  --accent-foreground: #EFECE4;
+  --destructive: #C4432F;
   --destructive-foreground: #FFFFFF;
-  --border: #1B3329;
-  --input: #2C5142;
-  --ring: #2BE07C;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --border: #4A4F4B;
+  --input: #4A4F4B;
+  --ring: #4A7C6A;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
   --text-3xs: 0.625rem;
   --text-3xs--line-height: 0.875rem;
   --text-2xs: 0.6875rem;
@@ -132,63 +137,196 @@
   --radius-xl: 1.25rem;
   --radius-full: 9999px;
   --spacing: 0.25rem;
-  --font-display: "Archivo", "Archivo Expanded", ui-sans-serif, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --radius: 0.625rem;
 }
 
-/* Only what actually differs. A token absent here — `--color-primary`, `--color-ring`
-   — is one the contract holds identical across modes. */
 .raqt.light,
-.light .raqt {
-  --color-background: #F2F7F4;
-  --color-foreground: #071410;
+.light .raqt,
+.raqt.theme-player.light,
+.light .raqt.theme-player {
+  --color-background: #EFECE4;
+  --color-foreground: #2E3330;
   --color-card: #FFFFFF;
-  --color-card-foreground: #071410;
+  --color-card-foreground: #2E3330;
   --color-popover: #FFFFFF;
-  --color-popover-foreground: #071410;
-  --color-secondary: #DCE7E1;
-  --color-secondary-foreground: #071410;
-  --color-muted: #E7EFEA;
-  --color-muted-foreground: #5A736A;
-  --color-accent: #DCE7E1;
-  --color-accent-foreground: #071410;
-  --color-destructive: #C42A2A;
-  --color-warning: #D97F00;
-  --color-warning-foreground: #FFFFFF;
-  --color-success: #12A253;
-  --color-success-foreground: #FFFFFF;
+  --color-popover-foreground: #2E3330;
+  --color-secondary: #F4F2EC;
+  --color-secondary-foreground: #2E3330;
+  --color-muted: #E5E1D7;
+  --color-muted-foreground: #6E6B64;
+  --color-accent: #EEF2EE;
+  --color-accent-foreground: #4A7C6A;
+  --color-destructive: #A33828;
   --color-info: #1580B4;
   --color-info-foreground: #FFFFFF;
-  --color-border: #DCE7E1;
-  --color-input: #B4C9BF;
+  --color-border: #E5E1D7;
+  --color-input: #B8B3A7;
   --color-surface-1: #FFFFFF;
   --color-surface-2: #FFFFFF;
   --color-surface-3: #FFFFFF;
-  --color-status-upcoming: #E7EFEA;
-  --color-status-upcoming-foreground: #5A736A;
-  --color-status-live: #C42A2A;
-  --color-status-finished: #DCE7E1;
-  --color-status-finished-foreground: #5A736A;
-  --color-status-open: #C2F7DC;
-  --color-status-open-foreground: #08582D;
-  --shadow-e1: 0 1px 2px rgb(7 20 16 / 0.06);
-  --shadow-e2: 0 2px 8px rgb(7 20 16 / 0.08);
-  --shadow-e3: 0 8px 24px rgb(7 20 16 / 0.10);
-  --background: #F2F7F4;
-  --foreground: #071410;
+  --color-status-upcoming: #E5E1D7;
+  --color-status-upcoming-foreground: #6E6B64;
+  --color-status-finished: #D9D5CB;
+  --color-status-finished-foreground: #6E6B64;
+  --color-status-open: #E7EFE9;
+  --color-status-open-foreground: #123321;
+  --shadow-e1: 0 1px 6px rgb(46 51 48 / 0.05);
+  --shadow-e2: 0 2px 10px rgb(46 51 48 / 0.06);
+  --shadow-e3: 0 8px 24px rgb(46 51 48 / 0.12);
+  --background: #EFECE4;
+  --foreground: #2E3330;
   --card: #FFFFFF;
-  --card-foreground: #071410;
+  --card-foreground: #2E3330;
   --popover: #FFFFFF;
-  --popover-foreground: #071410;
-  --secondary: #DCE7E1;
-  --secondary-foreground: #071410;
-  --muted: #E7EFEA;
-  --muted-foreground: #5A736A;
-  --accent: #DCE7E1;
-  --accent-foreground: #071410;
-  --destructive: #C42A2A;
-  --border: #DCE7E1;
-  --input: #B4C9BF;
+  --popover-foreground: #2E3330;
+  --secondary: #F4F2EC;
+  --secondary-foreground: #2E3330;
+  --muted: #E5E1D7;
+  --muted-foreground: #6E6B64;
+  --accent: #EEF2EE;
+  --accent-foreground: #4A7C6A;
+  --destructive: #A33828;
+  --border: #E5E1D7;
+  --input: #B8B3A7;
+}
+
+.raqt.theme-referee {
+  --color-background: #12140F;
+  --color-foreground: #EFECE4;
+  --color-card: #2E3330;
+  --color-card-foreground: #EFECE4;
+  --color-popover: #2E3330;
+  --color-popover-foreground: #EFECE4;
+  --color-primary: #A9752C;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #242824;
+  --color-secondary-foreground: #EFECE4;
+  --color-muted: #242824;
+  --color-muted-foreground: #B8B3A7;
+  --color-accent: #2E3330;
+  --color-accent-foreground: #EFECE4;
+  --color-destructive: #C4432F;
+  --color-destructive-foreground: #FFFFFF;
+  --color-warning: #FFC233;
+  --color-warning-foreground: #12140F;
+  --color-success: #A9752C;
+  --color-success-foreground: #FFFFFF;
+  --color-info: #4FC3F7;
+  --color-info-foreground: #06263A;
+  --color-border: #4A4F4B;
+  --color-input: #4A4F4B;
+  --color-ring: #A9752C;
+  --color-surface-1: #1A1E1B;
+  --color-surface-2: #242824;
+  --color-surface-3: #2E3330;
+  --color-status-upcoming: #242824;
+  --color-status-upcoming-foreground: #B8B3A7;
+  --color-status-live: #C4432F;
+  --color-status-live-foreground: #FFFFFF;
+  --color-status-finished: #2E3330;
+  --color-status-finished-foreground: #B8B3A7;
+  --color-status-open: #3A280E;
+  --color-status-open-foreground: #E0BD83;
+  --shadow-e1: none;
+  --shadow-e2: none;
+  --shadow-e3: none;
+  --background: #12140F;
+  --foreground: #EFECE4;
+  --card: #2E3330;
+  --card-foreground: #EFECE4;
+  --popover: #2E3330;
+  --popover-foreground: #EFECE4;
+  --primary: #A9752C;
+  --primary-foreground: #FFFFFF;
+  --secondary: #242824;
+  --secondary-foreground: #EFECE4;
+  --muted: #242824;
+  --muted-foreground: #B8B3A7;
+  --accent: #2E3330;
+  --accent-foreground: #EFECE4;
+  --destructive: #C4432F;
+  --destructive-foreground: #FFFFFF;
+  --border: #4A4F4B;
+  --input: #4A4F4B;
+  --ring: #A9752C;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --text-3xs: 0.625rem;
+  --text-3xs--line-height: 0.875rem;
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 0.875rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 2.125rem;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 2.5rem;
+  --text-4xl: 3rem;
+  --text-4xl--line-height: 3.125rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+  --spacing: 0.25rem;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --radius: 0.625rem;
+}
+
+.raqt.theme-referee.light,
+.light .raqt.theme-referee {
+  --color-background: #EFECE4;
+  --color-foreground: #2E3330;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #2E3330;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #2E3330;
+  --color-secondary: #F4F2EC;
+  --color-secondary-foreground: #2E3330;
+  --color-muted: #E5E1D7;
+  --color-muted-foreground: #6E6B64;
+  --color-accent: #F3E9D8;
+  --color-accent-foreground: #A9752C;
+  --color-destructive: #A33828;
+  --color-info: #1580B4;
+  --color-info-foreground: #FFFFFF;
+  --color-border: #E5E1D7;
+  --color-input: #B8B3A7;
+  --color-surface-1: #FFFFFF;
+  --color-surface-2: #FFFFFF;
+  --color-surface-3: #FFFFFF;
+  --color-status-upcoming: #E5E1D7;
+  --color-status-upcoming-foreground: #6E6B64;
+  --color-status-finished: #D9D5CB;
+  --color-status-finished-foreground: #6E6B64;
+  --color-status-open: #EDD9B8;
+  --color-status-open-foreground: #5C4016;
+  --shadow-e1: 0 1px 6px rgb(46 51 48 / 0.05);
+  --shadow-e2: 0 2px 10px rgb(46 51 48 / 0.06);
+  --shadow-e3: 0 8px 24px rgb(46 51 48 / 0.12);
+  --background: #EFECE4;
+  --foreground: #2E3330;
+  --card: #FFFFFF;
+  --card-foreground: #2E3330;
+  --popover: #FFFFFF;
+  --popover-foreground: #2E3330;
+  --secondary: #F4F2EC;
+  --secondary-foreground: #2E3330;
+  --muted: #E5E1D7;
+  --muted-foreground: #6E6B64;
+  --accent: #F3E9D8;
+  --accent-foreground: #A9752C;
+  --destructive: #A33828;
+  --border: #E5E1D7;
+  --input: #B8B3A7;
 }
 
 @layer base {

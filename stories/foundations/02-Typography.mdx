@@ -15,19 +15,18 @@ import {
 
 # Typography
 
-Two families, one scale, and a hard line between them.
+Two families, one scale, and a hard line between them. Shared across Player and
+Referee — this is boxing, not brand.
 
-- **Inter** carries everything you read — `--text-lg` and below.
-- **Archivo** carries everything you scan — `--text-xl` and above. Archivo is a
-  variable font, and Raqt uses it stretched — <code>font-stretch: {typography.display.stretch}</code>
-  and <code>letter-spacing: {typography.display.tracking}</code>. That width is
-  what makes a scoreline look like a scoreboard.
+- **Figtree** carries everything you read — `--text-lg` and below.
+- **Space Grotesk** carries everything you scan — `--text-xl` and above, with
+  <code>letter-spacing: {typography.display.tracking}</code>. That tracking is
+  what the canvases use on the RAQT wordmark and scores.
 
 <Rule>
-  **`font-display` is a utility, not a family.** It sets family, width and
-  tracking together, so nothing can take Archivo without also taking the stretch.
-  Applying `font-family: Archivo` by hand gives you Archivo at 100% width, which
-  is a different typeface from the one Raqt uses.
+  **`font-display` is a utility, not a family.** It sets family and tracking
+  together, so nothing can take Space Grotesk without also taking the canvas
+  tracking. Applying `font-family: Space Grotesk` by hand misses the tracking.
 </Rule>
 
 ## The scale
@@ -35,7 +34,7 @@ Two families, one scale, and a hard line between them.
 Every step rendered at size. Sizes come from the token contract; the `rem` value
 is the token, the `px` is what it resolves to at a 16px root.
 
-<ModeFrame mode="dark">
+<ModeFrame mode="light">
   <TypeSpecimen
     step="4xl"
     size={typography.scale["4xl"].size}
@@ -118,10 +117,10 @@ is the token, the `px` is what it resolves to at a 16px root.
 
 ## The two families side by side
 
-The same line at `--text-2xl`, once in each family. The display face is wider and
-tighter; that difference is the point of having two.
+The same line at `--text-2xl`, once in each family. The display face is tighter;
+that difference is the point of having two.
 
-<ModeFrame mode="dark">
+<ModeFrame mode="light">
   <p className="text-2xl font-display">Nilsson / Berg — 6–4 4–6 11–9</p>
   <p className="text-2xl">Nilsson / Berg — 6–4 4–6 11–9</p>
   <div className="mt-3 font-mono text-xs opacity-60">
@@ -136,6 +135,6 @@ Both load from Google Fonts as variable fonts.
 - `--font-sans` — <code>{typography.fonts.sans}</code>
 - `--font-display` — <code>{typography.fonts.display}</code>
 
-Weight is not a token: Inter is loaded across `400..700` and Archivo across
-`400..800`, and components pick from that range with Tailwind's stock `font-*`
-utilities. If a weight ever needs to *mean* something, it becomes a token first.
+Weight is not a token: Figtree and Space Grotesk load across `400..700`, and
+components pick from that range with Tailwind's stock `font-*` utilities. If a
+weight ever needs to *mean* something, it becomes a token first.

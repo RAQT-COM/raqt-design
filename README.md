@@ -1,9 +1,10 @@
 # raqt-design
 
 The Raqt design system — tokens plus the rules for building with them — and a
-nine-component library built on it. Dark-default, green-grounded, distributed to
-other repos over a [shadcn registry](https://ui.shadcn.com/docs/registry) that
-serves the rules alongside the components.
+nine-component library built on it. Two product skins (Player Sage, Referee
+gold) share paper/charcoal boxing and travel to other repos over a [shadcn
+registry](https://ui.shadcn.com/docs/registry) that serves the rules alongside
+the components.
 
 - [`DESIGN.md`](DESIGN.md) — the design language. Hand this to an agent, or pull
   it into a repo as a skill with
@@ -101,13 +102,16 @@ of yours still wins, and it reaches nothing outside `.raqt`.
 
 ### 4. Light mode
 
-Dark is the default. Add `light` alongside the scope for a light surface:
+Dark is derived. Add `light` alongside the scope for the paper surface the
+canvases use:
 
 ```tsx
 <div className="raqt light">…</div>
+<div className="raqt theme-referee light">…</div>
 ```
 
-`--color-primary` and `--color-ring` hold the same value in both modes.
+`--color-primary` holds the same value in both modes (Sage on Player, gold on
+Referee). `.raqt` without a `theme-*` class is Player.
 
 ### 5. Teach your agent the rules
 
@@ -132,7 +136,8 @@ not want any.
 
 Radix portals to `document.body`, which is outside your `.raqt` element, so a
 dialog would otherwise render in your app's palette. `DialogContent` takes a
-`scope` prop that re-establishes it — `"raqt"` by default, `"raqt light"` in a
+`scope` prop that re-establishes it — `"raqt"` by default, `"raqt light"` or
+`"raqt theme-referee light"` in a light-mode host.
 light-mode host. Anything else you portal needs the same treatment; see
 `DESIGN.md` rule 10.
 

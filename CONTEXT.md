@@ -36,11 +36,18 @@ system and the component library.
 Changing a value here changes it everywhere; changing a *name* is a
 renegotiation.
 
-**tokens** — `tokens/source/*.json`. The authored source, in two layers:
-primitives (the raw ramps) referenced by semantics (the only layer components
-touch).
+**tokens** — `tokens/source/*.json`. The authored source: shared primitives
+(`ink`, status ramps), per-product `themes/player.json` and `themes/referee.json`
+(`brand`), and semantics (the only layer components touch).
+
+**Player** — the Sage product theme. `.raqt` / `.raqt.theme-player`. Harvested
+from `raqt-mobile-design`.
+
+**Referee** — the gold product theme. `.raqt.theme-referee`. Harvested from
+`raqt-referee-design`. Same boxing as Player; different `primary`.
 
 **theme** — the emitted CSS, `tokens/dist/theme.css`, shipped as a registry item.
+Paints `.raqt` / `.raqt.theme-player` (Sage) and `.raqt.theme-referee` (gold).
 *The theme crosses the boundary; the tokens stay here.*
 
 ## Where it is seen

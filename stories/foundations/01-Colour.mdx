@@ -1,12 +1,13 @@
 import { Meta } from "@storybook/addon-docs/blocks";
 
-import { primitives } from "@/tokens/dist/tokens";
+import { themes } from "@/tokens/dist/tokens";
 
 import {
   COLOUR_GROUPS,
   ContrastTable,
   FoundationsStyles,
   ModeFrame,
+  PRODUCT_THEMES,
   Ramp,
   Rule,
   SwatchGroup,
@@ -20,12 +21,12 @@ import {
 
 # Colour
 
-Raqt is **green-grounded**, not grey with a green accent. The neutral ramp is
-tinted green all the way down, so a dark screen reads as turf rather than as
-charcoal.
+Two product themes share **paper, linen and charcoal**. They split only on
+`primary`: Sage for the player app, gold for the referee tool. Harvested from
+the approved Claude Design canvases, not invented here.
 
-Dark is the default mode. Light is derived from it. **`primary` holds the same
-value in both** — the brand green is the one colour that never moves.
+Light is what those canvases are. Dark is derived. **`primary` holds the same
+value in both modes.**
 
 <Rule>
 
@@ -35,17 +36,39 @@ value in both** — the brand green is the one colour that never moves.
 
 </Rule>
 
-## The semantic layer
+## Player — Sage
 
-The only layer components touch. Names match shadcn's, so `shadcn add` output
-works against Raqt with no rewiring; the Raqt-only additions sit alongside and
-never rename shadcn's.
+From `raqt-mobile-design`: *RAQT Palettes* (Sage marked current) and *RAQT Player
+Profile*. Scope: `.raqt` or `.raqt.theme-player`.
 
 {COLOUR_GROUPS.map((group) => (
-  <section key={group.title}>
+  <section key={`player-${group.title}`}>
     <h3>{group.title}</h3>
     <p>{group.blurb}</p>
-    <TwoUp render={(mode) => <SwatchGroup tokens={group.tokens} mode={mode} />} />
+    <TwoUp
+      product="player"
+      render={(mode) => (
+        <SwatchGroup tokens={group.tokens} mode={mode} product="player" />
+      )}
+    />
+  </section>
+))}
+
+## Referee — gold
+
+From `raqt-referee-design`: *RAQT Referee*. Same semantic names, gold instead of
+sage. Scope: `.raqt.theme-referee`.
+
+{COLOUR_GROUPS.map((group) => (
+  <section key={`referee-${group.title}`}>
+    <h3>{group.title}</h3>
+    <p>{group.blurb}</p>
+    <TwoUp
+      product="referee"
+      render={(mode) => (
+        <SwatchGroup tokens={group.tokens} mode={mode} product="referee" />
+      )}
+    />
   </section>
 ))}
 
@@ -69,18 +92,27 @@ large** means the pair is only safe at display sizes or on non-text elements.
 The `X` / `X-foreground` pairs are discovered from the token names, so a new pair
 in the contract appears here on its own.
 
-<TwoUp render={(mode) => <ContrastTable mode={mode} />} />
+{PRODUCT_THEMES.map((product) => (
+  <section key={`contrast-${product}`}>
+    <h3>{product === "player" ? "Player" : "Referee"}</h3>
+    <TwoUp
+      product={product}
+      render={(mode) => <ContrastTable mode={mode} product={product} />}
+    />
+  </section>
+))}
 
 ## The primitive ramps
 
 Raw values. **Components never reference these** — they are here so the ramps can
 be seen, and because the semantic layer is easier to trust once you can see what
-it was chosen from.
+it was chosen from. Ink, red, amber and blue are shared; `brand` is the split.
 
-<ModeFrame mode="dark">
-  <Ramp name="green — the brand ramp. 400 is the brand green." steps={primitives.color.green} />
-  <Ramp name="ink — the green-tinted neutral. Lower number is lighter." steps={primitives.color.ink} />
-  <Ramp name="red — destructive, and a live match" steps={primitives.color.red} />
-  <Ramp name="amber — warning" steps={primitives.color.amber} />
-  <Ramp name="blue — info" steps={primitives.color.blue} />
+<ModeFrame mode="light">
+  <Ramp name="ink — paper, linen, charcoal. Shared. Lower number is lighter." steps={themes.player.primitives.color.ink} />
+  <Ramp name="brand — Player Sage. 400 is primary." steps={themes.player.primitives.color.brand} />
+  <Ramp name="brand — Referee gold. 400 is primary." steps={themes.referee.primitives.color.brand} />
+  <Ramp name="red — live match (#C4432F) and destructive" steps={themes.player.primitives.color.red} />
+  <Ramp name="amber — sun / warning" steps={themes.player.primitives.color.amber} />
+  <Ramp name="blue — info" steps={themes.player.primitives.color.blue} />
 </ModeFrame>

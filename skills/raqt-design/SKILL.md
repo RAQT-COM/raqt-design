@@ -109,7 +109,7 @@ theme. Never write the hex.
 
 | token | for |
 |---|---|
-| `primary` / `primary-foreground` | the one most important action; brand green, identical in both modes |
+| `primary` / `primary-foreground` | the one most important action; Sage on Player, gold on Referee; identical in both modes |
 | `secondary` / `secondary-foreground` | the alternative action |
 | `accent` / `accent-foreground` | hover and tertiary emphasis |
 | `card` / `card-foreground`, `popover` / `popover-foreground` | shadcn compatibility; prefer `surface-N` for elevation |
@@ -134,8 +134,17 @@ a `-foreground`. A match's state is a domain fact, not a severity.
 
 ### Type, radius, spacing
 
-`--text-xs` … `--text-4xl` · `--radius-sm|md|lg|xl` · `--spacing` (`0.25rem`,
-Tailwind generates the rest) · the `font-display` and `shadow-e*` utilities.
+`--text-3xs` … `--text-4xl` · `--radius-sm|md|lg|xl|full` · `--spacing`
+(`0.25rem`, Tailwind generates the rest) · the `font-display` and `shadow-e*`
+utilities.
+
+`--text-2xs` (11px) and `--text-3xs` (10px) are the caption floor, for mobile
+chrome the reading scale cannot carry: timeline stamps, seed numbers, avatar
+initials, bracket-stage labels. `3xs` takes uppercase micro-labels only —
+anything read as a sentence starts at `sm`. `--radius-full` is the pill:
+avatars, count bubbles, status dots. Write the token, never `999px`.
+
+---
 
 ## Rules for inventing
 
@@ -175,11 +184,10 @@ looked flat is a lie the interface tells. Match state has its own four tokens
 because it is a domain fact: a live match is `status-live`, never `destructive`.
 
 **6 · Scan sizes and read sizes are different faces.** `--text-xl` and above are
-display type — Archivo, stretched, applied with the `font-display` utility.
-Scores, names, headings; things the eye lands on. `--text-lg` and below are
-Inter, for anything read as a sentence. Never apply the Archivo family by hand:
-`font-display` sets family, width and tracking together, and the family alone is
-a different typeface.
+display type — Space Grotesk, applied with the `font-display` utility. Scores,
+names, headings; things the eye lands on. `--text-lg` and below are Figtree, for
+anything read as a sentence. Never apply the Space Grotesk family by hand:
+`font-display` sets family and tracking together.
 
 **7 · Spacing comes off the scale.** `--spacing` is `0.25rem` and Tailwind
 generates the rungs. Use `2` inside a control, `3`–`4` for control padding, `4`–`6`
@@ -199,19 +207,20 @@ theme restores it for every enabled `button` and `[role="button"]` in the scope.
 Write `cursor-pointer` only for something clickable that is *not* a button — an
 interactive `card` is the one in this library.
 
-**9 · Dark is the truth, light is the check.** Design in dark — it is the default
-and it is what most of Raqt's users see. Then flip to light before calling it
-done. Almost every mode bug is one of the rules above already broken: a hardcoded
-colour, a surface without its border, an elevation without its shadow. The flip
-does not create those bugs, it reveals them.
+**9 · Light is the canvas, dark is the check.** The approved screens are paper.
+Flip to dark before calling a component done. Almost every mode bug is one of
+the rules above already broken: a hardcoded colour, a surface without its
+border, an elevation without its shadow. The flip does not create those bugs,
+it reveals them.
 
 **10 · Anything portalled has to re-enter the scope.** The theme is a `.raqt`
 class, and custom properties inherit down the DOM. A dialog, popover, tooltip or
 dropdown that portals to `document.body` lands **outside** the scope and picks up
 the host app's palette instead. Re-establish it inside the portal on a
 `display: contents` wrapper (`<div className="contents raqt">`), and carry the
-mode explicitly — the portal left its ancestry behind, so a light-mode host needs
-`"raqt light"`. `dialog` does this already; copy it rather than rediscovering it.
+mode explicitly — the portal left its ancestry behind, so a light-mode referee
+host needs `"raqt theme-referee light"`. `dialog` does this already; copy it
+rather than rediscovering it.
 
 ### When the rules do not cover it
 
@@ -222,6 +231,8 @@ than a quiet one.
 
 Inventing a value locally is how a design system dies: not in one bad decision,
 but in fifty small ones nobody had to defend.
+
+---
 
 ## Iconography
 
@@ -258,6 +269,8 @@ icon beside a label repeats the label, so it is hidden from the accessibility
 tree. An icon-only `button` (`size="icon"`) carries an `sr-only` label, as
 `dialog`'s close does. And never let the glyph be the only carrier — status is
 colour *and* glyph *and* text, because any one of the three fails for somebody.
+
+---
 
 ## The marks
 
@@ -306,9 +319,8 @@ ground, and is drawn by iOS, Android and the browser tab — none of which know
 what `.raqt` is. It is a picture; do not try to token-drive it.
 
 > **Open, and deliberately not decided here.** The icon's charcoal is `#2B2F30`,
-> a neutral. The system's near-black is `#071410`, green-tinted ink, and that is
-> what the masked marks resolve to in light mode. They read as the same colour
-> alone and visibly differ side by side, and no token names the charcoal. Either
-> the icon moves onto the ink or the charcoal earns a `brand-*` primitive — a
-> contract change either way, which is why it is written down rather than fixed
-> quietly.
+> a neutral. The system's charcoal is `#2E3330` (`ink.700`), and they read as
+> nearly the same colour alone and visibly differ side by side, and no token
+> names the icon's charcoal. Either the icon moves onto `ink.700` or that hex
+> earns a primitive — a contract change either way, which is why it is written
+> down rather than fixed quietly.

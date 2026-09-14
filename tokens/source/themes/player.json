@@ -1,0 +1,18 @@
+{
+  "_comment": "Player brand ramp — Sage, marked current in raqt-mobile-design/RAQT Palettes.dc.html and used by RAQT Player Profile.dc.html. Overlays primitives.json as color.brand.",
+  "color": {
+    "brand": {
+      "50": "#EEF2EE",
+      "100": "#E7EFE9",
+      "200": "#B8D2C4",
+      "300": "#8FB59A",
+      "400": "#4A7C6A",
+      "500": "#3D6658",
+      "600": "#2F5247",
+      "700": "#123321",
+      "800": "#0F281C",
+      "900": "#0A1C14",
+      "950": "#06110C"
+    }
+  }
+}

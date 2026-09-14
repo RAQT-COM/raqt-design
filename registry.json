@@ -7,7 +7,7 @@
       "name": "theme",
       "type": "registry:file",
       "title": "Raqt theme",
-      "description": "The Raqt design tokens as one CSS file: colour, typography, spacing, radius and elevation. Paints the `.raqt` class and nothing else, so it retints only what is inside a `<div className=\"raqt\">` and leaves the rest of the host app untouched. Add `light` alongside it for the light mode (`className=\"raqt light\"`); dark is the default. Import it once, after the app's own stylesheet. Every Raqt component depends on this item.",
+      "description": "The Raqt design tokens as one CSS file: colour, typography, spacing, radius and elevation. Paints `.raqt` (Player, Sage) and `.raqt.theme-referee` (gold) and nothing else, so it retints only what is inside that subtree and leaves the rest of the host app untouched. Add `light` alongside either for the paper mode the canvases use (`className=\"raqt light\"` or `className=\"raqt theme-referee light\"`). Import it once, after the app's own stylesheet. Every Raqt component depends on this item.",
       "files": [
         {
           "path": "tokens/dist/theme.css",

@@ -2,61 +2,61 @@
   "_comment": "Layer 2 — the only layer components touch. {color.x.y} resolves against primitives.json. Every colour/shadow token carries both modes; identical pairs emit once (dark block) and are absent from the light block, which is how `--color-primary is the same in both modes` is visible in the output.",
 
   "color": {
-    "background":             { "dark": "{color.ink.900}",  "light": "{color.ink.25}" },
-    "foreground":             { "dark": "{color.ink.50}",   "light": "{color.ink.900}" },
-    "card":                   { "dark": "{color.ink.800}",  "light": "{color.white}" },
-    "card-foreground":        { "dark": "{color.ink.50}",   "light": "{color.ink.900}" },
-    "popover":                { "dark": "{color.ink.800}",  "light": "{color.white}" },
-    "popover-foreground":     { "dark": "{color.ink.50}",   "light": "{color.ink.900}" },
-    "primary":                { "dark": "{color.green.400}", "light": "{color.green.400}" },
-    "primary-foreground":     { "dark": "{color.green.950}", "light": "{color.green.950}" },
-    "secondary":              { "dark": "{color.ink.750}",  "light": "{color.ink.100}" },
-    "secondary-foreground":   { "dark": "{color.ink.50}",   "light": "{color.ink.900}" },
-    "muted":                  { "dark": "{color.ink.750}",  "light": "{color.ink.75}" },
+    "background":             { "dark": "{color.ink.900}",  "light": "{color.ink.50}" },
+    "foreground":             { "dark": "{color.ink.50}",   "light": "{color.ink.700}" },
+    "card":                   { "dark": "{color.ink.700}",  "light": "{color.white}" },
+    "card-foreground":        { "dark": "{color.ink.50}",   "light": "{color.ink.700}" },
+    "popover":                { "dark": "{color.ink.700}",  "light": "{color.white}" },
+    "popover-foreground":     { "dark": "{color.ink.50}",   "light": "{color.ink.700}" },
+    "primary":                { "dark": "{color.brand.400}", "light": "{color.brand.400}" },
+    "primary-foreground":     { "dark": "{color.white}",     "light": "{color.white}" },
+    "secondary":              { "dark": "{color.ink.750}",  "light": "{color.ink.75}" },
+    "secondary-foreground":   { "dark": "{color.ink.50}",   "light": "{color.ink.700}" },
+    "muted":                  { "dark": "{color.ink.750}",  "light": "{color.ink.100}" },
     "muted-foreground":       { "dark": "{color.ink.300}",  "light": "{color.ink.500}" },
-    "accent":                 { "dark": "{color.ink.700}",  "light": "{color.ink.100}" },
-    "accent-foreground":      { "dark": "{color.ink.50}",   "light": "{color.ink.900}" },
+    "accent":                 { "dark": "{color.ink.700}",  "light": "{color.brand.50}" },
+    "accent-foreground":      { "dark": "{color.ink.50}",   "light": "{color.brand.400}" },
     "destructive":            { "dark": "{color.red.500}",  "light": "{color.red.600}" },
     "destructive-foreground": { "dark": "{color.white}",    "light": "{color.white}" },
-    "warning":                { "dark": "{color.amber.500}", "light": "{color.amber.600}" },
-    "warning-foreground":     { "dark": "{color.green.950}", "light": "{color.white}" },
-    "success":                { "dark": "{color.green.400}", "light": "{color.green.600}" },
-    "success-foreground":     { "dark": "{color.green.950}", "light": "{color.white}" },
+    "warning":                { "dark": "{color.amber.400}", "light": "{color.amber.400}" },
+    "warning-foreground":     { "dark": "{color.ink.900}",   "light": "{color.ink.900}" },
+    "success":                { "dark": "{color.brand.400}", "light": "{color.brand.400}" },
+    "success-foreground":     { "dark": "{color.white}",     "light": "{color.white}" },
     "info":                   { "dark": "{color.blue.400}", "light": "{color.blue.600}" },
     "info-foreground":        { "dark": "{color.blue.900}", "light": "{color.white}" },
-    "border":                 { "dark": "{color.ink.700}",  "light": "{color.ink.100}" },
-    "input":                  { "dark": "{color.ink.600}",  "light": "{color.ink.200}" },
-    "ring":                   { "dark": "{color.green.400}", "light": "{color.green.400}" },
+    "border":                 { "dark": "{color.ink.600}",  "light": "{color.ink.100}" },
+    "input":                  { "dark": "{color.ink.600}",  "light": "{color.ink.300}" },
+    "ring":                   { "dark": "{color.brand.400}", "light": "{color.brand.400}" },
 
     "surface-1":              { "dark": "{color.ink.800}",  "light": "{color.white}" },
     "surface-2":              { "dark": "{color.ink.750}",  "light": "{color.white}" },
     "surface-3":              { "dark": "{color.ink.700}",  "light": "{color.white}" },
 
-    "status-upcoming":              { "dark": "{color.ink.750}",   "light": "{color.ink.75}" },
+    "status-upcoming":              { "dark": "{color.ink.750}",   "light": "{color.ink.100}" },
     "status-upcoming-foreground":   { "dark": "{color.ink.300}",   "light": "{color.ink.500}" },
-    "status-live":                  { "dark": "{color.red.500}",   "light": "{color.red.600}" },
+    "status-live":                  { "dark": "{color.red.500}",   "light": "{color.red.500}" },
     "status-live-foreground":       { "dark": "{color.white}",     "light": "{color.white}" },
-    "status-finished":              { "dark": "{color.ink.700}",   "light": "{color.ink.100}" },
-    "status-finished-foreground":   { "dark": "{color.ink.200}",   "light": "{color.ink.500}" },
-    "status-open":                  { "dark": "{color.green.800}", "light": "{color.green.100}" },
-    "status-open-foreground":       { "dark": "{color.green.300}", "light": "{color.green.800}" }
+    "status-finished":              { "dark": "{color.ink.700}",   "light": "{color.ink.200}" },
+    "status-finished-foreground":   { "dark": "{color.ink.300}",   "light": "{color.ink.500}" },
+    "status-open":                  { "dark": "{color.brand.800}", "light": "{color.brand.100}" },
+    "status-open-foreground":       { "dark": "{color.brand.300}", "light": "{color.brand.700}" }
   },
 
   "shadow": {
-    "e1": { "dark": "none", "light": "0 1px 2px rgb(7 20 16 / 0.06)" },
-    "e2": { "dark": "none", "light": "0 2px 8px rgb(7 20 16 / 0.08)" },
-    "e3": { "dark": "none", "light": "0 8px 24px rgb(7 20 16 / 0.10)" }
+    "e1": { "dark": "none", "light": "0 1px 6px rgb(46 51 48 / 0.05)" },
+    "e2": { "dark": "none", "light": "0 2px 10px rgb(46 51 48 / 0.06)" },
+    "e3": { "dark": "none", "light": "0 8px 24px rgb(46 51 48 / 0.12)" }
   },
 
   "font": {
-    "sans": "\"Inter\", ui-sans-serif, system-ui, sans-serif",
-    "display": "\"Archivo\", \"Archivo Expanded\", ui-sans-serif, sans-serif"
+    "sans": "\"Figtree\", ui-sans-serif, system-ui, sans-serif",
+    "display": "\"Space Grotesk\", ui-sans-serif, system-ui, sans-serif"
   },
 
   "display": {
-    "_comment": "Applied together by the .font-display utility so no lane can take the family without the width.",
-    "stretch": "115%",
-    "tracking": "-0.01em"
+    "_comment": "Applied together by the .font-display utility so no lane can take Space Grotesk without the canvas tracking. Stretch is 100% — this face has no wdth axis.",
+    "stretch": "100%",
+    "tracking": "-0.04em"
   },
 
   "text": {

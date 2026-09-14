@@ -11,7 +11,7 @@
 
 :root.light,
 .light {
-  --shadow-e1: 0 1px 2px rgb(7 20 16 / 0.06);
-  --shadow-e2: 0 2px 8px rgb(7 20 16 / 0.08);
-  --shadow-e3: 0 8px 24px rgb(7 20 16 / 0.10);
+  --shadow-e1: 0 1px 6px rgb(46 51 48 / 0.05);
+  --shadow-e2: 0 2px 10px rgb(46 51 48 / 0.06);
+  --shadow-e3: 0 8px 24px rgb(46 51 48 / 0.12);
 }

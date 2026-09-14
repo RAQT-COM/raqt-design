@@ -65,13 +65,17 @@ import {
   radius,
   spacing,
   typography,
+  themes,
+  type ThemeId,
 } from "@/tokens/dist/tokens";
 
 /* ------------------------------------------------------------------ modes */
 
 export type Mode = "dark" | "light";
+export type ProductTheme = ThemeId;
 
 export const MODES: readonly Mode[] = ["dark", "light"];
+export const PRODUCT_THEMES: readonly ProductTheme[] = ["player", "referee"];
 
 /**
  * A panel painted in one mode. Uses the real `.raqt` scope from `theme.css` —
@@ -80,21 +84,24 @@ export const MODES: readonly Mode[] = ["dark", "light"];
  */
 export function ModeFrame({
   mode,
+  product = "player",
   children,
   className = "",
   style,
 }: {
   mode: Mode;
+  product?: ProductTheme;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
 }) {
+  const themeClass = product === "referee" ? "theme-referee" : "theme-player";
   return (
     <div
       className={
-        (mode === "dark" ? "raqt" : "raqt light") +
-        " sb-unstyled bg-background text-foreground rounded-lg border border-border p-4 " +
-        className
+        ["raqt", themeClass, mode === "light" ? "light" : "", "sb-unstyled bg-background text-foreground rounded-lg border border-border p-4", className]
+          .filter(Boolean)
+          .join(" ")
       }
       style={style}
     >
@@ -104,13 +111,21 @@ export function ModeFrame({
 }
 
 /** The two modes side by side, each labelled. `render` is called once per mode. */
-export function TwoUp({ render }: { render: (mode: Mode) => ReactNode }) {
+export function TwoUp({
+  product = "player",
+  render,
+}: {
+  product?: ProductTheme;
+  render: (mode: Mode) => ReactNode;
+}) {
   return (
     <div className="sb-unstyled mt-3 mb-8 grid gap-4 sm:grid-cols-2">
       {MODES.map((mode) => (
         <div key={mode}>
           <ModeLabel mode={mode} />
-          <ModeFrame mode={mode}>{render(mode)}</ModeFrame>
+          <ModeFrame mode={mode} product={product}>
+            {render(mode)}
+          </ModeFrame>
         </div>
       ))}
     </div>
@@ -120,19 +135,23 @@ export function TwoUp({ render }: { render: (mode: Mode) => ReactNode }) {
 function ModeLabel({ mode }: { mode: Mode }) {
   return (
     <p className="mb-2 font-mono text-xs uppercase tracking-widest opacity-60">
-      {mode === "dark" ? "dark — default" : "light — derived"}
+      {mode === "dark" ? "dark — derived" : "light — canvas"}
     </p>
   );
 }
 
 /* ------------------------------------------------------------------ colour */
 
-type SemanticToken = (typeof semanticColors)[number];
+type SemanticToken = { name: string; dark: string; light: string };
+
+function colorsFor(product: ProductTheme): readonly SemanticToken[] {
+  return themes[product].semanticColors;
+}
 
 const BY_NAME = new Map<string, SemanticToken>(semanticColors.map((t) => [t.name, t]));
 
-export function value(name: string, mode: Mode): string {
-  const token = BY_NAME.get(name);
+export function value(name: string, mode: Mode, product: ProductTheme = "player"): string {
+  const token = colorsFor(product).find((t) => t.name === name);
   if (!token) throw new Error(`Unknown semantic token: ${name}`);
   return token[mode];
 }
@@ -253,8 +272,16 @@ export const UNGROUPED = semanticColors
   .filter((name) => !GROUPED.has(name));
 
 /** One token: a chip painted from the live custom property, its name and its hex. */
-export function Swatch({ name, mode }: { name: string; mode: Mode }) {
-  const hex = value(name, mode);
+export function Swatch({
+  name,
+  mode,
+  product = "player",
+}: {
+  name: string;
+  mode: Mode;
+  product?: ProductTheme;
+}) {
+  const hex = value(name, mode, product);
   const short = name.replace("--color-", "");
   return (
     <div className="flex items-center gap-3">
@@ -270,11 +297,19 @@ export function Swatch({ name, mode }: { name: string; mode: Mode }) {
   );
 }
 
-export function SwatchGroup({ tokens, mode }: { tokens: string[]; mode: Mode }) {
+export function SwatchGroup({
+  tokens,
+  mode,
+  product = "player",
+}: {
+  tokens: string[];
+  mode: Mode;
+  product?: ProductTheme;
+}) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {tokens.map((name) => (
-        <Swatch key={name} name={name} mode={mode} />
+        <Swatch key={name} name={name} mode={mode} product={product} />
       ))}
     </div>
   );
@@ -308,7 +343,13 @@ export const CONTRAST_PAIRS: Pair[] = [...EXTRA_PAIRS, ...SIBLING_PAIRS].filter(
   (pair, i, all) => all.findIndex((p) => p.fg === pair.fg && p.bg === pair.bg) === i,
 );
 
-export function ContrastTable({ mode }: { mode: Mode }) {
+export function ContrastTable({
+  mode,
+  product = "player",
+}: {
+  mode: Mode;
+  product?: ProductTheme;
+}) {
   return (
     <table className="w-full border-collapse text-left font-mono text-xs">
       <thead>
@@ -321,7 +362,7 @@ export function ContrastTable({ mode }: { mode: Mode }) {
       </thead>
       <tbody>
         {CONTRAST_PAIRS.map((pair) => {
-          const ratio = contrastRatio(value(pair.fg, mode), value(pair.bg, mode));
+          const ratio = contrastRatio(value(pair.fg, mode, product), value(pair.bg, mode, product));
           const g = grade(ratio);
           return (
             <tr key={`${pair.fg}|${pair.bg}`} className="border-b border-border/50">
@@ -362,7 +403,7 @@ export function ContrastTable({ mode }: { mode: Mode }) {
 
 /* -------------------------------------------------------------- primitives */
 
-export function Ramp({ name, steps }: { name: string; steps: Record<string, string> }) {
+export function Ramp({ name, steps }: { name: string; steps: { readonly [key: string]: string } }) {
   return (
     <div className="mb-4">
       <p className="mb-1.5 font-mono text-xs opacity-60">{name}</p>
@@ -455,7 +496,7 @@ export function TypeSpecimen({
         <span>
           {rem2px(size)} / {rem2px(lineHeight)}
         </span>
-        <span>{family === "display" ? "Archivo, font-display" : "Inter, font-sans"}</span>
+        <span>{family === "display" ? "Space Grotesk, font-display" : "Figtree, font-sans"}</span>
       </div>
       <p className={family === "display" ? `${cls} font-display` : cls}>{sample}</p>
     </div>

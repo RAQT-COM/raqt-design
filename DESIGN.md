@@ -14,15 +14,19 @@ library is finite, the language is not.
 ## 1. Principles
 
 **Sporty, energetic, modern.** Raqt is a tournament platform — courts, draws,
-live scores — and the interface should feel like the venue at night, not like an
-admin panel.
+live scores — and the interface should feel like the venue, not like an admin
+panel.
 
-**Dark is the default.** The ground is a near-black green-tinted ink, not grey.
-One vibrant spring green (`primary`) carries every action and never changes
-between modes, so the brand is the constant and everything else is the setting.
+**Two skins, one box.** Player (Sage) and Referee (linen/gold) share paper,
+charcoal, type, radius and space. `primary` is the only brand split: sage for
+the player app, gold for the official's tool. Do not invent a third accent.
 
-**Green is a signal, not a wash.** Most of a Raqt screen is ink and type. Green
-marks the one thing to do next, or the one thing that is live.
+**Paper is what the canvases are.** Light ground (`background` on `.raqt.light`)
+is the phone; dark is derived. `primary` holds the same value in both modes.
+
+**Brand is a signal, not a wash.** Most of a Raqt screen is paper, charcoal and
+type. Sage or gold marks the one thing to do next — not a live match, which is
+`status-live`.
 
 **Density with air.** A day sheet stacks twenty matches; the layout has to stay
 scannable, which means tight surfaces and generous type contrast rather than
@@ -49,7 +53,7 @@ theme. Never write the hex.
 
 | token | for |
 |---|---|
-| `primary` / `primary-foreground` | the one most important action; brand green, identical in both modes |
+| `primary` / `primary-foreground` | the one most important action; Sage on Player, gold on Referee; identical in both modes |
 | `secondary` / `secondary-foreground` | the alternative action |
 | `accent` / `accent-foreground` | hover and tertiary emphasis |
 | `card` / `card-foreground`, `popover` / `popover-foreground` | shadcn compatibility; prefer `surface-N` for elevation |
@@ -145,11 +149,10 @@ looked flat is a lie the interface tells. Match state has its own four tokens
 because it is a domain fact: a live match is `status-live`, never `destructive`.
 
 **6 · Scan sizes and read sizes are different faces.** `--text-xl` and above are
-display type — Archivo, stretched, applied with the `font-display` utility.
-Scores, names, headings; things the eye lands on. `--text-lg` and below are
-Inter, for anything read as a sentence. Never apply the Archivo family by hand:
-`font-display` sets family, width and tracking together, and the family alone is
-a different typeface.
+display type — Space Grotesk, applied with the `font-display` utility. Scores,
+names, headings; things the eye lands on. `--text-lg` and below are Figtree, for
+anything read as a sentence. Never apply the Space Grotesk family by hand:
+`font-display` sets family and tracking together.
 
 **7 · Spacing comes off the scale.** `--spacing` is `0.25rem` and Tailwind
 generates the rungs. Use `2` inside a control, `3`–`4` for control padding, `4`–`6`
@@ -169,19 +172,20 @@ theme restores it for every enabled `button` and `[role="button"]` in the scope.
 Write `cursor-pointer` only for something clickable that is *not* a button — an
 interactive `card` is the one in this library.
 
-**9 · Dark is the truth, light is the check.** Design in dark — it is the default
-and it is what most of Raqt's users see. Then flip to light before calling it
-done. Almost every mode bug is one of the rules above already broken: a hardcoded
-colour, a surface without its border, an elevation without its shadow. The flip
-does not create those bugs, it reveals them.
+**9 · Light is the canvas, dark is the check.** The approved screens are paper.
+Flip to dark before calling a component done. Almost every mode bug is one of
+the rules above already broken: a hardcoded colour, a surface without its
+border, an elevation without its shadow. The flip does not create those bugs,
+it reveals them.
 
 **10 · Anything portalled has to re-enter the scope.** The theme is a `.raqt`
 class, and custom properties inherit down the DOM. A dialog, popover, tooltip or
 dropdown that portals to `document.body` lands **outside** the scope and picks up
 the host app's palette instead. Re-establish it inside the portal on a
 `display: contents` wrapper (`<div className="contents raqt">`), and carry the
-mode explicitly — the portal left its ancestry behind, so a light-mode host needs
-`"raqt light"`. `dialog` does this already; copy it rather than rediscovering it.
+mode explicitly — the portal left its ancestry behind, so a light-mode referee
+host needs `"raqt theme-referee light"`. `dialog` does this already; copy it
+rather than rediscovering it.
 
 ### When the rules do not cover it
 
@@ -280,12 +284,11 @@ ground, and is drawn by iOS, Android and the browser tab — none of which know
 what `.raqt` is. It is a picture; do not try to token-drive it.
 
 > **Open, and deliberately not decided here.** The icon's charcoal is `#2B2F30`,
-> a neutral. The system's near-black is `#071410`, green-tinted ink, and that is
-> what the masked marks resolve to in light mode. They read as the same colour
-> alone and visibly differ side by side, and no token names the charcoal. Either
-> the icon moves onto the ink or the charcoal earns a `brand-*` primitive — a
-> contract change either way, which is why it is written down rather than fixed
-> quietly.
+> a neutral. The system's charcoal is `#2E3330` (`ink.700`), and they read as
+> nearly the same colour alone and visibly differ side by side, and no token
+> names the icon's charcoal. Either the icon moves onto `ink.700` or that hex
+> earns a primitive — a contract change either way, which is why it is written
+> down rather than fixed quietly.
 
 ## 7. Platform notes
 

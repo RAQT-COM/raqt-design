@@ -1,0 +1,18 @@
+{
+  "_comment": "Referee brand ramp — linen/gold from raqt-referee-design/RAQT Referee.dc.html (cream #F3E9D8, gold #E0BD83, amber #A9752C). Overlays primitives.json as color.brand.",
+  "color": {
+    "brand": {
+      "50": "#F3E9D8",
+      "100": "#EDD9B8",
+      "200": "#E8CC9A",
+      "300": "#E0BD83",
+      "400": "#A9752C",
+      "500": "#8B5E22",
+      "600": "#82591D",
+      "700": "#5C4016",
+      "800": "#3A280E",
+      "900": "#241808",
+      "950": "#140E06"
+    }
+  }
+}
