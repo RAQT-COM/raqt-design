@@ -10,8 +10,13 @@ canvases — not invented here.
 
 | theme | class | accent | source |
 |---|---|---|---|
-| **Player** (default) | `.raqt` / `.raqt.theme-player` | Sage `#4A7C6A` | `raqt-mobile-design` — *RAQT Palettes* (Sage marked current), *RAQT Player Profile* |
+| **Player — Claude Design** (default) | `.raqt` / `.raqt.theme-player` | Sage `#4A7C6A` | `raqt-mobile-design` — *RAQT Palettes* (Sage marked current), *RAQT Player Profile* |
 | **Referee** | `.raqt.theme-referee` | Gold `#A9752C` | `raqt-referee-design` — *RAQT Referee* |
+
+Storybook also ships **Player — Original/Nelson** (`.raqt.theme-turf`) — the
+pre-canvas neon-green Player (`#2BE07C`, Inter + Archivo, dark-default ink).
+It is a comparison skin, not a product theme. Toolbar: Theme →
+**Player — Original/Nelson**, Mode → **Dark**.
 
 Light is what those canvases actually are (paper `#EFECE4`). Dark is derived so
 the existing `.raqt` / `.raqt.light` switch still works. `--color-primary` holds
@@ -24,7 +29,8 @@ Add `light` alongside the scope for paper: `className="raqt light"` or
 
 Raw values. Components never reference these. Shared ramps live in
 `tokens/source/primitives.json`. Each theme overlays `color.brand` from
-`tokens/source/themes/{player,referee}.json`.
+`tokens/source/themes/{player,referee}.json`. Original/Nelson overlays a full
+palette in `tokens/source/themes/turf.json`.
 
 ### `ink` — paper, linen, charcoal (shared)
 
@@ -49,7 +55,7 @@ Harvested from both canvases. Lower number = lighter.
 
 ### `brand` — per theme
 
-**Player — Sage**
+**Player — Claude Design (Sage)**
 
 | step | hex | |
 |---|---|---|

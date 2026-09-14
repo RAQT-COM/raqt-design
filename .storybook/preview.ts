@@ -3,27 +3,34 @@ import type { Preview } from "@storybook/react-vite";
 
 import "../tokens/dist/tokens.css";
 
-const THEME_CLASSES = ["raqt", "theme-player", "theme-referee", "light"] as const;
+const THEME_CLASSES = ["raqt", "theme-player", "theme-turf", "theme-referee", "light"] as const;
+
+function themeClass(product: string): string {
+  if (product === "referee") return "theme-referee";
+  if (product === "turf") return "theme-turf";
+  return "theme-player";
+}
 
 function applyGlobals(product: string, colorMode: string) {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
   for (const cls of THEME_CLASSES) root.classList.remove(cls);
   root.classList.add("raqt");
-  root.classList.add(product === "referee" ? "theme-referee" : "theme-player");
+  root.classList.add(themeClass(product));
   if (colorMode === "light") root.classList.add("light");
 }
 
 const preview: Preview = {
   globalTypes: {
     product: {
-      description: "Player (Sage) or Referee (gold)",
+      description: "Player Claude Design, Player Original/Nelson, or Referee gold",
       toolbar: {
         title: "Theme",
         icon: "paintbrush",
         items: [
-          { value: "player", title: "Player", description: "Sage — mobile canvases" },
-          { value: "referee", title: "Referee", description: "Gold — official canvases" },
+          { value: "player", title: "Player — Claude Design", description: "Sage — harvested from the canvases" },
+          { value: "turf", title: "Player — Original/Nelson", description: "Neon green, Inter/Archivo. Switch Mode to Dark to match" },
+          { value: "referee", title: "Referee", description: "Gold — Claude Design canvases" },
         ],
         dynamicTitle: true,
       },
@@ -34,7 +41,7 @@ const preview: Preview = {
         title: "Mode",
         items: [
           { value: "light", title: "Light", description: "Paper — what the canvases are" },
-          { value: "dark", title: "Dark", description: "Derived" },
+          { value: "dark", title: "Dark", description: "Derived — original Storybook default" },
         ],
         dynamicTitle: true,
       },
@@ -51,7 +58,7 @@ const preview: Preview = {
       applyGlobals(product, colorMode);
       const className = [
         "raqt",
-        product === "referee" ? "theme-referee" : "theme-player",
+        themeClass(product),
         colorMode === "light" ? "light" : "",
         "bg-background",
         "text-foreground",

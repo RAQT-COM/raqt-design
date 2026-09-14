@@ -59,7 +59,6 @@
   --color-status-finished-foreground: #B8B3A7;
   --color-status-open: #0F281C;
   --color-status-open-foreground: #8FB59A;
-  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
   --text-3xs: 0.625rem;
   --text-3xs--line-height: 0.875rem;
   --text-2xs: 0.6875rem;
@@ -86,6 +85,7 @@
   --radius-xl: 1.25rem;
   --radius-full: 9999px;
   --spacing: 0.25rem;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Values Tailwind must not own — see the note on `extras` in build.mjs. */
@@ -93,8 +93,10 @@
   --shadow-e1: none;
   --shadow-e2: none;
   --shadow-e3: none;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --radius: 0.625rem;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display-stretch: 100%;
+  --font-display-tracking: -0.04em;
 }
 
 /* Unlayered, so it beats the `@layer theme` block `@theme` above compiles to. */

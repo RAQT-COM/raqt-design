@@ -75,7 +75,19 @@ export type Mode = "dark" | "light";
 export type ProductTheme = ThemeId;
 
 export const MODES: readonly Mode[] = ["dark", "light"];
-export const PRODUCT_THEMES: readonly ProductTheme[] = ["player", "referee"];
+export const PRODUCT_THEMES: readonly ProductTheme[] = ["player", "turf", "referee"];
+
+export const THEME_LABEL: Record<ProductTheme, string> = {
+  player: "Player — Claude Design",
+  turf: "Player — Original/Nelson",
+  referee: "Referee — gold",
+};
+
+const THEME_CLASS: Record<ProductTheme, string> = {
+  player: "theme-player",
+  turf: "theme-turf",
+  referee: "theme-referee",
+};
 
 /**
  * A panel painted in one mode. Uses the real `.raqt` scope from `theme.css` —
@@ -95,7 +107,7 @@ export function ModeFrame({
   className?: string;
   style?: CSSProperties;
 }) {
-  const themeClass = product === "referee" ? "theme-referee" : "theme-player";
+  const themeClass = THEME_CLASS[product];
   return (
     <div
       className={

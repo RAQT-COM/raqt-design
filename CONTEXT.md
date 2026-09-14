@@ -40,15 +40,20 @@ renegotiation.
 (`ink`, status ramps), per-product `themes/player.json` and `themes/referee.json`
 (`brand`), and semantics (the only layer components touch).
 
-**Player** — the Sage product theme. `.raqt` / `.raqt.theme-player`. Harvested
-from `raqt-mobile-design`.
+**Player — Claude Design** — the Sage product theme. `.raqt` /
+`.raqt.theme-player`. Harvested from `raqt-mobile-design`.
 
 **Referee** — the gold product theme. `.raqt.theme-referee`. Harvested from
 `raqt-referee-design`. Same boxing as Player; different `primary`.
 
+**Player — Original/Nelson** — the pre-canvas neon Player (`#2BE07C`, Inter +
+Archivo). `.raqt.theme-turf`. Comparison skin in Storybook only; not a product
+theme.
+
 **theme** — the emitted CSS, `tokens/dist/theme.css`, shipped as a registry item.
 Paints `.raqt` / `.raqt.theme-player` (Sage) and `.raqt.theme-referee` (gold).
-*The theme crosses the boundary; the tokens stay here.*
+Storybook also paints `.raqt.theme-turf` (Original/Nelson) as a comparison
+skin — not a product theme. *The theme crosses the boundary; the tokens stay here.*
 
 ## Where it is seen
 

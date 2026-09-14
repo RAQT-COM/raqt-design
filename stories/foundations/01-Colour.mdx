@@ -11,6 +11,7 @@ import {
   Ramp,
   Rule,
   SwatchGroup,
+  THEME_LABEL,
   TwoUp,
   UNGROUPED,
 } from "./lib";
@@ -25,6 +26,11 @@ Two product themes share **paper, linen and charcoal**. They split only on
 `primary`: Sage for the player app, gold for the referee tool. Harvested from
 the approved Claude Design canvases, not invented here.
 
+Storybook also keeps **Player — Original/Nelson** — the pre-canvas neon Player —
+so the two Player looks can sit on the same page. It is a comparison skin, not
+a product theme. To match it, use the toolbar: Theme →
+**Player — Original/Nelson**, Mode → **Dark**.
+
 Light is what those canvases are. Dark is derived. **`primary` holds the same
 value in both modes.**
 
@@ -36,7 +42,7 @@ value in both modes.**
 
 </Rule>
 
-## Player — Sage
+## Player — Claude Design
 
 From `raqt-mobile-design`: *RAQT Palettes* (Sage marked current) and *RAQT Player
 Profile*. Scope: `.raqt` or `.raqt.theme-player`.
@@ -49,6 +55,25 @@ Profile*. Scope: `.raqt` or `.raqt.theme-player`.
       product="player"
       render={(mode) => (
         <SwatchGroup tokens={group.tokens} mode={mode} product="player" />
+      )}
+    />
+  </section>
+))}
+
+## Player — Original/Nelson
+
+The pre-harvest Player: neon `#2BE07C` on near-black ink, Inter + Archivo.
+Scope: `.raqt.theme-turf`. Not a canvas; kept so Claude Design Sage and
+Original/Nelson can be compared side by side.
+
+{COLOUR_GROUPS.map((group) => (
+  <section key={`turf-${group.title}`}>
+    <h3>{group.title}</h3>
+    <p>{group.blurb}</p>
+    <TwoUp
+      product="turf"
+      render={(mode) => (
+        <SwatchGroup tokens={group.tokens} mode={mode} product="turf" />
       )}
     />
   </section>
@@ -94,7 +119,7 @@ in the contract appears here on its own.
 
 {PRODUCT_THEMES.map((product) => (
   <section key={`contrast-${product}`}>
-    <h3>{product === "player" ? "Player" : "Referee"}</h3>
+    <h3>{THEME_LABEL[product]}</h3>
     <TwoUp
       product={product}
       render={(mode) => <ContrastTable mode={mode} product={product} />}
@@ -110,7 +135,8 @@ it was chosen from. Ink, red, amber and blue are shared; `brand` is the split.
 
 <ModeFrame mode="light">
   <Ramp name="ink — paper, linen, charcoal. Shared. Lower number is lighter." steps={themes.player.primitives.color.ink} />
-  <Ramp name="brand — Player Sage. 400 is primary." steps={themes.player.primitives.color.brand} />
+  <Ramp name="brand — Player Claude Design (Sage). 400 is primary." steps={themes.player.primitives.color.brand} />
+  <Ramp name="brand — Player Original/Nelson. 400 is primary." steps={themes.turf.primitives.color.brand} />
   <Ramp name="brand — Referee gold. 400 is primary." steps={themes.referee.primitives.color.brand} />
   <Ramp name="red — live match (#C4432F) and destructive" steps={themes.player.primitives.color.red} />
   <Ramp name="amber — sun / warning" steps={themes.player.primitives.color.amber} />

@@ -22,16 +22,33 @@ const dist = (name) => join(here, "dist", name);
 
 const sharedPrimitives = src("primitives.json");
 const semantic = src("semantic.json");
-const THEME_IDS = ["player", "referee"];
+const THEME_IDS = ["player", "turf", "referee"];
 
-function themePrimitives(id) {
-  const overlay = src(`themes/${id}.json`);
+function loadTheme(id) {
+  return src(`themes/${id}.json`);
+}
+
+function themePrimitives(overlay) {
   return { color: { ...sharedPrimitives.color, ...overlay.color } };
+}
+
+function themeSemantic(overlay) {
+  if (!overlay.semantic) return semantic;
+  return {
+    ...semantic,
+    color: overlay.semantic.color ?? semantic.color,
+    shadow: overlay.semantic.shadow ?? semantic.shadow,
+    font: overlay.semantic.font ?? semantic.font,
+    display: {
+      ...stripComments(semantic.display),
+      ...stripComments(overlay.semantic.display ?? {}),
+    },
+  };
 }
 
 /* ---------- reference resolution ---------- */
 
-function compile(primitives) {
+function compile(primitives, sem) {
   const at = (path) =>
     path.split(".").reduce((node, key) => {
       if (node == null || !(key in node)) throw new Error(`unknown primitive: {${path}}`);
@@ -44,7 +61,7 @@ function compile(primitives) {
   };
 
   const modal = (group, prefix) =>
-    Object.entries(semantic[group])
+    Object.entries(sem[group])
       .filter(([key]) => !key.startsWith("_"))
       .map(([key, { dark, light }]) => ({
         name: `${prefix}${key}`,
@@ -56,10 +73,17 @@ function compile(primitives) {
     primitives: stripComments(primitives),
     colors: modal("color", "--color-"),
     shadows: modal("shadow", "--shadow-"),
+    font: sem.font,
+    display: stripComments(sem.display),
   };
 }
 
-const compiled = Object.fromEntries(THEME_IDS.map((id) => [id, compile(themePrimitives(id))]));
+const compiled = Object.fromEntries(
+  THEME_IDS.map((id) => {
+    const overlay = loadTheme(id);
+    return [id, compile(themePrimitives(overlay), themeSemantic(overlay))];
+  }),
+);
 const { colors, shadows } = compiled.player;
 
 /* ---------- CSS ---------- */
@@ -81,8 +105,7 @@ const standard = new Set(shadcnStandard.names);
 
 // Scales that exist in every Tailwind install. Like the standard colours, they are
 // retinted by redefining the property, never by re-registering the name.
-const scales = [
-  ["--font-sans", font.sans],
+const boxing = [
   ...Object.entries(text).flatMap(([step, t]) => [
     [`--text-${step}`, t.size],
     [`--text-${step}--line-height`, t.lineHeight],
@@ -91,25 +114,15 @@ const scales = [
   ["--spacing", spacing.base],
 ];
 
-// Not Tailwind theme keys at all, so they need writing out wherever values are set.
-//  - `--shadow-*`: Tailwind inlines theme shadow values into the utility to splice in
-//    the shadow colour, which would freeze elevation to whichever mode built it. Owning
-//    the utility keeps `shadow-e1` reading the live property, so it flips with the mode.
-//  - `--font-display`: a utility rather than a `--font-*` key so the family can never be
-//    applied without the width and tracking (docs/TOKENS.md).
-//  - `--radius`: shadcn's bare alias, which hand-pasted shadcn CSS still references.
-const extras = [
-  ["--font-display", font.display],
-  ["--radius", radius[radiusDefault]],
-];
+const extras = [["--radius", radius[radiusDefault]]];
 
 const utilities = [
   ...shadows.map((s) => `@utility ${s.name.slice(2)} {\n  box-shadow: var(${s.name});\n}`),
   [
     "@utility font-display {",
     "  font-family: var(--font-display);",
-    `  font-stretch: ${display.stretch};`,
-    `  letter-spacing: ${display.tracking};`,
+    "  font-stretch: var(--font-display-stretch);",
+    "  letter-spacing: var(--font-display-tracking);",
     "}",
   ].join("\n"),
 ].join("\n\n");
@@ -120,28 +133,37 @@ const utilities = [
 // inside the scope covers either convention. Scope-local, so it costs the host nothing.
 const alias = (t, mode) => [`--${t.name.slice("--color-".length)}`, t[mode]];
 
-function scopes({ colors, shadows }) {
-  const standardColors = colors.filter((t) => standard.has(t.name.slice("--color-".length)));
-  const raqtOnly = colors.filter((t) => !standard.has(t.name.slice("--color-".length)));
-  const differs = (t) => t.light !== t.dark;
+function scopes(t) {
+  const { colors, shadows, font, display } = t;
+  const standardColors = colors.filter((c) => standard.has(c.name.slice("--color-".length)));
+  const raqtOnly = colors.filter((c) => !standard.has(c.name.slice("--color-".length)));
+  const differs = (token) => token.light !== token.dark;
+  const typeface = [
+    ["--font-sans", font.sans],
+    ["--font-display", font.display],
+    ["--font-display-stretch", display.stretch],
+    ["--font-display-tracking", display.tracking],
+  ];
   return {
     raqtOnly,
     dark: [
-      ...colors.map((t) => [t.name, t.dark]),
-      ...shadows.map((t) => [t.name, t.dark]),
-      ...standardColors.map((t) => alias(t, "dark")),
-      ...scales,
+      ...colors.map((c) => [c.name, c.dark]),
+      ...shadows.map((s) => [s.name, s.dark]),
+      ...standardColors.map((c) => alias(c, "dark")),
+      ...boxing,
+      ...typeface,
       ...extras,
     ],
     light: [
-      ...colors.filter(differs).map((t) => [t.name, t.light]),
-      ...shadows.filter(differs).map((t) => [t.name, t.light]),
-      ...standardColors.filter(differs).map((t) => alias(t, "light")),
+      ...colors.filter(differs).map((c) => [c.name, c.light]),
+      ...shadows.filter(differs).map((s) => [s.name, s.light]),
+      ...standardColors.filter(differs).map((c) => alias(c, "light")),
     ],
   };
 }
 
 const player = scopes(compiled.player);
+const turf = scopes(compiled.turf);
 const referee = scopes(compiled.referee);
 const raqtOnly = player.raqtOnly;
 const differs = (t) => t.light !== t.dark;
@@ -184,9 +206,9 @@ ${utilities}
    \`.raqt\` always wins inside itself no matter what the host's \`:root\` says — and
    changes nothing outside itself. That asymmetry is the whole retrofit story.
 
-   Two product skins share boxing (type, radius, space) and ink. \`.raqt\` /
-   \`.raqt.theme-player\` is Sage (mobile). \`.raqt.theme-referee\` is linen/gold.
-   Add \`light\` alongside either for the paper mode the canvases actually use. */
+   Two product skins plus Original/Nelson for comparison.
+   \`.raqt\` / \`.raqt.theme-player\` is Claude Design Sage. \`.raqt.theme-turf\` is
+   Original/Nelson neon green. \`.raqt.theme-referee\` is linen/gold. */
 .raqt,
 .raqt.theme-player {
 ${decls(player.dark)}
@@ -197,6 +219,15 @@ ${decls(player.dark)}
 .raqt.theme-player.light,
 .light .raqt.theme-player {
 ${decls(player.light)}
+}
+
+.raqt.theme-turf {
+${decls(turf.dark)}
+}
+
+.raqt.theme-turf.light,
+.light .raqt.theme-turf {
+${decls(turf.light)}
 }
 
 .raqt.theme-referee {
@@ -240,12 +271,22 @@ const tokensCss = `${banner}
 @source inline("text-{2,3}xs");
 
 @theme {
-${decls([...colors.map((t) => [t.name, t.dark]), ...scales])}
+${decls([
+  ...colors.map((t) => [t.name, t.dark]),
+  ...boxing,
+  ["--font-sans", compiled.player.font.sans],
+])}
 }
 
 /* Values Tailwind must not own — see the note on \`extras\` in build.mjs. */
 :root {
-${decls([...shadows.map((t) => [t.name, t.dark]), ...extras])}
+${decls([
+  ...shadows.map((t) => [t.name, t.dark]),
+  ...extras,
+  ["--font-display", compiled.player.font.display],
+  ["--font-display-stretch", compiled.player.display.stretch],
+  ["--font-display-tracking", compiled.player.display.tracking],
+])}
 }
 
 /* Unlayered, so it beats the \`@layer theme\` block \`@theme\` above compiles to. */
@@ -270,7 +311,7 @@ const ts = `/* GENERATED by tokens/build.mjs — do not edit. Values: docs/TOKEN
 export const themeIds = ${JSON.stringify(THEME_IDS)} as const;
 export type ThemeId = (typeof themeIds)[number];
 
-/** Per-product Layer 1 + Layer 2. Player is Sage; referee is linen/gold. */
+/** Per-theme Layer 1 + Layer 2. Player is Claude Design Sage; turf is Original/Nelson; referee is linen/gold. */
 export const themes = {
 ${THEME_IDS.map((id) => {
   const t = compiled[id];

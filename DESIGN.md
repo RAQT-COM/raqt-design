@@ -17,9 +17,11 @@ library is finite, the language is not.
 live scores — and the interface should feel like the venue, not like an admin
 panel.
 
-**Two skins, one box.** Player (Sage) and Referee (linen/gold) share paper,
-charcoal, type, radius and space. `primary` is the only brand split: sage for
-the player app, gold for the official's tool. Do not invent a third accent.
+**Two skins, one box.** Player — Claude Design (Sage) and Referee (linen/gold)
+share paper, charcoal, type, radius and space. `primary` is the only brand
+split: sage for the player app, gold for the official's tool. Do not invent a
+third accent. Storybook keeps **Player — Original/Nelson** (neon `#2BE07C`) as a
+comparison toolbar item only — it is not a product theme.
 
 **Paper is what the canvases are.** Light ground (`background` on `.raqt.light`)
 is the phone; dark is derived. `primary` holds the same value in both modes.

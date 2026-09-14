@@ -1,8 +1,8 @@
 # raqt-design
 
 The Raqt design system — tokens plus the rules for building with them — and a
-nine-component library built on it. Two product skins (Player Sage, Referee
-gold) share paper/charcoal boxing and travel to other repos over a [shadcn
+nine-component library built on it. Two product skins (Player — Claude Design,
+Referee gold) share paper/charcoal boxing and travel to other repos over a [shadcn
 registry](https://ui.shadcn.com/docs/registry) that serves the rules alongside
 the components.
 
@@ -111,7 +111,9 @@ canvases use:
 ```
 
 `--color-primary` holds the same value in both modes (Sage on Player, gold on
-Referee). `.raqt` without a `theme-*` class is Player.
+Referee). `.raqt` without a `theme-*` class is Player. Storybook also has
+**Player — Original/Nelson** — the pre-canvas neon look — on the Theme toolbar
+(switch Mode to Dark to match). It is not shipped as a product theme.
 
 ### 5. Teach your agent the rules
 
