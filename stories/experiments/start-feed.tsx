@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Screen } from "./screen";
+import type { Mode } from "./theme";
 import { NotificationBell } from "./tab-bar";
 
 const logotype = new URL("../../assets/brand/logotype.png", import.meta.url).href;
@@ -15,9 +16,14 @@ const coachesSrc = new URL("./assets/coaches.png", import.meta.url).href;
 function Header() {
   return (
     <header className="flex h-[76px] shrink-0 items-center justify-between px-5">
-      <img src={logotype} alt="RAQT" className="h-[26px] w-auto" />
+      <img
+        src={logotype}
+        alt="RAQT"
+        className="h-[26px] w-auto"
+        style={{ filter: "var(--logo-filter)" }}
+      />
       <div className="flex items-center gap-[11px]">
-        <div className="flex h-[32px] items-center gap-[6px] rounded-full bg-[#282828] px-[11px]">
+        <div className="flex h-[32px] items-center gap-[6px] rounded-full bg-[var(--surface)] px-[11px]">
           <svg width="19" height="19" viewBox="0 0 20 20" aria-hidden>
             <defs>
               <linearGradient id="raqt-sparkle" x1="0" y1="0.5" x2="1" y2="0.5">
@@ -39,12 +45,12 @@ function Header() {
 }
 
 function TileLabel({ children }: { children: string }) {
-  return <span className="text-[10px] leading-[12px] font-semibold text-white">{children}</span>;
+  return <span className="text-[10px] leading-[12px] font-semibold text-[var(--ink)]">{children}</span>;
 }
 
 function TileTitle({ children }: { children: ReactNode }) {
   return (
-    <h2 className="mt-[8px] text-[16px] leading-[17px] font-bold tracking-[-0.015em] text-white">
+    <h2 className="mt-[8px] text-[16px] leading-[17px] font-bold tracking-[-0.015em] text-[var(--ink)]">
       {children}
     </h2>
   );
@@ -52,11 +58,11 @@ function TileTitle({ children }: { children: ReactNode }) {
 
 function BadgesTile() {
   return (
-    <section className="flex h-[157px] flex-col rounded-[20px] bg-[#282828] px-[13px] pt-[16px] pb-[13px]">
+    <section className="flex h-[157px] flex-col rounded-[20px] bg-[var(--surface)] px-[13px] pt-[16px] pb-[13px]">
       <TileLabel>Badges</TileLabel>
       <TileTitle>Unlock Achievements</TileTitle>
       <span className="mt-auto text-[16px] leading-[19px] font-bold tracking-[-0.02em]">17%</span>
-      <div className="mt-[9px] h-[8px] w-full overflow-hidden rounded-full bg-[#464646]">
+      <div className="mt-[9px] h-[8px] w-full overflow-hidden rounded-full bg-[var(--track)]">
         <div className="h-full w-[18%] rounded-full bg-[#3fe176]" />
       </div>
     </section>
@@ -73,7 +79,7 @@ function AtpTile() {
 
 function ClinicsTile() {
   return (
-    <section className="flex h-[157px] flex-col rounded-[20px] bg-[#282828] px-[13px] pt-[16px] pb-[13px]">
+    <section className="flex h-[157px] flex-col rounded-[20px] bg-[var(--surface)] px-[13px] pt-[16px] pb-[13px]">
       <TileLabel>Clinics</TileLabel>
       {/* The Figma text box is narrower than the tile, so this break is authored
           rather than a consequence of the available width. */}
@@ -84,7 +90,7 @@ function ClinicsTile() {
       </TileTitle>
       <div className="mt-auto flex items-center gap-[11px]">
         <img src={coachesSrc} alt="Coaches online" className="h-[32px] w-[82px]" />
-        <span className="text-[9px] leading-[11px] font-medium whitespace-nowrap text-white">
+        <span className="text-[9px] leading-[11px] font-medium whitespace-nowrap text-[var(--ink)]">
           + 12 online now
         </span>
       </div>
@@ -94,11 +100,11 @@ function ClinicsTile() {
 
 function NearbyTile() {
   return (
-    <section className="flex h-[157px] flex-col overflow-hidden rounded-[20px] bg-[#1c1c1c]">
+    <section className="flex h-[157px] flex-col overflow-hidden rounded-[20px] bg-[var(--recessed)]">
       <img src={courtSrc} alt="" className="h-[70px] w-full object-cover" />
       <div className="px-[7px] pt-[12px]">
         <div className="flex items-center gap-[4px]">
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="white" aria-hidden>
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="var(--ink)" aria-hidden>
             <path d="M11.4.6 1 4.9c-.6.3-.5 1.1.1 1.3l4 1.3 1.3 4c.2.6 1 .7 1.3.1L11.4.6Z" />
           </svg>
           <span className="text-[11px] leading-[13px] font-medium">5.3 km away from you</span>
@@ -115,11 +121,11 @@ function FeedCard() {
   return (
     <section className="relative h-[153px] overflow-hidden rounded-[20px] bg-[#3a3d27]">
       <img src={feedSrc} alt="" className="absolute inset-x-0 top-0 h-[68px] w-full object-cover" />
-      <div className="absolute inset-x-0 bottom-0 flex h-[88px] items-center rounded-[20px] bg-[#333333] px-[25px]">
+      <div className="absolute inset-x-0 bottom-0 flex h-[88px] items-center rounded-[20px] bg-[var(--raised)] px-[25px]">
         <img src={niklasSrc} alt="" className="h-[42px] w-[42px] shrink-0 rounded-full" />
         <div className="ml-[19px] w-[218px] shrink-0">
           <p className="text-[16px] leading-[18px] font-bold tracking-[-0.01em]">Niklas Sidfalk</p>
-          <p className="text-[16px] leading-[18px] text-white">
+          <p className="text-[16px] leading-[18px] text-[var(--ink)]">
             Det var väldigt kul att spela idag! Ska vi kanske försöka att göra om detta näst...
           </p>
         </div>
@@ -131,7 +137,7 @@ function FeedCard() {
           className="ml-auto shrink-0"
           aria-hidden
         >
-          <path d="m6 9 6 6 6-6" stroke="white" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="m6 9 6 6 6-6" stroke="var(--ink)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
     </section>
@@ -139,14 +145,16 @@ function FeedCard() {
 }
 
 export function StartFeed({
+  mode = "dark",
   backdrop = true,
   onOpenSearch,
 }: {
+  mode?: Mode;
   backdrop?: boolean;
   onOpenSearch?: () => void;
 }) {
   return (
-    <Screen depth={0} backdrop={backdrop} onSearch={onOpenSearch}>
+    <Screen depth={0} mode={mode} backdrop={backdrop} onSearch={onOpenSearch}>
       <Header />
       <div className="flex flex-col gap-[10px] px-[10px]">
         <section

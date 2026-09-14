@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Backdrop, bandFor } from "./backdrop";
+import { THEME } from "./theme";
 import { NAVIGATE_MS, SNAP } from "./motion";
 import { StartFeed } from "./start-feed";
 import { TournamentSearch } from "./tournament-search";
@@ -18,7 +19,7 @@ function Navigation() {
   };
 
   return (
-    <div className="relative h-[874px] w-[402px] overflow-hidden">
+    <div className="relative h-[874px] w-[402px] overflow-hidden" style={THEME.dark}>
       <style>{`
         @keyframes enter-right{from{transform:translateX(11%);opacity:.35}to{transform:none;opacity:1}}
         @keyframes enter-left{from{transform:translateX(-11%);opacity:.35}to{transform:none;opacity:1}}

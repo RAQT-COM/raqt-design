@@ -57,6 +57,17 @@ reads editorial, which is the wrong sport.
   opaque cards, so it only ever shows through gutters and margins — never behind
   text.
 - Status red is reserved for live and destructive. It is not a brand colour.
+- **Two grounds, one brand.** Light is a warm off-white `#f2f1ea`, never pure
+  white — white with grey cards is the most generic light UI there is. What does
+  *not* move between grounds: the green fill, the PLAY gradient, the points
+  sparkle and the partner navy. A value that changes when the lights come on was
+  never a brand value.
+- Green as a **fill** is `#3fe176` on both grounds. Green as **foreground** has
+  its own value, because `#3fe176` on white is unreadable.
+- Surfaces lift off the ground in both directions: recessed is darker than the
+  card, raised is lighter. On light that inverts arithmetically, not
+  semantically — a closed tournament is still *recessed*, whichever ground it
+  sits on.
 
 ## 4. Photography and icons
 
@@ -155,6 +166,10 @@ Assume the user is on a phone, mid-tournament, in a hurry.
 - **Render it as a `<Screen depth={n}>`.** That is what supplies the backdrop,
   the status bar and the footer. Never assemble those yourself — a screen should
   get the chrome right by existing, not by remembering to.
+- **Ground comes from `mode`** (`"dark"` | `"light"`), set once on the `Screen`.
+  Never write a raw hex for a surface, a text tier or the backdrop — those are
+  `var(--surface)`, `var(--ink-dim)` and so on, and hardcoding one is what breaks
+  the other ground.
 - **`depth` is how far in you are**: `0` a footer destination, `1` pushed on top
   of one, `2` a detail inside that. It selects the band pose. You do not pick an
   angle or a position.
@@ -176,6 +191,7 @@ Assume the user is on a phone, mid-tournament, in a hurry.
 - [ ] Any generated or illustrated imagery?
 - [ ] Could a user finish this task without typing?
 - [ ] Is the screen a `Screen`, with a `depth` that matches where it sits?
+- [ ] Does it hold up on both grounds, with nothing hardcoded that should flip?
 
 ## Open contradictions
 

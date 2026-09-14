@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { SNAP } from "./motion";
 import { Screen } from "./screen";
+import type { Mode } from "./theme";
 import { NotificationBell } from "./tab-bar";
 
 const courtSrc = new URL("./assets/court.png", import.meta.url).href;
@@ -36,7 +37,7 @@ function StatusPill({ open }: { open: boolean }) {
   return (
     <span
       className={`rounded-full px-[8px] py-[2px] text-[11px] leading-[14px] font-bold ${
-        open ? "bg-[#3fe176] text-black" : "bg-[#333333] text-[#8a8a8a]"
+        open ? "bg-[#3fe176] text-black" : "bg-[var(--recessed)] text-[var(--ink-dim)]"
       }`}
     >
       {open ? "OPEN" : "CLOSED"}
@@ -47,13 +48,13 @@ function StatusPill({ open }: { open: boolean }) {
 function TournamentCard({ t }: { t: Tournament }) {
   return (
     <article
-      className="overflow-hidden rounded-[20px] bg-[#282828] transition-transform duration-100 active:scale-[0.985]"
+      className="overflow-hidden rounded-[20px] bg-[var(--surface)] transition-transform duration-100 active:scale-[0.985]"
       style={{ transitionTimingFunction: SNAP }}
     >
       <img src={t.image} alt="" className="h-[112px] w-full object-cover" />
       <div className="px-[14px] pt-[12px] pb-[14px]">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] leading-[14px] font-semibold tracking-[0.04em] text-[#9a9a9a] uppercase">
+          <span className="text-[11px] leading-[14px] font-semibold tracking-[0.04em] text-[var(--ink-dim)] uppercase">
             {t.dates}
           </span>
           <StatusPill open={t.open} />
@@ -65,7 +66,7 @@ function TournamentCard({ t }: { t: Tournament }) {
           {t.name}
         </h3>
         <div className="mt-[9px] flex items-center gap-[5px]">
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="white" aria-hidden>
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="var(--ink)" aria-hidden>
             <path d="M6 .8a4 4 0 0 0-4 4c0 3 4 6.4 4 6.4s4-3.4 4-6.4a4 4 0 0 0-4-4Zm0 5.6a1.6 1.6 0 1 1 0-3.2 1.6 1.6 0 0 1 0 3.2Z" />
           </svg>
           <span className="text-[11px] leading-[14px] font-medium">
@@ -95,10 +96,10 @@ function CountrySheet({
         className="absolute inset-0 bg-black/60"
       />
       <div
-        className="relative rounded-t-[24px] bg-[#1c1c1c] px-[15px] pt-[10px] pb-[22px]"
+        className="relative rounded-t-[24px] bg-[var(--recessed)] px-[15px] pt-[10px] pb-[22px]"
         style={{ animation: `sheet-up 180ms ${SNAP} both` }}
       >
-        <span className="mx-auto mb-[14px] block h-[4px] w-[38px] rounded-full bg-[#464646]" />
+        <span className="mx-auto mb-[14px] block h-[4px] w-[38px] rounded-full bg-[var(--track)]" />
         {COUNTRIES.map((c) => {
           const active = c === value;
           return (
@@ -107,14 +108,14 @@ function CountrySheet({
               type="button"
               onClick={() => onPick(c)}
               className={`flex w-full items-center justify-between rounded-[14px] px-[13px] py-[13px] text-left text-[15px] font-semibold transition-transform duration-100 active:scale-[0.98] ${
-                active ? "bg-[#282828] text-white" : "text-[#8a8a8a]"
+                active ? "bg-[var(--surface)] text-[var(--ink)]" : "text-[var(--ink-dim)]"
               }`}
               style={{ transitionTimingFunction: SNAP }}
             >
               {c}
               {active && (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="m5 13 4 4L19 7" stroke="#3fe176" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="m5 13 4 4L19 7" stroke="var(--green-ink)" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               )}
             </button>
@@ -126,9 +127,11 @@ function CountrySheet({
 }
 
 export function TournamentSearch({
+  mode = "dark",
   backdrop = true,
   onBack,
 }: {
+  mode?: Mode;
   backdrop?: boolean;
   onBack?: () => void;
 }) {
@@ -149,7 +152,7 @@ export function TournamentSearch({
   }, [query, country, status]);
 
   return (
-    <Screen depth={1} backdrop={backdrop}>
+    <Screen depth={1} mode={mode} backdrop={backdrop}>
       <style>{`@keyframes sheet-up{from{transform:translateY(100%)}to{transform:translateY(0)}}.no-bar{scrollbar-width:none}.no-bar::-webkit-scrollbar{display:none}`}</style>
 
       <div className="shrink-0 px-[15px]">
@@ -158,11 +161,11 @@ export function TournamentSearch({
             type="button"
             aria-label="Back"
             onClick={onBack}
-            className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white transition-transform duration-100 active:scale-[0.9]"
+            className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[var(--ink)] transition-transform duration-100 active:scale-[0.9]"
             style={{ transitionTimingFunction: SNAP }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M15 5l-7 7 7 7" stroke="black" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M15 5l-7 7 7 7" stroke="var(--bg)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
           <NotificationBell unread />
@@ -175,16 +178,16 @@ export function TournamentSearch({
           Tournaments
         </h1>
 
-        <div className="mt-[18px] flex h-[46px] items-center gap-[9px] rounded-[14px] bg-[#1c1c1c] px-[13px]">
+        <div className="mt-[18px] flex h-[46px] items-center gap-[9px] rounded-[14px] bg-[var(--recessed)] px-[13px]">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden>
-            <circle cx="10.5" cy="10.5" r="7.5" stroke="#8a8a8a" strokeWidth="2.2" />
-            <path d="m16.2 16.2 4.8 4.8" stroke="#8a8a8a" strokeWidth="2.2" strokeLinecap="round" />
+            <circle cx="10.5" cy="10.5" r="7.5" stroke="var(--ink-dim)" strokeWidth="2.2" />
+            <path d="m16.2 16.2 4.8 4.8" stroke="var(--ink-dim)" strokeWidth="2.2" strokeLinecap="round" />
           </svg>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Tournament or city"
-            className="w-full bg-transparent text-[15px] font-medium text-white placeholder:text-[#6f6f6f] focus:outline-none"
+            className="w-full bg-transparent text-[15px] font-medium text-[var(--ink)] placeholder:text-[var(--ink-dim)] focus:outline-none"
           />
         </div>
 
@@ -193,26 +196,26 @@ export function TournamentSearch({
           <button
             type="button"
             onClick={() => setSheetOpen(true)}
-            className="flex h-[40px] min-w-0 flex-1 items-center justify-between rounded-[13px] bg-[#1c1c1c] px-[13px] transition-transform duration-100 active:scale-[0.97]"
+            className="flex h-[40px] min-w-0 flex-1 items-center justify-between rounded-[13px] bg-[var(--recessed)] px-[13px] transition-transform duration-100 active:scale-[0.97]"
             style={{ transitionTimingFunction: SNAP }}
           >
             <span className="truncate text-[11px] font-bold tracking-[0.04em] uppercase">
               {country}
             </span>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="ml-[6px] shrink-0" aria-hidden>
-              <path d="m6 9 6 6 6-6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="m6 9 6 6 6-6" stroke="var(--ink)" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
 
           {/* §9 — 3 options, so all of them stay visible. */}
-          <div className="flex h-[40px] shrink-0 items-center rounded-[13px] bg-[#1c1c1c] p-[3px]">
+          <div className="flex h-[40px] shrink-0 items-center rounded-[13px] bg-[var(--recessed)] p-[3px]">
             {STATUSES.map((s) => (
               <button
                 key={s}
                 type="button"
                 onClick={() => setStatus(s)}
                 className={`h-full rounded-[10px] px-[12px] text-[11px] font-bold tracking-[0.04em] uppercase transition-transform duration-100 active:scale-[0.94] ${
-                  status === s ? "bg-[#333333] text-white" : "text-[#8a8a8a]"
+                  status === s ? "bg-[var(--raised)] text-[var(--ink)]" : "text-[var(--ink-dim)]"
                 }`}
                 style={{ transitionTimingFunction: SNAP }}
               >
@@ -222,7 +225,7 @@ export function TournamentSearch({
           </div>
         </div>
 
-        <p className="mt-[20px] mb-[10px] text-[11px] leading-[14px] font-bold tracking-[0.06em] text-[#7a7a7a] uppercase">
+        <p className="mt-[20px] mb-[10px] text-[11px] leading-[14px] font-bold tracking-[0.06em] text-[var(--ink-dim)] uppercase">
           {results.length} {results.length === 1 ? "Tournament" : "Tournaments"}
         </p>
       </div>
@@ -234,7 +237,7 @@ export function TournamentSearch({
           ))}
           {results.length === 0 && (
             <p
-              className="pt-[40px] text-center text-[15px] font-extrabold tracking-[0.04em] text-[#5f5f5f] uppercase"
+              className="pt-[40px] text-center text-[15px] font-extrabold tracking-[0.04em] text-[var(--ink-faint)] uppercase"
               style={{ fontFamily: DISPLAY }}
             >
               Nothing here

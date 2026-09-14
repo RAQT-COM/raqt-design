@@ -44,13 +44,13 @@ export const BAND_SHIFT = `transform ${NAVIGATE_MS}ms ${SNAP}`;
 
 export function Backdrop({ pose, animate = true }: { pose: BandPose; animate?: boolean }) {
   return (
-    <div className="absolute inset-0 overflow-hidden bg-black" aria-hidden>
+    <div className="absolute inset-0 overflow-hidden bg-[var(--bg)]" aria-hidden>
       <div
         className="absolute top-0 left-0 rounded-full"
         style={{
           width: BAND_W,
           height: BAND_H,
-          background: "#17601e",
+          background: "var(--band)",
           filter: "blur(70px)",
           transform: `translate3d(${pose.x}px, ${pose.y}px, 0) rotate(${pose.angle}deg)`,
           transition: animate ? BAND_SHIFT : undefined,
@@ -60,15 +60,14 @@ export function Backdrop({ pose, animate = true }: { pose: BandPose; animate?: b
       <div
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(78% 30% at 10% 9%, #2f2f2f 0%, rgba(0,0,0,0) 76%)",
+          background: "var(--key)",
         }}
       />
       {/* the band never reaches the tab bar */}
       <div
         className="absolute inset-0"
         style={{
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0) 48%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0.9) 86%, #000000 100%)",
+          background: "var(--fade)",
         }}
       />
     </div>
