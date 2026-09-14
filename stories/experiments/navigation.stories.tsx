@@ -2,42 +2,68 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Backdrop, bandFor } from "./backdrop";
-import { THEME } from "./theme";
 import { NAVIGATE_MS, SNAP } from "./motion";
 import { StartFeed } from "./start-feed";
+import { THEME, type Mode } from "./theme";
 import { TournamentSearch } from "./tournament-search";
 
-type Screen = "feed" | "search";
+type ScreenName = "feed" | "search";
 
 function Navigation() {
-  const [screen, setScreen] = useState<Screen>("feed");
+  const [screen, setScreen] = useState<ScreenName>("feed");
   const [entering, setEntering] = useState<"right" | "left">("right");
+  const [mode, setMode] = useState<Mode>("dark");
 
-  const go = (next: Screen) => {
+  const go = (next: ScreenName) => {
     setEntering(next === "search" ? "right" : "left");
     setScreen(next);
   };
 
   return (
-    <div className="relative h-[874px] w-[402px] overflow-hidden" style={THEME.dark}>
-      <style>{`
-        @keyframes enter-right{from{transform:translateX(11%);opacity:.35}to{transform:none;opacity:1}}
-        @keyframes enter-left{from{transform:translateX(-11%);opacity:.35}to{transform:none;opacity:1}}
-      `}</style>
-
-      {/* One band for the whole app. The screens travel across it; it drifts. */}
-      <Backdrop pose={bandFor(screen === "feed" ? 0 : 1)} />
-
+    <div className="flex items-start gap-[20px]">
       <div
-        key={screen}
-        className="absolute inset-0"
-        style={{ animation: `enter-${entering} ${NAVIGATE_MS}ms ${SNAP} both` }}
+        className="relative h-[874px] w-[402px] overflow-hidden"
+        style={THEME[mode]}
       >
-        {screen === "feed" ? (
-          <StartFeed backdrop={false} onOpenSearch={() => go("search")} />
-        ) : (
-          <TournamentSearch backdrop={false} onBack={() => go("feed")} />
-        )}
+        <style>{`
+          @keyframes enter-right{from{transform:translateX(11%);opacity:.35}to{transform:none;opacity:1}}
+          @keyframes enter-left{from{transform:translateX(-11%);opacity:.35}to{transform:none;opacity:1}}
+        `}</style>
+
+        {/* One band for the whole app. The screens travel across it; it moves. */}
+        <Backdrop pose={bandFor(screen === "feed" ? 0 : 1)} />
+
+        <div
+          key={screen}
+          className="absolute inset-0"
+          style={{ animation: `enter-${entering} ${NAVIGATE_MS}ms ${SNAP} both` }}
+        >
+          {screen === "feed" ? (
+            <StartFeed mode={mode} backdrop={false} onOpenSearch={() => go("search")} />
+          ) : (
+            <TournamentSearch mode={mode} backdrop={false} onBack={() => go("feed")} />
+          )}
+        </div>
+      </div>
+
+      {/* A harness control, deliberately outside the phone and deliberately not
+          styled in the design language — it is not part of the product. */}
+      <div className="flex w-[104px] flex-col gap-[6px] rounded-[10px] border border-neutral-300 bg-neutral-100 p-[6px]">
+        <span className="px-[4px] pt-[2px] text-[10px] font-semibold tracking-[0.08em] text-neutral-500 uppercase">
+          Ground
+        </span>
+        {(["dark", "light"] as const).map((m) => (
+          <button
+            key={m}
+            type="button"
+            onClick={() => setMode(m)}
+            className={`rounded-[7px] px-[10px] py-[7px] text-[12px] font-semibold capitalize ${
+              mode === m ? "bg-neutral-900 text-white" : "bg-white text-neutral-600"
+            }`}
+          >
+            {m}
+          </button>
+        ))}
       </div>
     </div>
   );
@@ -55,9 +81,8 @@ function Navigation() {
  * continuous background being travelled across rather than a screen swap; it
  * does not need to lag to do that.
  *
- * Each screen keeps its own tab bar, so the bar transitions with the content —
- * the two bars still disagree (five items with PLAY on the feed, four without
- * it on search), which is open contradiction 2 in `DESIGN-ALT.md`.
+ * The **Ground** switch flips both screens between the two themes. It sits
+ * outside the phone because it is a harness control, not a product surface.
  */
 const meta = {
   title: "Experiments/Navigation",

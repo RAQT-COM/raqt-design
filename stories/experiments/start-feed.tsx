@@ -119,7 +119,7 @@ function NearbyTile() {
 
 function FeedCard() {
   return (
-    <section className="relative h-[153px] overflow-hidden rounded-[20px] bg-[#3a3d27]">
+    <section className="relative h-[153px] overflow-hidden rounded-[20px] bg-[var(--surface)]">
       <img src={feedSrc} alt="" className="absolute inset-x-0 top-0 h-[68px] w-full object-cover" />
       <div className="absolute inset-x-0 bottom-0 flex h-[88px] items-center rounded-[20px] bg-[var(--raised)] px-[25px]">
         <img src={niklasSrc} alt="" className="h-[42px] w-[42px] shrink-0 rounded-full" />

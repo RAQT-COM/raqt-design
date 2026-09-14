@@ -261,5 +261,14 @@ The reference frames disagree. These need a decision, not a rule:
 7. **Caption floor.** `DESIGN.md` sets one at 10px and says it exists because
    designs kept landing below it and getting hand-written as raw px. This spec
    uses 9px for "+ 12 online now". Raise it or argue for it.
-8. **Display face.** §2 asks for a face that echoes the wordmark; nothing has
+8. **The Clinics tile has three type sizes** — 10px label, 16px title, 9px
+   "+ 12 online now" — against §2's max of two. The reference frame does this,
+   so either §2 is too strict or the tile is wrong. Cannot be both.
+9. **The points sparkle is a yellow-to-green gradient**, which puts a second
+   saturated hue on screen against §3. It is measured from the reference and
+   it is a brand mark, so it is probably a documented exception — but it is
+   currently an undocumented one.
+10. **Neither screen has a loading state.** §10 requires loaded, loading and
+    empty. Search has empty; nothing has loading, because nothing fetches yet.
+11. **Display face.** §2 asks for a face that echoes the wordmark; nothing has
    been chosen. Archivo is standing in. This is the largest remaining gap.
