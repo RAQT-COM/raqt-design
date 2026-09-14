@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { BLOB, Backdrop } from "./backdrop";
+import { BAND, Backdrop } from "./backdrop";
 
 const logotype = new URL("../../assets/brand/logotype.png", import.meta.url).href;
 const courtSrc = new URL("./assets/court.png", import.meta.url).href;
@@ -174,15 +174,17 @@ function FeedCard() {
   );
 }
 
-function TabBar() {
+function TabBar({ onOpenSearch }: { onOpenSearch?: () => void }) {
   return (
     <nav className="relative mt-auto h-[90px] shrink-0 bg-black">
       <div className="flex h-[80px] items-center px-[15px]">
         <div className="flex flex-1 justify-center">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <circle cx="10.5" cy="10.5" r="7.5" stroke="white" strokeWidth="2.1" />
-            <path d="m16.2 16.2 4.8 4.8" stroke="white" strokeWidth="2.1" strokeLinecap="round" />
-          </svg>
+          <button type="button" aria-label="Search" onClick={onOpenSearch}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <circle cx="10.5" cy="10.5" r="7.5" stroke="white" strokeWidth="2.1" />
+              <path d="m16.2 16.2 4.8 4.8" stroke="white" strokeWidth="2.1" strokeLinecap="round" />
+            </svg>
+          </button>
         </div>
         <div className="flex flex-1 justify-center">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -228,13 +230,19 @@ function TabBar() {
   );
 }
 
-export function StartFeed({ backdrop = true }: { backdrop?: boolean }) {
+export function StartFeed({
+  backdrop = true,
+  onOpenSearch,
+}: {
+  backdrop?: boolean;
+  onOpenSearch?: () => void;
+}) {
   return (
     <div
       className="relative h-[874px] w-[402px] overflow-hidden text-white antialiased"
       style={{ fontFamily: "Inter, system-ui, sans-serif" }}
     >
-      {backdrop && <Backdrop pose={BLOB.feed} />}
+      {backdrop && <Backdrop pose={BAND.feed} />}
       <div className="relative z-10 flex h-full flex-col">
       <StatusBar />
       <Header />
@@ -255,7 +263,7 @@ export function StartFeed({ backdrop = true }: { backdrop?: boolean }) {
         </div>
         <FeedCard />
       </div>
-      <TabBar />
+      <TabBar onOpenSearch={onOpenSearch} />
       </div>
     </div>
   );

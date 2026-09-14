@@ -1,14 +1,12 @@
 import { useMemo, useState } from "react";
 
-import { BLOB, Backdrop } from "./backdrop";
+import { BAND, Backdrop } from "./backdrop";
+import { SNAP } from "./motion";
 
 const courtSrc = new URL("./assets/court.png", import.meta.url).href;
 const feedSrc = new URL("./assets/feed.png", import.meta.url).href;
 const navMeSrc = new URL("./assets/nav-me.png", import.meta.url).href;
 
-// §7 — one curve everywhere. Taken from the ball: fast out, abrupt settle,
-// almost no bounce-back.
-const SNAP = "cubic-bezier(0.2, 0.9, 0.3, 1)";
 const DISPLAY = '"Archivo", ui-sans-serif, sans-serif';
 
 type Tournament = {
@@ -184,7 +182,13 @@ function TabBar() {
   );
 }
 
-export function TournamentSearch({ backdrop = true }: { backdrop?: boolean }) {
+export function TournamentSearch({
+  backdrop = true,
+  onBack,
+}: {
+  backdrop?: boolean;
+  onBack?: () => void;
+}) {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState(COUNTRIES[0]);
   const [status, setStatus] = useState<Status>("All");
@@ -206,7 +210,7 @@ export function TournamentSearch({ backdrop = true }: { backdrop?: boolean }) {
       className="relative h-[874px] w-[402px] overflow-hidden text-white antialiased"
       style={{ fontFamily: "Inter, system-ui, sans-serif" }}
     >
-      {backdrop && <Backdrop pose={BLOB.search} />}
+      {backdrop && <Backdrop pose={BAND.search} />}
       <div className="relative z-10 flex h-full flex-col">
       <style>{`@keyframes sheet-up{from{transform:translateY(100%)}to{transform:translateY(0)}}.no-bar{scrollbar-width:none}.no-bar::-webkit-scrollbar{display:none}`}</style>
 
@@ -216,6 +220,7 @@ export function TournamentSearch({ backdrop = true }: { backdrop?: boolean }) {
         <button
           type="button"
           aria-label="Back"
+          onClick={onBack}
           className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white transition-transform duration-100 active:scale-[0.9]"
           style={{ transitionTimingFunction: SNAP }}
         >

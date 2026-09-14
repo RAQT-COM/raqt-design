@@ -51,10 +51,10 @@ reads editorial, which is the wrong sport.
   raised, `#464646` track. **(measured)**
 - **A different surface means someone else's content.** Partner and broadcast
   tiles sit on navy `#0f192b`; RAQT's own content never does. **(measured)**
-- **One blurred green blob, behind every screen.** It belongs to the app, not
-  to a screen: each screen parks it somewhere different, and navigating moves it
-  rather than replacing it. It sits behind opaque cards, so it only ever shows
-  through gutters and margins — never behind text.
+- **One blurred green band, behind every screen.** It belongs to the app, not to
+  a screen: each screen parks it at its own position and angle, and navigating
+  moves and rotates it rather than replacing it. It sits behind opaque cards, so
+  it only ever shows through gutters and margins — never behind text.
 - Status red is reserved for live and destructive. It is not a brand colour.
 
 ## 4. Photography and icons
@@ -123,10 +123,13 @@ fast out, abrupt settle, almost no bounce-back.
 
 ## 8. Diagonals
 
-- One angle across the whole app: ~33° from horizontal. **(originally measured
-  off the backdrop wash, which is now a blob — see contradiction 7)**
+- **The backdrop band carries the angle, and it is per screen, not per app.**
+  The feed is −33° **(measured)**; tournament search is −13°. Navigating rotates
+  between them, and that rotation is the signature — it is why the background
+  reads as one continuous place rather than a per-screen texture.
+- A screen has exactly one angle. Any foreground diagonal on it matches the
+  band. Two angles on one screen means one is wrong.
 - Background and structural elements only. Never on text blocks or tap targets.
-- If a screen has two angles, one is wrong.
 
 ## 9. Controls
 
@@ -169,8 +172,5 @@ The reference frames disagree. These need a decision, not a rule:
    Ellipsis, or drop it?
 6. **Screen margin.** The feed uses 10px, all three tournament screens use 15px.
    Two values is one too many.
-7. **Where the 33° comes from.** The diagonal was derived from the backdrop
-   wash. The backdrop is now a blob with no angle, so the number is currently
-   orphaned — either re-anchor it to something or drop §8.
-8. **Display face.** §2 asks for a face that echoes the wordmark; nothing has
+7. **Display face.** §2 asks for a face that echoes the wordmark; nothing has
    been chosen. Archivo is standing in. This is the largest remaining gap.

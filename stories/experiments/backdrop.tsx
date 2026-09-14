@@ -1,40 +1,45 @@
 // §3 — the backdrop.
 //
-// One blurred green blob lives behind the whole app. Each screen parks it
-// somewhere different; moving between screens moves the blob rather than
-// replacing it, so the background reads as continuous and the screens slide
-// over it.
+// One blurred green band lives behind the whole app. Each screen parks it at
+// its own position and angle; navigating moves and rotates it rather than
+// replacing it, so the background reads as continuous and the screens travel
+// across it.
 //
 // It never sits behind text — cards are opaque, so it only shows through the
 // gutters and margins.
 
-export type BlobPose = { x: number; y: number };
+import { BACKDROP_EASE, BACKDROP_MS } from "./motion";
 
-const BLOB_W = 560;
-const BLOB_H = 440;
+export type BandPose = { x: number; y: number; angle: number };
 
-export const BLOB: Record<"feed" | "search", BlobPose> = {
-  feed: { x: -80, y: 200 },
-  search: { x: -215, y: 95 },
+const BAND_W = 900;
+const BAND_H = 300;
+
+export const BAND: Record<"feed" | "search", BandPose> = {
+  // Matches the original frame: the band rises to the right at ~33°, crossing
+  // the screen centre around y=410. **(measured)**
+  feed: { x: -249, y: 260, angle: -33 },
+  // Flatter and higher, so it sits behind the title rather than the list.
+  search: { x: -270, y: 120, angle: -13 },
 };
 
-// §7 exception: the blob is further away than the UI, so it moves slower than
+// §7 exception: the band is further away than the UI, so it moves slower than
 // the screens do. Snap the content, drift the background — that difference is
 // what reads as depth.
-export const BLOB_SHIFT = "transform 620ms cubic-bezier(0.33, 0, 0.16, 1)";
+export const BAND_SHIFT = `transform ${BACKDROP_MS}ms ${BACKDROP_EASE}`;
 
-export function Backdrop({ pose, animate = true }: { pose: BlobPose; animate?: boolean }) {
+export function Backdrop({ pose, animate = true }: { pose: BandPose; animate?: boolean }) {
   return (
     <div className="absolute inset-0 overflow-hidden bg-black" aria-hidden>
       <div
         className="absolute top-0 left-0 rounded-full"
         style={{
-          width: BLOB_W,
-          height: BLOB_H,
-          background: "#17651f",
-          filter: "blur(85px)",
-          transform: `translate3d(${pose.x}px, ${pose.y}px, 0)`,
-          transition: animate ? BLOB_SHIFT : undefined,
+          width: BAND_W,
+          height: BAND_H,
+          background: "#17601e",
+          filter: "blur(70px)",
+          transform: `translate3d(${pose.x}px, ${pose.y}px, 0) rotate(${pose.angle}deg)`,
+          transition: animate ? BAND_SHIFT : undefined,
         }}
       />
       {/* grey key light, top-left */}
@@ -44,7 +49,7 @@ export function Backdrop({ pose, animate = true }: { pose: BlobPose; animate?: b
           background: "radial-gradient(78% 30% at 10% 9%, #2f2f2f 0%, rgba(0,0,0,0) 76%)",
         }}
       />
-      {/* the blob never reaches the tab bar */}
+      {/* the band never reaches the tab bar */}
       <div
         className="absolute inset-0"
         style={{
