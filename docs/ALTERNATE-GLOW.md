@@ -93,6 +93,10 @@ exploration’s promotional copy. The Start Feed remains the visual reference.
 5. **Hierarchy over symmetry.** Prioritize one next action. Mix featured cards
    with compact rows and group related facts; do not give everything equal size,
    equal emphasis, or its own box. Keep alignment consistent within each group.
+   Give most of the first viewport to the content named by the page: tournaments
+   on Tournaments, scores on Scores, and the next match on My matches. Secondary
+   controls should normally consume one compact row. They may expand temporarily
+   after the user asks for search or advanced filtering.
 6. **Fast response.** Use 120–180ms; the theme uses 150ms and an overshooting
    cubic-bezier for press feedback. No 300ms ease-in-out. Do not delay actions
    until animations finish. Respect reduced-motion preferences.

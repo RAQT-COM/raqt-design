@@ -164,6 +164,20 @@ button.glow-tile:hover { filter: brightness(1.08); }
 .glow-choice > div { display: flex; gap: 6px; }
 .glow-choice button { flex: 1; min-height: 42px; padding: 8px 10px; border: 1px solid var(--glow-border); border-radius: var(--glow-pill); background: var(--glow-raised); white-space: nowrap; }
 .glow-choice button[aria-pressed='true'] { border-color: var(--glow-green); background: var(--glow-green); color: var(--glow-action-text); font-weight: 750; }
+.glow-filter-inline { display: flex; flex-direction: row; align-items: center; gap: 5px; padding: 7px; overflow: visible; position: relative; }
+.glow-filter-inline .glow-choice { min-width: 0; }
+.glow-filter-inline .glow-choice:first-child { flex: 1.25; }
+.glow-filter-inline .glow-choice:nth-child(2) { flex: 1; }
+.glow-filter-inline .glow-choice legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.glow-filter-inline .glow-choice > div { gap: 3px; }
+.glow-filter-inline .glow-choice button { min-height: 32px; padding: 5px 7px; font-size: 10px; }
+.glow-filter-inline .glow-search-disclosure { flex: 0 0 34px; border: 0; padding: 0; }
+.glow-filter-inline .glow-search-disclosure summary { min-height: 32px; width: 34px; justify-content: center; padding: 0; border-radius: 8px; background: var(--glow-raised); }
+.glow-filter-inline .glow-search-disclosure summary::after { display: none; }
+.glow-filter-inline .glow-search-disclosure[open] { position: absolute; z-index: 3; left: 10px; right: 10px; margin-top: 85px; padding: 7px; border-radius: var(--glow-radius); background: var(--glow-surface); box-shadow: 0 10px 30px #0006; }
+.glow-filter-inline .glow-search-disclosure[open] summary { margin-left: auto; }
+.glow-filter-inline .glow-search { margin: 6px 0 0; }
+.glow-active-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--glow-green); }
 .glow-search-disclosure { margin: 0; border-top: 1px solid var(--glow-border); padding-top: 6px; }
 .glow-search-disclosure summary { width: 100%; }
 .glow-results { flex-direction: row; justify-content: space-between; margin-bottom: 10px; padding: 12px 14px; }
