@@ -136,6 +136,10 @@ fast out, abrupt settle, almost no bounce-back.
 
 Assume the user is on a phone, mid-tournament, in a hurry.
 
+- **The footer is identical on every screen** — four destinations either side of
+  PLAY. PLAY is the brand's primary action and never disappears. Anything
+  screen-specific (a back button, a participant count, notifications) belongs in
+  the header instead.
 - One full-width segmented control per screen for view switching. Three segments
   max. **(measured)**
 - Other filters: ≤ 4 options show all, > 4 collapse to a sheet.
@@ -163,8 +167,9 @@ The reference frames disagree. These need a decision, not a rule:
 
 1. **Segmented selection.** Results index and Eliminations use a grey selected
    segment; Groups uses white-on-black. Pick one.
-2. **Bottom nav.** The start feed has five items with a centre PLAY button; all
-   three tournament screens have four and no PLAY. Is PLAY home-only?
+2. **Footer active state.** The footer is now consistent, but no tab is marked
+   as current — the reference frames show every icon at full white, and which
+   destination owns the start feed is undecided. Needs an IA call, not a rule.
 3. **Green.** The `Register now` button reads lighter than the feed's
    `#3fe176`. If they're meant to be the same green, they aren't yet.
 4. **Medals are emoji** on the Groups screen, which breaks §4. Placeholder, or

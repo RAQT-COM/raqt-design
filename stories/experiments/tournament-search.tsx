@@ -2,10 +2,10 @@ import { useMemo, useState } from "react";
 
 import { BAND, Backdrop } from "./backdrop";
 import { SNAP } from "./motion";
+import { NotificationBell, TabBar } from "./tab-bar";
 
 const courtSrc = new URL("./assets/court.png", import.meta.url).href;
 const feedSrc = new URL("./assets/feed.png", import.meta.url).href;
-const navMeSrc = new URL("./assets/nav-me.png", import.meta.url).href;
 
 const DISPLAY = '"Archivo", ui-sans-serif, sans-serif';
 
@@ -150,38 +150,6 @@ function CountrySheet({
   );
 }
 
-function TabBar() {
-  const items = [
-    <svg key="s" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="10.5" cy="10.5" r="7.5" stroke="currentColor" strokeWidth="2.1" />
-      <path d="m16.2 16.2 4.8 4.8" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
-    </svg>,
-    <svg key="c" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M12 3.8c-4.8 0-8.7 3.3-8.7 7.4 0 2.3 1.2 4.3 3.1 5.6v3.4l3.3-1.8c.7.1 1.5.2 2.3.2 4.8 0 8.7-3.3 8.7-7.4S16.8 3.8 12 3.8Z" stroke="currentColor" strokeWidth="2.1" strokeLinejoin="round" />
-    </svg>,
-    <svg key="b" width="23" height="23" viewBox="0 0 18 22" fill="currentColor" aria-hidden>
-      <path d="M9 1.2a6.4 6.4 0 0 0-6.4 6.4v3.7L1 15.1a.9.9 0 0 0 .8 1.3h14.4a.9.9 0 0 0 .8-1.3l-1.6-3.8V7.6A6.4 6.4 0 0 0 9 1.2Z" />
-      <path d="M6.6 18a2.5 2.5 0 0 0 4.8 0H6.6Z" />
-    </svg>,
-  ];
-  return (
-    <nav className="relative h-[90px] shrink-0 bg-black">
-      <div className="flex h-[80px] items-center px-[15px]">
-        {items.map((icon, i) => (
-          <div key={i} className="flex flex-1 justify-center">
-            {/* §5 — active is full white, inactive dimmed. Same device as a won match. */}
-            <span className={i === 0 ? "text-white" : "text-[#5f5f5f]"}>{icon}</span>
-          </div>
-        ))}
-        <div className="flex flex-1 justify-center">
-          <img src={navMeSrc} alt="Your profile" className="h-[31px] w-[31px] rounded-full opacity-60" />
-        </div>
-      </div>
-      <span className="absolute bottom-[8px] left-1/2 h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-white" />
-    </nav>
-  );
-}
-
 export function TournamentSearch({
   backdrop = true,
   onBack,
@@ -217,17 +185,20 @@ export function TournamentSearch({
       <StatusBar />
 
       <div className="shrink-0 px-[15px]">
-        <button
-          type="button"
-          aria-label="Back"
-          onClick={onBack}
-          className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white transition-transform duration-100 active:scale-[0.9]"
-          style={{ transitionTimingFunction: SNAP }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path d="M15 5l-7 7 7 7" stroke="black" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            aria-label="Back"
+            onClick={onBack}
+            className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white transition-transform duration-100 active:scale-[0.9]"
+            style={{ transitionTimingFunction: SNAP }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path d="M15 5l-7 7 7 7" stroke="black" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <NotificationBell unread />
+        </div>
 
         <h1
           className="mt-[18px] text-[28px] leading-[30px] font-extrabold tracking-[-0.01em] uppercase"
