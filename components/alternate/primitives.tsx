@@ -1,3 +1,4 @@
+import { User, Users } from 'lucide-react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import './theme.css';
 
@@ -13,6 +14,20 @@ export function IconButton({ label, children, ...props }: ButtonHTMLAttributes<H
 export function Progress({ value, label }: { value: number; label: string }) {
   return <div className="glow-progress"><strong>{value}%</strong><progress max={100} value={value} aria-label={label} /></div>;
 }
-export function PageHeading({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) {
-  return <div className="glow-page-heading"><span className="glow-eyebrow glow-muted">{eyebrow}</span><h1>{title}</h1>{children && <p className="glow-muted">{children}</p>}</div>;
+export function PageHeading({ title }: { title: string }) {
+  return <div className="glow-page-heading glow-tile"><h1>{title}</h1></div>;
+}
+export function ChoiceGroup({ label, value, options, onChange }: { label: string; value: string; options: readonly string[]; onChange: (value: string) => void }) {
+  if (options.length > 4) throw new Error('ChoiceGroup displays at most four options; collapse larger sets.');
+  return <fieldset className="glow-choice"><legend>{label}</legend><div>{options.map(option => <button key={option} type="button" aria-pressed={option === value} onClick={() => onChange(option)}>{option}</button>)}</div></fieldset>;
+}
+export function Surface({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <section className={`glow-tile ${className}`}>{children}</section>;
+}
+export function PlayerIdentity({ name, avatar }: { name: string; avatar: string }) {
+  return <span className="glow-player"><img className="glow-avatar" src={avatar} alt="" /><strong>{name}</strong></span>;
+}
+export function Rating({ value, format }: { value: string; format: 'singles' | 'doubles' }) {
+  const Icon = format === 'doubles' ? Users : User;
+  return <span className="glow-rating" aria-label={`DUPR ${format}: ${value}`}><Icon size={18} aria-hidden="true" /><strong>{value}</strong><span>DUPR · {format}</span></span>;
 }
