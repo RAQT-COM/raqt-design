@@ -61,7 +61,7 @@ function Navigation() {
 const meta = {
   title: "Experiments/Navigation",
   component: Navigation,
-  parameters: { layout: "centered" },
+  parameters: { layout: "centered", options: { showPanel: false } },
 } satisfies Meta<typeof Navigation>;
 
 export default meta;

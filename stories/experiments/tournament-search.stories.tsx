@@ -16,7 +16,7 @@ import { TournamentSearch } from "./tournament-search";
 const meta = {
   title: "Experiments/Tournament Search",
   component: TournamentSearch,
-  parameters: { layout: "centered" },
+  parameters: { layout: "centered", options: { showPanel: false } },
 } satisfies Meta<typeof TournamentSearch>;
 
 export default meta;

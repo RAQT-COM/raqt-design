@@ -17,7 +17,7 @@ import { StartFeed } from "./start-feed";
 const meta = {
   title: "Experiments/Start Feed",
   component: StartFeed,
-  parameters: { layout: "centered" },
+  parameters: { layout: "centered", options: { showPanel: false } },
 } satisfies Meta<typeof StartFeed>;
 
 export default meta;
