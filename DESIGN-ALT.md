@@ -112,6 +112,16 @@ reading a digit. **(measured: bracket rows)**
   message card)**
 - Horizontal sets cut off mid-item at the screen edge to show they continue.
   **(measured: bracket rounds)**
+- **In a scrolling list, the gap between two cards must be clearly larger than
+  the largest gap inside one.** Otherwise proximity groups the wrong things and
+  a card's text reads as belonging to the next card's photo. 20px between, ≤14px
+  within. **(this is why the first pass of the tournament list failed)**
+- **A full-bleed photo is not a card edge.** Inset the photo so the card's own
+  surface frames it on all four sides, and give it the next radius down —
+  20px card, 13px photo. The frame is what binds the photo to its text.
+- Elevation is surface *and* edge together, not surface alone. A card on the
+  band needs `border-[var(--hairline)]` or its boundary disappears exactly where
+  the green is strongest.
 - Elements separate by surface and weight, not by dividers.
 
 ## 7. Motion

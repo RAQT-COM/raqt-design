@@ -31,7 +31,7 @@ const DARK: Record<string, string> = {
   // own value. Fills keep #3fe176 in both modes.
   "--green-ink": "#3fe176",
   "--chrome": "#000000",
-  "--hairline": "rgba(255,255,255,0.06)",
+  "--hairline": "rgba(255,255,255,0.10)",
   // the wordmark ships as a near-white PNG; light needs it flipped
   "--logo-filter": "none",
 };
@@ -51,7 +51,7 @@ const LIGHT: Record<string, string> = {
   "--ink-faint": "#a5a399",
   "--green-ink": "#0b7a33",
   "--chrome": "#ffffff",
-  "--hairline": "rgba(20,21,15,0.08)",
+  "--hairline": "rgba(20,21,15,0.09)",
   "--logo-filter": "invert(1)",
 };
 

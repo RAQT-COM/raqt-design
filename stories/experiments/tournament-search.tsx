@@ -46,15 +46,72 @@ function StatusPill({ open }: { open: boolean }) {
   );
 }
 
-function TournamentCard({ t }: { t: Tournament }) {
+type CardStyle = "framed" | "overlay";
+
+/**
+ * Two answers to the same problem: in a single scrolling column the cards were
+ * not reading as discrete objects, because the gap between one card's text and
+ * the next card's photo matched the gaps inside a card.
+ *
+ * `framed` insets the photo so the card's own surface frames it on all four
+ * sides, and adds the edge that §11's elevation ladder was missing.
+ * `overlay` makes the photo *be* the card and puts the text on it, so there is
+ * only one object to group in the first place.
+ */
+function TournamentCard({ t, style }: { t: Tournament; style: CardStyle }) {
+  const press =
+    "transition-transform duration-100 active:scale-[0.985] " + FOCUS;
+
+  if (style === "overlay") {
+    return (
+      <button
+        type="button"
+        className={`relative block w-full overflow-hidden rounded-[20px] text-left ${press}`}
+        style={{ transitionTimingFunction: SNAP }}
+      >
+        <img src={t.image} alt="" className="h-[168px] w-full object-cover" />
+        {/* text sits on photography, so it is light on both grounds */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.55) 34%, rgba(0,0,0,0) 66%)",
+          }}
+        />
+        <div className="absolute top-[12px] right-[12px]">
+          <StatusPill open={t.open} />
+        </div>
+        <div className="absolute inset-x-0 bottom-0 px-[14px] pb-[13px] text-white">
+          <span className="text-[11px] leading-[14px] font-semibold tracking-[0.04em] text-white/70 uppercase">
+            {t.dates}
+          </span>
+          <h3
+            className="mt-[5px] text-[18px] leading-[20px] font-extrabold tracking-[-0.01em] uppercase"
+            style={{ fontFamily: DISPLAY }}
+          >
+            {t.name}
+          </h3>
+          <div className="mt-[7px] flex items-center gap-[5px]">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" aria-hidden>
+              <path d="M6 .8a4 4 0 0 0-4 4c0 3 4 6.4 4 6.4s4-3.4 4-6.4a4 4 0 0 0-4-4Zm0 5.6a1.6 1.6 0 1 1 0-3.2 1.6 1.6 0 0 1 0 3.2Z" />
+            </svg>
+            <span className="text-[11px] leading-[14px] font-medium">
+              {t.city}, {t.country}
+            </span>
+          </div>
+        </div>
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
-      className={`block w-full overflow-hidden rounded-[20px] bg-[var(--surface)] text-left transition-transform duration-100 active:scale-[0.985] ${FOCUS}`}
+      className={`block w-full overflow-hidden rounded-[20px] border border-[var(--hairline)] bg-[var(--surface)] p-[8px] text-left ${press}`}
       style={{ transitionTimingFunction: SNAP }}
     >
-      <img src={t.image} alt="" className="h-[112px] w-full object-cover" />
-      <div className="px-[14px] pt-[12px] pb-[14px]">
+      <img src={t.image} alt="" className="h-[112px] w-full rounded-[13px] object-cover" />
+      <div className="px-[6px] pt-[11px] pb-[5px]">
         <div className="flex items-center justify-between">
           <span className="text-[11px] leading-[14px] font-semibold tracking-[0.04em] text-[var(--ink-dim)] uppercase">
             {t.dates}
@@ -133,10 +190,12 @@ function CountrySheet({
 export function TournamentSearch({
   mode = "dark",
   backdrop = true,
+  cards = "framed",
   onBack,
 }: {
   mode?: Mode;
   backdrop?: boolean;
+  cards?: CardStyle;
   onBack?: () => void;
 }) {
   const [query, setQuery] = useState("");
@@ -239,9 +298,9 @@ export function TournamentSearch({
       </div>
 
       <div className="no-bar flex-1 overflow-y-auto px-[15px] pb-[14px]">
-        <div className="flex flex-col gap-[12px]">
+        <div className="flex flex-col gap-[20px]">
           {results.map((t) => (
-            <TournamentCard key={t.id} t={t} />
+            <TournamentCard key={t.id} t={t} style={cards} />
           ))}
           {results.length === 0 && (
             <p

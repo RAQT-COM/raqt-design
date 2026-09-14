@@ -26,3 +26,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 export const Light: Story = { args: { mode: "light" } };
+
+/** The photo is the card, and the text sits on it. One object to group. */
+export const OverlayCards: Story = { args: { cards: "overlay" } };
+
+export const OverlayCardsLight: Story = { args: { cards: "overlay", mode: "light" } };
