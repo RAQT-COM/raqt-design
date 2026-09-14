@@ -107,8 +107,11 @@ function TournamentCard({ t, style }: { t: Tournament; style: CardStyle }) {
   return (
     <button
       type="button"
-      className={`block w-full overflow-hidden rounded-[20px] border border-[var(--hairline)] bg-[var(--surface)] p-[8px] text-left ${press}`}
-      style={{ transitionTimingFunction: SNAP }}
+      className={`block w-full overflow-hidden rounded-[20px] border border-[var(--hairline)] p-[8px] text-left ${press}`}
+      style={{
+        background: "var(--sheen), var(--surface)",
+        transitionTimingFunction: SNAP,
+      }}
     >
       <img src={t.image} alt="" className="h-[112px] w-full rounded-[13px] object-cover" />
       <div className="px-[6px] pt-[11px] pb-[5px]">

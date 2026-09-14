@@ -20,8 +20,13 @@ const DARK: Record<string, string> = {
   "--key": "radial-gradient(78% 30% at 10% 9%, #2f2f2f 0%, rgba(0,0,0,0) 76%)",
   "--fade":
     "linear-gradient(to bottom, rgba(0,0,0,0) 48%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0.9) 86%, #000000 100%)",
-  "--surface": "#282828",
-  "--recessed": "#1c1c1c",
+  // Surfaces are translucent so the band shows through them. A card is not
+  // decorated to look like the screen — it is made of the screen. Controls are
+  // the most transparent, because chrome sitting opaque on an atmospheric
+  // ground is what reads as pasted on.
+  "--surface": "rgba(40,40,40,0.84)",
+  "--recessed": "rgba(24,24,24,0.62)",
+  // raised sits on photography, where the band is not behind it — stays opaque
   "--raised": "#333333",
   "--track": "#464646",
   "--ink": "#ffffff",
@@ -34,6 +39,10 @@ const DARK: Record<string, string> = {
   "--hairline": "rgba(255,255,255,0.10)",
   // the wordmark ships as a near-white PNG; light needs it flipped
   "--logo-filter": "none",
+  // §8 — a streak of the band's own light catching the top of a card. The angle
+  // comes from the screen's band, so a card can never disagree with it.
+  "--sheen":
+    "linear-gradient(var(--sheen-angle, 147deg), rgba(63,225,118,0.14) 0%, rgba(63,225,118,0.04) 30%, rgba(63,225,118,0) 52%)",
 };
 
 const LIGHT: Record<string, string> = {
@@ -42,8 +51,8 @@ const LIGHT: Record<string, string> = {
   "--key": "radial-gradient(78% 30% at 10% 9%, #ffffff 0%, rgba(255,255,255,0) 76%)",
   "--fade":
     "linear-gradient(to bottom, rgba(242,241,234,0) 48%, rgba(242,241,234,0.55) 70%, rgba(242,241,234,0.92) 86%, #f2f1ea 100%)",
-  "--surface": "#ffffff",
-  "--recessed": "#e8e6dc",
+  "--surface": "rgba(255,255,255,0.82)",
+  "--recessed": "rgba(228,226,214,0.58)",
   "--raised": "#ffffff",
   "--track": "#dbd8cd",
   "--ink": "#14150f",
@@ -53,6 +62,8 @@ const LIGHT: Record<string, string> = {
   "--chrome": "#ffffff",
   "--hairline": "rgba(20,21,15,0.09)",
   "--logo-filter": "invert(1)",
+  "--sheen":
+    "linear-gradient(var(--sheen-angle, 147deg), rgba(63,225,118,0.34) 0%, rgba(63,225,118,0.10) 30%, rgba(63,225,118,0) 52%)",
 };
 
 /**

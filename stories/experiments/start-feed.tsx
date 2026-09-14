@@ -58,7 +58,10 @@ function TileTitle({ children }: { children: ReactNode }) {
 
 function BadgesTile() {
   return (
-    <section className="flex h-[157px] flex-col rounded-[20px] bg-[var(--surface)] px-[13px] pt-[16px] pb-[13px]">
+    <section
+      className="flex h-[157px] flex-col rounded-[20px] px-[13px] pt-[16px] pb-[13px]"
+      style={{ background: "var(--sheen), var(--surface)" }}
+    >
       <TileLabel>Badges</TileLabel>
       <TileTitle>Unlock Achievements</TileTitle>
       <span className="mt-auto text-[16px] leading-[19px] font-bold tracking-[-0.02em]">17%</span>
@@ -79,7 +82,10 @@ function AtpTile() {
 
 function ClinicsTile() {
   return (
-    <section className="flex h-[157px] flex-col rounded-[20px] bg-[var(--surface)] px-[13px] pt-[16px] pb-[13px]">
+    <section
+      className="flex h-[157px] flex-col rounded-[20px] px-[13px] pt-[16px] pb-[13px]"
+      style={{ background: "var(--sheen), var(--surface)" }}
+    >
       <TileLabel>Clinics</TileLabel>
       {/* The Figma text box is narrower than the tile, so this break is authored
           rather than a consequence of the available width. */}

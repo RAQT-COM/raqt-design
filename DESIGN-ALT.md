@@ -62,6 +62,12 @@ reads editorial, which is the wrong sport.
   *not* move between grounds: the green fill, the PLAY gradient, the points
   sparkle and the partner navy. A value that changes when the lights come on was
   never a brand value.
+- **Surfaces are translucent, so the band shows through them.** A card is not
+  decorated to look like the screen — it is made of the screen, and its tint
+  changes as it scrolls past the band. Controls are the most transparent:
+  opaque chrome sitting on an atmospheric ground is what reads as pasted on.
+  Only `raised` is solid, because it sits on photography rather than on the
+  band.
 - Green as a **fill** is `#3fe176` on both grounds. Green as **foreground** has
   its own value, because `#3fe176` on white is unreadable.
 - Surfaces lift off the ground in both directions: recessed is darker than the
@@ -155,6 +161,11 @@ fast out, abrupt settle, almost no bounce-back.
 - A screen has exactly one angle. Any foreground diagonal on it matches the
   band. Two angles on one screen means one is wrong.
 - Background and structural elements only. Never on text blocks or tap targets.
+- **A card catches the band's light along the same angle.** `--sheen` is a green
+  streak across the top of any card carrying a block of text, and its angle is
+  published by `Screen` from the band pose — so a card physically cannot
+  disagree with the screen it is on. It is what stops a large text surface
+  reading as a blank slab.
 
 ## 9. Controls
 

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { Backdrop, bandFor } from "./backdrop";
 import { THEME, type Mode } from "./theme";
@@ -59,12 +59,19 @@ export function Screen({
   onSearch?: () => void;
   children: ReactNode;
 }) {
+  const pose = bandFor(depth);
+
   return (
     <div
       className="relative h-[874px] w-[402px] overflow-hidden text-[var(--ink)] antialiased"
-      style={{ ...THEME[mode], fontFamily: "Inter, system-ui, sans-serif" }}
+      style={{
+        ...THEME[mode],
+        // a gradient perpendicular to the band reads as parallel to it
+        "--sheen-angle": `${180 + pose.angle}deg`,
+        fontFamily: "Inter, system-ui, sans-serif",
+      } as CSSProperties}
     >
-      {backdrop && <Backdrop pose={bandFor(depth)} />}
+      {backdrop && <Backdrop pose={pose} />}
       <div className="relative z-10 flex h-full flex-col">
         <StatusBar />
         {children}
