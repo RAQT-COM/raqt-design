@@ -115,9 +115,10 @@ fast out, abrupt settle, almost no bounce-back.
 
 - Never `ease-in-out`. Never 300ms.
 - No ambient motion, no idle drift, no scroll-triggered reveals.
-- **One exception: the backdrop.** The blob is further away than the UI, so it
-  lags — content snaps at ~200ms while the blob drifts over ~620ms. That
-  difference is what reads as depth. Nothing else gets an exception.
+- **No exceptions, including the backdrop.** The band travels and rotates on the
+  same clock as the screen in front of it. A background still moving after the
+  content has landed reads as lag, not depth — and lag is the one thing this
+  brand cannot afford.
 - Expressive choreography lives in Celebrate only. Frequency and personality are
   inversely proportional.
 

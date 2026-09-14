@@ -8,7 +8,7 @@
 // It never sits behind text — cards are opaque, so it only shows through the
 // gutters and margins.
 
-import { BACKDROP_EASE, BACKDROP_MS } from "./motion";
+import { NAVIGATE_MS, SNAP } from "./motion";
 
 export type BandPose = { x: number; y: number; angle: number };
 
@@ -23,10 +23,10 @@ export const BAND: Record<"feed" | "search", BandPose> = {
   search: { x: -270, y: 120, angle: -13 },
 };
 
-// §7 exception: the band is further away than the UI, so it moves slower than
-// the screens do. Snap the content, drift the background — that difference is
-// what reads as depth.
-export const BAND_SHIFT = `transform ${BACKDROP_MS}ms ${BACKDROP_EASE}`;
+// §7 — the band travels on the same clock and the same curve as the screen it
+// sits behind. A background still moving after the content has landed reads as
+// lag, not as depth.
+export const BAND_SHIFT = `transform ${NAVIGATE_MS}ms ${SNAP}`;
 
 export function Backdrop({ pose, animate = true }: { pose: BandPose; animate?: boolean }) {
   return (

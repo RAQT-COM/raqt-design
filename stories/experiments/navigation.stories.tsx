@@ -49,10 +49,10 @@ function Navigation() {
  * button to return — the two affordances the screens already have, rather than
  * invented navigation. Watch the background while you do it.
  *
- * The screen snaps across in 200ms. The band takes 620ms to travel and rotate
- * from −33° to −13°, so it arrives after the content has settled. That lag is
- * the whole point: it makes the band read as further away, and turns navigation
- * into a camera move over one continuous background rather than a screen swap.
+ * Screen and band move together — 200ms on the same curve — while the band also
+ * rotates from −33° to −13°. The rotation is what makes it read as one
+ * continuous background being travelled across rather than a screen swap; it
+ * does not need to lag to do that.
  *
  * Each screen keeps its own tab bar, so the bar transitions with the content —
  * the two bars still disagree (five items with PLAY on the feed, four without
