@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { BAND, Backdrop } from "./backdrop";
+import { Backdrop, bandFor } from "./backdrop";
 import { NAVIGATE_MS, SNAP } from "./motion";
 import { StartFeed } from "./start-feed";
 import { TournamentSearch } from "./tournament-search";
@@ -25,7 +25,7 @@ function Navigation() {
       `}</style>
 
       {/* One band for the whole app. The screens travel across it; it drifts. */}
-      <Backdrop pose={BAND[screen]} />
+      <Backdrop pose={bandFor(screen === "feed" ? 0 : 1)} />
 
       <div
         key={screen}

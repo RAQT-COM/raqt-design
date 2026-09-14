@@ -52,9 +52,10 @@ reads editorial, which is the wrong sport.
 - **A different surface means someone else's content.** Partner and broadcast
   tiles sit on navy `#0f192b`; RAQT's own content never does. **(measured)**
 - **One blurred green band, behind every screen.** It belongs to the app, not to
-  a screen: each screen parks it at its own position and angle, and navigating
-  moves and rotates it rather than replacing it. It sits behind opaque cards, so
-  it only ever shows through gutters and margins — never behind text.
+  a screen. Navigating moves and rotates it rather than replacing it, so the
+  background is one continuous place the screens travel across. It sits behind
+  opaque cards, so it only ever shows through gutters and margins — never behind
+  text.
 - Status red is reserved for live and destructive. It is not a brand colour.
 
 ## 4. Photography and icons
@@ -124,10 +125,12 @@ fast out, abrupt settle, almost no bounce-back.
 
 ## 8. Diagonals
 
-- **The backdrop band carries the angle, and it is per screen, not per app.**
-  The feed is −33° **(measured)**; tournament search is −13°. Navigating rotates
-  between them, and that rotation is the signature — it is why the background
-  reads as one continuous place rather than a per-screen texture.
+- **The band carries the angle, and it is keyed to navigation depth — not to the
+  screen.** A footer destination gets −33° **(measured)**; a screen pushed on
+  top of one gets −13°; a detail inside that gets −5°. Going deeper flattens and
+  raises the band; going back steepens and drops it.
+- Depth, not screen name, is what makes this scale: twenty screens still need
+  only three poses, and nobody invents an angle.
 - A screen has exactly one angle. Any foreground diagonal on it matches the
   band. Two angles on one screen means one is wrong.
 - Background and structural elements only. Never on text blocks or tap targets.
@@ -147,6 +150,18 @@ Assume the user is on a phone, mid-tournament, in a hurry.
   messages.
 - A filter shows its current state without being opened.
 
+## 10. Adding a screen
+
+- **Render it as a `<Screen depth={n}>`.** That is what supplies the backdrop,
+  the status bar and the footer. Never assemble those yourself — a screen should
+  get the chrome right by existing, not by remembering to.
+- **`depth` is how far in you are**: `0` a footer destination, `1` pushed on top
+  of one, `2` a detail inside that. It selects the band pose. You do not pick an
+  angle or a position.
+- Screen-specific chrome — a back button, a count, notifications — goes in the
+  header. The footer never changes.
+- Margin is 15px on content screens, 10px on the feed (contradiction 6).
+
 ---
 
 ## Review checklist
@@ -160,6 +175,7 @@ Assume the user is on a phone, mid-tournament, in a hurry.
 - [ ] Any transition over 220ms outside Celebrate?
 - [ ] Any generated or illustrated imagery?
 - [ ] Could a user finish this task without typing?
+- [ ] Is the screen a `Screen`, with a `depth` that matches where it sits?
 
 ## Open contradictions
 
