@@ -27,6 +27,12 @@ const SCREENS: Screen[] = [
     note: "The photo is the card. Groups more cleanly in a list, but the scrim eats half of every photo.",
   },
   {
+    file: "SearchGrid",
+    name: "Tournaments, featured + grid",
+    group: "Current — dark",
+    note: "A full-width featured carousel on top, then half-width cards in a grid — squarer, and four visible instead of two.",
+  },
+  {
     file: "StartFeedLight",
     name: "Start feed",
     group: "Current — light",

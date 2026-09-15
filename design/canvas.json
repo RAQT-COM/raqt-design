@@ -1,24 +1,124 @@
 {
   "artboards": [
-    { "file": "StartFeedDark.dc.html", "x": 0, "y": 0, "w": 402, "h": 874, "title": "Current dark · start feed" },
-    { "file": "SearchDark.dc.html", "x": 502, "y": 0, "w": 402, "h": 874, "title": "Current dark · tournaments" },
-    { "file": "SearchOverlay.dc.html", "x": 1004, "y": 0, "w": 402, "h": 874, "title": "Current dark · overlay cards" },
-
-    { "file": "StartFeedLight.dc.html", "x": 0, "y": 1120, "w": 402, "h": 874, "title": "Current light · start feed" },
-    { "file": "SearchLight.dc.html", "x": 502, "y": 1120, "w": 402, "h": 874, "title": "Current light · tournaments" },
-
-    { "file": "Signal.dc.html", "x": 0, "y": 2240, "w": 402, "h": 874, "title": "Signal · start feed" },
-    { "file": "Main.dc.html", "x": 502, "y": 2240, "w": 402, "h": 874, "title": "Signal · class standings" },
-
-    { "file": "Court.dc.html", "x": 0, "y": 3360, "w": 402, "h": 874, "title": "Court" },
-    { "file": "ClubBoard.dc.html", "x": 502, "y": 3360, "w": 402, "h": 874, "title": "Club board" }
+    {
+      "file": "StartFeedDark.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "Current dark · start feed"
+    },
+    {
+      "file": "SearchDark.dc.html",
+      "x": 502,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "Current dark · tournaments"
+    },
+    {
+      "file": "SearchOverlay.dc.html",
+      "x": 1004,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "Current dark · overlay cards"
+    },
+    {
+      "file": "SearchGrid.dc.html",
+      "x": 1506,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "Current dark · featured + grid"
+    },
+    {
+      "file": "StartFeedLight.dc.html",
+      "x": 0,
+      "y": 1120,
+      "w": 402,
+      "h": 874,
+      "title": "Current light · start feed"
+    },
+    {
+      "file": "SearchLight.dc.html",
+      "x": 502,
+      "y": 1120,
+      "w": 402,
+      "h": 874,
+      "title": "Current light · tournaments"
+    },
+    {
+      "file": "Signal.dc.html",
+      "x": 0,
+      "y": 2240,
+      "w": 402,
+      "h": 874,
+      "title": "Signal · start feed"
+    },
+    {
+      "file": "Main.dc.html",
+      "x": 502,
+      "y": 2240,
+      "w": 402,
+      "h": 874,
+      "title": "Signal · class standings"
+    },
+    {
+      "file": "Court.dc.html",
+      "x": 0,
+      "y": 3360,
+      "w": 402,
+      "h": 874,
+      "title": "Court"
+    },
+    {
+      "file": "ClubBoard.dc.html",
+      "x": 502,
+      "y": 3360,
+      "w": 402,
+      "h": 874,
+      "title": "Club board"
+    }
   ],
   "annotations": [
-    { "id": "row-dark", "x": 1506, "y": 0, "w": 420, "text": "CURRENT — DARK. The language that exists in code today: diagonal band, translucent surfaces with a green sheen, Archivo caps over Inter, 20px cards, five-slot footer.\n\nThe third is the overlay-card variant: the photo is the card. Groups better in a list, but the scrim eats half of every photo." },
-    { "id": "row-light", "x": 1004, "y": 1120, "w": 420, "text": "CURRENT — LIGHT. Warm off-white, not white. The brand green, the PLAY gradient, the points sparkle and the partner navy keep their exact values across both grounds; everything else flips." },
-    { "id": "row-signal", "x": 1004, "y": 2240, "w": 420, "text": "SIGNAL. Near-white, hard 2px rules instead of cards, square corners, Outfit, one green and one amber. Drawn only — no code behind these yet." },
-    { "id": "row-rejected", "x": 1004, "y": 3360, "w": 420, "text": "REJECTED DIRECTIONS, rebuilt on request. Court puts the screen on the court; Club board is the noticeboard at a real club.\n\nThese are redraws, not recoveries — the originals were deleted, so they are close to but not byte-identical with what you first saw." },
-    { "id": "gone-note", "x": 0, "y": 4290, "w": 700, "text": "STILL NOT HERE: Broadcast, Editorial, both Arcade palettes, Signal dark, and the personalised \"Today\" feed. Say the word and I will redraw any of them too.\n\nAll nine screens above also live in Storybook now, under Experiments / All Screens." }
+    {
+      "id": "row-dark",
+      "x": 2008,
+      "y": 0,
+      "w": 420,
+      "text": "CURRENT — DARK. The language that exists in code today: diagonal band, translucent surfaces with a green sheen, Archivo caps over Inter, 20px cards, five-slot footer.\n\nThird is the overlay-card variant: the photo is the card.\n\nFourth is featured + grid: one full-width carousel card on top, then half-width cards two to a row. Four tournaments visible instead of two, and the squarer card gives the name less room — so the long ones wrap to two lines."
+    },
+    {
+      "id": "row-light",
+      "x": 1004,
+      "y": 1120,
+      "w": 420,
+      "text": "CURRENT — LIGHT. Warm off-white, not white. The brand green, the PLAY gradient, the points sparkle and the partner navy keep their exact values across both grounds; everything else flips."
+    },
+    {
+      "id": "row-signal",
+      "x": 1004,
+      "y": 2240,
+      "w": 420,
+      "text": "SIGNAL. Near-white, hard 2px rules instead of cards, square corners, Outfit, one green and one amber. Drawn only — no code behind these yet."
+    },
+    {
+      "id": "row-rejected",
+      "x": 1004,
+      "y": 3360,
+      "w": 420,
+      "text": "REJECTED DIRECTIONS, rebuilt on request. Court puts the screen on the court; Club board is the noticeboard at a real club.\n\nThese are redraws, not recoveries — the originals were deleted, so they are close to but not byte-identical with what you first saw."
+    },
+    {
+      "id": "gone-note",
+      "x": 0,
+      "y": 4290,
+      "w": 700,
+      "text": "STILL NOT HERE: Broadcast, Editorial, both Arcade palettes, Signal dark, and the personalised \"Today\" feed. Say the word and I will redraw any of them too.\n\nAll nine screens above also live in Storybook now, under Experiments / All Screens."
+    }
   ],
-  "launch": { "view": "canvas" }
+  "launch": {
+    "view": "canvas"
+  }
 }
