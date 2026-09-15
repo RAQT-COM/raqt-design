@@ -56,18 +56,6 @@ const SCREENS: Screen[] = [
     group: "Signal",
     note: "Standings and schedule. The qualification cut is a heavy rule, not a colour.",
   },
-  {
-    file: "Court",
-    name: "Court",
-    group: "Rejected directions",
-    note: "The screen as a court seen from above. Rebuilt from scratch — the original working file was deleted.",
-  },
-  {
-    file: "ClubBoard",
-    name: "Club board",
-    group: "Rejected directions",
-    note: "The noticeboard at a real club: paper, printed caps, pinned cards. Also a rebuild.",
-  },
 ];
 
 const SCALE = 0.62;
