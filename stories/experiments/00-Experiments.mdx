@@ -1,0 +1,23 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+
+import * as GlowStories from "./glow/glow.stories";
+
+<Meta title="Experiments/Overview" />
+
+# Experiments
+
+Design explorations live here while their visual language and product behavior
+are still being evaluated. They do not change the released RAQT theme or
+component registry.
+
+## Glow
+
+The Glow exploration starts from the supplied mobile feed and extends it into
+tournament discovery, next-match, scores, draw, messages, profile, achievements,
+coaching, and live coverage. Use the screen selector above the phones to inspect
+both themes together.
+
+<Canvas of={GlowStories.CompareThemes} />
+
+Open the stories under **Experiments → Glow** to view each screen individually,
+change its theme, and interact with its controls.

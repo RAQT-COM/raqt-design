@@ -202,3 +202,35 @@ resolving, so this passes every gate. `.design-sync/conventions.md` states the
 shape (`each { players, scores }`) in its component map, which is currently the
 only shipped place the agent can read it. Keep that line until the converter
 carries referenced types. Worth reporting upstream.
+
+## Experiments are excluded from the sync, by construction
+
+`[GENERAL]` `stories/experiments/` holds design explorations — alternative
+languages, rejected directions, screens drawn to present rather than to ship.
+They must never reach the converter: the sync grades every real component
+against the reference storybook, so an experiment in that build does not just
+get uploaded, it changes what "correct" means for everything else.
+
+Two layers, both committed:
+
+- `.storybook/main.ts` leaves them out of the story glob unless
+  `RAQT_EXPERIMENTS=1`. That covers the published storybook (`pages.yml`) at the
+  same time. Run them locally with `pnpm storybook:experiments`.
+- `prepare.mjs` refuses to hand off if any `experiments-*` story id is present
+  in the reference build — so leaving the flag set fails loudly instead of
+  silently shipping.
+
+If you add an exploration somewhere other than `stories/experiments/`, the
+second guard still catches it only if its story id starts `experiments-`. Keep
+the title prefix.
+
+## `pnpm ds:sync` cannot bootstrap itself
+
+`[GENERAL]` `build-dist.mjs` imports esbuild from `../.ds-sync/node_modules/`,
+and `.ds-sync/` is gitignored — Claude Code stages it when `/design-sync` runs.
+So on a fresh clone `pnpm ds:sync` dies at step 1 with `ERR_MODULE_NOT_FOUND`
+before it reaches the storybook build.
+
+Order on a new machine: `/design-login`, then `/design-sync` once to stage the
+converter, and only then is `pnpm ds:sync` runnable on its own.
+
