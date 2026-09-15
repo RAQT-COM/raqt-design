@@ -221,3 +221,9 @@ Tokens, the nine components, the Storybook and the registry are built and pushed
 `registry.json` validates both locally and at `RAQT-COM/raqt-design`, `r/` is
 committed, and `v0.1.0` is tagged. Every target and every dependency chain above
 was verified by installing all ten items into a scratch consumer.
+
+## Alternate design exploration
+
+The opt-in **Glow** direction recreates the supplied mobile feed and explores
+additional screens in dark and light. Open **Experiments / Glow / Compare
+Themes** in Storybook. See [the design and reuse notes](docs/ALTERNATE-GLOW.md).
