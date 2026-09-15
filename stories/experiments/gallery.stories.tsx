@@ -1,6 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { GlowApp, type Screen as GlowScreen, type Theme as GlowTheme } from "./glow/glow";
 
-type Screen = { file: string; name: string; group: string; note: string };
+type Screen = {
+  name: string;
+  group: string;
+  note: string;
+  /** A standalone mockup under `screens/`, mounted in its own document. */
+  file?: string;
+  /** A live Glow screen, rendered in place — its CSS is scoped to `.raqt-glow`. */
+  glow?: { screen: GlowScreen; theme: GlowTheme };
+};
 
 /**
  * Every screen drawn for RAQT so far. Each is a standalone document under
@@ -56,6 +65,102 @@ const SCREENS: Screen[] = [
     group: "Signal",
     note: "Standings and schedule. The qualification cut is a heavy rule, not a colour.",
   },
+  {
+    glow: { screen: "feed", theme: "dark" },
+    name: "Start feed",
+    group: "Glow — dark",
+    note: "ATP Live hero, badge and clinic tiles, a nearby club, one post.",
+  },
+  {
+    glow: { screen: "discover", theme: "dark" },
+    name: "Tournaments",
+    group: "Glow — dark",
+    note: "One-tap date and format filters; search hides behind a disclosure.",
+  },
+  {
+    glow: { screen: "play", theme: "dark" },
+    name: "Play",
+    group: "Glow — dark",
+    note: "Next match first, then open games. Draw and scores sit behind the same switch.",
+  },
+  {
+    glow: { screen: "messages", theme: "dark" },
+    name: "Messages",
+    group: "Glow — dark",
+    note: "Conversation list opening into a thread with a composer.",
+  },
+  {
+    glow: { screen: "profile", theme: "dark" },
+    name: "Profile",
+    group: "Glow — dark",
+    note: "Rating, counts, achievement progress, activity shortcuts.",
+  },
+  {
+    glow: { screen: "badges", theme: "dark" },
+    name: "Achievements",
+    group: "Glow — dark",
+    note: "Twelve badges, the locked ones kept visible.",
+  },
+  {
+    glow: { screen: "clinics", theme: "dark" },
+    name: "Clinics",
+    group: "Glow — dark",
+    note: "A live coaching session with a waiting room.",
+  },
+  {
+    glow: { screen: "live", theme: "dark" },
+    name: "ATP Live",
+    group: "Glow — dark",
+    note: "Broadcast placeholder with a notify-me reminder.",
+  },
+  {
+    glow: { screen: "feed", theme: "light" },
+    name: "Start feed",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
+  {
+    glow: { screen: "discover", theme: "light" },
+    name: "Tournaments",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
+  {
+    glow: { screen: "play", theme: "light" },
+    name: "Play",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
+  {
+    glow: { screen: "messages", theme: "light" },
+    name: "Messages",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
+  {
+    glow: { screen: "profile", theme: "light" },
+    name: "Profile",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
+  {
+    glow: { screen: "badges", theme: "light" },
+    name: "Achievements",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
+  {
+    glow: { screen: "clinics", theme: "light" },
+    name: "Clinics",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
+  {
+    glow: { screen: "live", theme: "light" },
+    name: "ATP Live",
+    group: "Glow — daylight",
+    note: "Same screen on the daylight ground.",
+  },
 ];
 
 const SCALE = 0.62;
@@ -76,19 +181,25 @@ function Frame({ screen }: { screen: Screen }) {
           flex: "none",
         }}
       >
-        <iframe
-          src={`/screens/${screen.file}.html`}
-          title={`${screen.group} — ${screen.name}`}
-          loading="lazy"
+        <div
           style={{
             width: W,
             height: H,
-            border: 0,
-            display: "block",
             transform: `scale(${SCALE})`,
             transformOrigin: "top left",
           }}
-        />
+        >
+          {screen.glow ? (
+            <GlowApp theme={screen.glow.theme} initialScreen={screen.glow.screen} />
+          ) : (
+            <iframe
+              src={`/screens/${screen.file}.html`}
+              title={`${screen.group} — ${screen.name}`}
+              loading="lazy"
+              style={{ width: W, height: H, border: 0, display: "block" }}
+            />
+          )}
+        </div>
       </div>
       <figcaption style={{ width: W * SCALE, display: "flex", flexDirection: "column", gap: 4 }}>
         <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "-0.01em" }}>{screen.name}</span>
@@ -118,8 +229,8 @@ function Gallery() {
         RAQT screens
       </h1>
       <p style={{ margin: "8px 0 0", maxWidth: 620, fontSize: 14, lineHeight: 1.55, color: "#55544c" }}>
-        Every direction drawn so far, at one scale. The dark screens are ports of the live
-        components; the rest exist only as drawings.
+        Every direction drawn so far, at one scale. The Current screens are ports of the live
+        components, Glow renders from its own components, and the rest exist only as drawings.
       </p>
 
       {Object.entries(groups).map(([group, items]) => (
@@ -138,7 +249,7 @@ function Gallery() {
           </h2>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 28 }}>
             {items.map((s) => (
-              <Frame key={s.file} screen={s} />
+              <Frame key={s.file ?? `${s.glow?.theme}-${s.glow?.screen}`} screen={s} />
             ))}
           </div>
         </section>

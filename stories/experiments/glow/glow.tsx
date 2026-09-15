@@ -1,8 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import { ArrowLeft, Bell, BatteryFull, Check, ChevronDown, ChevronRight, MapPin, MessageCircle, Navigation, Search, Users, CircleCheck, Clock3, Signal, Sparkles, Trophy, Wifi, Zap, Map, Swords, Ticket } from 'lucide-react';
-import { Action, ChoiceGroup, IconButton, PageHeading, PlayerIdentity, Rating, Progress, Surface, Tile } from '../../components/alternate/primitives';
+import { Action, ChoiceGroup, IconButton, PageHeading, PlayerIdentity, Rating, Progress, Surface, Tile } from './primitives';
 
-const logo = new URL('../../assets/brand/logotype.png', import.meta.url).href;
+const logo = new URL('../../../assets/brand/logotype.png', import.meta.url).href;
 const asset = (name: string) => new URL(`./assets/${name}.png`, import.meta.url).href;
 const assets = { court: asset('court'), feed: asset('feed'), hero: asset('atp-hero'), atp: asset('atp-tile'), niklas: asset('niklas'), me: asset('nav-me'), coaches: asset('coaches') };
 export type Screen = 'feed' | 'discover' | 'play' | 'messages' | 'profile' | 'badges' | 'clinics' | 'live';

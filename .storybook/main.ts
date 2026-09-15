@@ -21,12 +21,16 @@ const withExperiments = process.env.RAQT_EXPERIMENTS === "1";
 
 const config: StorybookConfig = {
   stories: [
-    "../stories/**/*.mdx",
+    // Named per folder rather than `../stories/**/*.mdx`, for the same reason:
+    // that glob swept the experiments' own docs page in, gate or no gate.
+    "../stories/foundations/*.mdx",
     "../components/**/*.stories.@(ts|tsx)",
     // A new non-experiment story under stories/ needs its own entry here — the
     // broad `../stories/**/*.stories.@(ts|tsx)` glob is deliberately gone,
     // because it swept experiments in.
-    ...(withExperiments ? ["../stories/experiments/**/*.stories.@(ts|tsx)"] : []),
+    ...(withExperiments
+      ? ["../stories/experiments/**/*.mdx", "../stories/experiments/**/*.stories.@(ts|tsx)"]
+      : []),
   ],
   addons: ["@storybook/addon-docs"],
   // Only mounted with the experiments: the gallery loads each mockup as its own
