@@ -99,8 +99,24 @@ if (stale) {
 if (!existsSync(iframe) || statSync(iframe).size < 10_000) {
   die("the reference storybook did not build", `expected a populated ${iframe}`);
 }
-const stories = Object.keys(JSON.parse(readFileSync(join(reference, "index.json"), "utf8")).entries ?? {}).length;
-ok(`${stories} stories in .design-sync/sb-reference`);
+const entries = JSON.parse(readFileSync(join(reference, "index.json"), "utf8")).entries ?? {};
+
+/**
+ * Experiments must never reach the converter. The sync grades every real
+ * component against this build, so an experiment in here does not just get
+ * uploaded — it changes what "correct" means for everything else. They are
+ * excluded from the storybook glob by default; this catches the case where
+ * RAQT_EXPERIMENTS was left set, or where one is added outside that folder.
+ */
+const leaked = Object.keys(entries).filter((id) => id.startsWith("experiments-"));
+if (leaked.length) {
+  die(
+    `${leaked.length} experiment ${leaked.length === 1 ? "story is" : "stories are"} in the reference storybook`,
+    `e.g. ${leaked[0]}\n  Unset RAQT_EXPERIMENTS, delete .design-sync/sb-reference, and re-run.`,
+  );
+}
+
+ok(`${Object.keys(entries).length} stories in .design-sync/sb-reference, no experiments`);
 
 /* ---------- 3. hand off ---------- */
 

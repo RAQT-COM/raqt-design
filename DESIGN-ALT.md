@@ -9,6 +9,11 @@ use the token contract in `DESIGN.md`.
 Rules are written to be checkable in review. If a rule can't fail a PR, it isn't
 a rule yet.
 
+> **This is not the design system.** Everything here lives behind
+> `RAQT_EXPERIMENTS=1` — excluded from the published Storybook and refused by
+> the Claude Design sync. `DESIGN.md` and the token contract are unaffected.
+> Run these screens with `pnpm storybook:experiments`.
+
 > **(measured)** = sampled from a reference frame. Everything else is proposed.
 > Open contradictions between the frames are listed at the bottom.
 
