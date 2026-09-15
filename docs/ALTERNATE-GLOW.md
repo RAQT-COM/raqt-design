@@ -8,7 +8,7 @@ integration into the production mobile app.
 ## Preview
 
 Run `pnpm install`, then `pnpm exec storybook dev -p 6007 --no-open` from this
-worktree. Open **Alternate Design → Glow → Compare Themes** to switch screens
+worktree. Open **Experiments → Glow → Compare Themes** to switch screens
 and compare dark and light. Navigation inside each phone works independently.
 The original system and registry remain available alongside this exploration.
 

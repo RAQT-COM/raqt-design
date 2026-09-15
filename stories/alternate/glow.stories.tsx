@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { GlowApp, GlowComparison } from './glow';
-const meta = { title: 'Alternate Design/Glow', component: GlowApp, parameters: { layout: 'centered' }, argTypes: { theme: { control: 'inline-radio', options: ['dark', 'light'] }, initialScreen: { control: 'select', options: ['feed', 'discover', 'play', 'profile', 'messages', 'badges', 'clinics', 'live'] } } } satisfies Meta<typeof GlowApp>;
+const meta = { title: 'Experiments/Glow', component: GlowApp, parameters: { layout: 'centered' }, argTypes: { theme: { control: 'inline-radio', options: ['dark', 'light'] }, initialScreen: { control: 'select', options: ['feed', 'discover', 'play', 'profile', 'messages', 'badges', 'clinics', 'live'] } } } satisfies Meta<typeof GlowApp>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const StartFeed: Story = { args: { theme: 'dark', initialScreen: 'feed' } };
